@@ -1,0 +1,150 @@
+/* ── Live Price Ticker Styles ──────────────────────────────────────────── */
+
+.ticker {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+/* LIVE badge */
+.liveBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--success, #00e68a);
+  background: rgba(0, 230, 138, 0.07);
+  border: 1px solid rgba(0, 230, 138, 0.15);
+  padding: 2px 8px;
+  border-radius: 100px;
+  width: fit-content;
+}
+
+.liveDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success, #00e68a);
+  box-shadow: 0 0 6px var(--success, #00e68a);
+  animation: blinky 1s step-start infinite;
+}
+
+@keyframes blinky {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.2; }
+}
+
+/* Price display */
+.priceWrap {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  transition: color 0.2s;
+}
+
+.currency {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted, #7b8ca8);
+}
+
+.price {
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  font-weight: 800;
+  color: #fff;
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -1px;
+  transition: color 0.15s ease;
+}
+
+.deltaSec {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.15s;
+}
+
+/* Flash animations */
+.flash_up   { animation: flashUp   0.35s ease-out; }
+.flash_down { animation: flashDown 0.35s ease-out; }
+
+@keyframes flashUp {
+  0%   { color: var(--success, #00e68a); text-shadow: 0 0 12px rgba(0,230,138,0.6); }
+  100% { color: inherit; text-shadow: none; }
+}
+
+@keyframes flashDown {
+  0%   { color: var(--danger, #ff4757); text-shadow: 0 0 12px rgba(255,71,87,0.6); }
+  100% { color: inherit; text-shadow: none; }
+}
+
+/* Session info row */
+.sessionInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.changePill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 8px;
+  border: 1px solid;
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.sessionLabel {
+  font-size: 0.72rem;
+  color: var(--text-muted, #7b8ca8);
+  letter-spacing: 0.5px;
+}
+
+/* Skeleton placeholder */
+.skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Compact mode (for nav/header) ─────────────────────────────────────── */
+.compact {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.compactPrice {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--gold, #d4af37);
+  font-variant-numeric: tabular-nums;
+}
+
+.compactDelta {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}

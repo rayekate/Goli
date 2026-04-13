@@ -1,0 +1,194 @@
+/* ── App Header (authenticated layout) ──────────────────────────────────── */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  background: rgba(6, 11, 22, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  gap: 1rem;
+}
+
+/* ── Logo ─────────────────────────────────────────────────────────────── */
+.logo {
+  font-size: 1.2rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+  flex-shrink: 0;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.logo:hover {
+  opacity: 0.85;
+}
+
+.logo span {
+  color: var(--gold, #d4af37);
+  text-shadow: 0 0 16px rgba(212, 175, 55, 0.3);
+}
+
+/* ── Live price centre ────────────────────────────────────────────────── */
+.priceArea {
+  display: flex;
+  align-items: center;
+  background: rgba(212, 175, 55, 0.04);
+  border: 1px solid rgba(212, 175, 55, 0.1);
+  border-radius: 100px;
+  padding: 5px 14px;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* ── User area ────────────────────────────────────────────────────────── */
+.userArea {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
+.userChip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 0.3rem 0.75rem 0.3rem 0.45rem;
+}
+
+.avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold, #d4af37);
+  flex-shrink: 0;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.userName {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px;
+}
+
+.userBalance {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--gold, #d4af37);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.logoutBtn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0.38rem 0.9rem;
+  border: 1px solid rgba(255, 71, 87, 0.15);
+  border-radius: 8px;
+  background: rgba(255, 71, 87, 0.04);
+  color: var(--text-muted, #7b8ca8);
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.logoutBtn:hover {
+  border-color: var(--danger, #ff4757);
+  color: var(--danger, #ff4757);
+  background: rgba(255, 71, 87, 0.08);
+}
+
+/* ── Responsive ────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .header {
+    padding: 0 1rem;
+    height: 54px;
+  }
+
+  .priceArea {
+    padding: 4px 10px;
+  }
+
+  .userName {
+    max-width: 70px;
+  }
+
+  .logoutBtn span {
+    display: none;
+  }
+
+  .logoutBtn {
+    padding: 0.38rem 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .userChip {
+    display: none;
+  }
+
+  .logo {
+    font-size: 1rem;
+    letter-spacing: 1px;
+  }
+}
+
+/* ── Mobile Toggle ────────────────────────────────────────────────────── */
+.mobileToggle {
+  display: none;
+  background: var(--gold, #d4af37);
+  border: none;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  color: #000;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 0 16px rgba(212, 175, 55, 0.2);
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+}
+
+.mobileToggle:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+}
+
+@media (max-width: 768px) {
+  .mobileToggle {
+    display: flex;
+  }
+}
