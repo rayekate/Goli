@@ -9,7 +9,7 @@ npm run dev
 # or yarn dev
 yarn devmn
 # or
-pnpm dev
+pnpm devdfdf
 # or
 bun dev
 ```
