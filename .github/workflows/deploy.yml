@@ -17,8 +17,13 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
+          
+      - name: Create .env.local
+        run: |
+          echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env.local
 
       - name: Install & build
+        
         run: |
           npm ci
           npm run build
