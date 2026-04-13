@@ -35,8 +35,8 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /var/www/myapp
+            cd /var/www/Goli
             git pull origin main
             npm ci --production=false
             npm run build
-            pm2 restart myapp
+            pm2 restart Goli
