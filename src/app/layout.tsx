@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { UIProvider } from "@/context/UIContext";
+import { ThemeProvider } from "@/context/ThemeContext";
 import NavigationWrapper from "@/components/NavigationWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -24,13 +25,15 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body className={inter.className} style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }} suppressHydrationWarning>
-        <AuthProvider>
-          <UIProvider>
-            <NavigationWrapper>
-              {children}
-            </NavigationWrapper>
-          </UIProvider>
-        </AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <UIProvider>
+              <NavigationWrapper>
+                {children}
+              </NavigationWrapper>
+            </UIProvider>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

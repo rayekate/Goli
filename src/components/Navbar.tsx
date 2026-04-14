@@ -6,6 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 import LivePriceTicker from './LivePriceTicker';
 import { Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import ThemeToggle from './ThemeToggle';
 import styles from './Navbar.module.css';
 
 export default function Navbar() {
@@ -46,6 +47,7 @@ export default function Navbar() {
             </button>
 
             <div className={`${styles.links} ${menuOpen ? styles.linksOpen : ''}`}>
+              <ThemeToggle />
               {user ? (
                 <>
                   <Link href="/dashboard" className={pathname === '/dashboard' ? styles.active : ''}>Dashboard</Link>

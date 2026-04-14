@@ -7,6 +7,7 @@ import {
 
 interface ChartProps {
   data: { time: string; price: number }[];
+  singleColor?: string;
 }
 
 // Custom tooltip for the chart
@@ -29,7 +30,7 @@ function CustomTooltip({ active, payload, label }: any) {
   );
 }
 
-export default function PriceChart({ data }: ChartProps) {
+export default function PriceChart({ data, singleColor }: ChartProps) {
   const [isMobile, setIsMobile] = React.useState(false);
 
   React.useEffect(() => {
@@ -59,11 +60,11 @@ export default function PriceChart({ data }: ChartProps) {
   const tickInterval = data.length > 60 ? 29 : data.length > 30 ? 14 : 'preserveStartEnd';
 
   const isUp = data.length >= 2 ? data[data.length - 1].price >= data[0].price : true;
-  const strokeColor = isUp ? '#00e68a' : '#ff4757';
-  const fillId = isUp ? 'colorUp' : 'colorDown';
+  const strokeColor = singleColor || (isUp ? '#00e68a' : '#ff4757');
+  const fillId = singleColor ? 'colorSingle' : (isUp ? 'colorUp' : 'colorDown');
   const stopColorUp = '#00e68a';
   const stopColorDown = '#ff4757';
-  const stopColor = isUp ? stopColorUp : stopColorDown;
+  const stopColor = singleColor || (isUp ? stopColorUp : stopColorDown);
 
   return (
     <div style={{
@@ -81,20 +82,20 @@ export default function PriceChart({ data }: ChartProps) {
       {/* Mini header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 0.5rem', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.25rem' }}>
         <span style={{ fontSize: '0.72rem', color: '#7B8CA8', letterSpacing: '1px', textTransform: 'uppercase' }}>
-          XAU/USD · {data.length}s of data
+          XAU/USD · MARKET DATA
         </span>
         {data.length >= 2 && (
           <span style={{
             fontSize: '0.75rem',
             fontWeight: 700,
-            color: isUp ? '#00e68a' : '#ff4757',
-            background: isUp ? 'rgba(0,230,138,0.07)' : 'rgba(255,71,87,0.07)',
-            border: `1px solid ${isUp ? 'rgba(0,230,138,0.15)' : 'rgba(255,71,87,0.15)'}`,
+            color: singleColor || (isUp ? '#00e68a' : '#ff4757'),
+            background: singleColor ? `rgba(245, 158, 11, 0.07)` : (isUp ? 'rgba(0,230,138,0.07)' : 'rgba(255,71,87,0.07)'),
+            border: `1px solid ${singleColor ? 'rgba(245, 158, 11, 0.15)' : (isUp ? 'rgba(0,230,138,0.15)' : 'rgba(255,71,87,0.15)')}`,
             borderRadius: '6px',
             padding: '2px 8px',
             fontVariantNumeric: 'tabular-nums',
           }}>
-            {isUp ? '▲' : '▼'} {Math.abs(data[data.length - 1].price - data[0].price).toFixed(2)}
+            {singleColor ? (isUp ? '▲' : '▼') : (isUp ? '▲' : '▼')} {Math.abs(data[data.length - 1].price - data[0].price).toFixed(2)}
           </span>
         )}
       </div>
@@ -103,16 +104,26 @@ export default function PriceChart({ data }: ChartProps) {
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data} margin={{ top: 4, right: 4, left: isMobile ? -10 : 0, bottom: 0 }}>
             <defs>
-              <linearGradient id="colorUp" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%"  stopColor={stopColorUp}   stopOpacity={0.22} />
-                <stop offset="60%" stopColor={stopColorUp}   stopOpacity={0.05} />
-                <stop offset="95%" stopColor={stopColorUp}   stopOpacity={0} />
-              </linearGradient>
-              <linearGradient id="colorDown" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%"  stopColor={stopColorDown} stopOpacity={0.22} />
-                <stop offset="60%" stopColor={stopColorDown} stopOpacity={0.05} />
-                <stop offset="95%" stopColor={stopColorDown} stopOpacity={0} />
-              </linearGradient>
+              {singleColor ? (
+                <linearGradient id="colorSingle" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%"  stopColor={stopColor} stopOpacity={0.22} />
+                  <stop offset="60%" stopColor={stopColor} stopOpacity={0.05} />
+                  <stop offset="95%" stopColor={stopColor} stopOpacity={0} />
+                </linearGradient>
+              ) : (
+                <>
+                  <linearGradient id="colorUp" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%"  stopColor={stopColorUp}   stopOpacity={0.22} />
+                    <stop offset="60%" stopColor={stopColorUp}   stopOpacity={0.05} />
+                    <stop offset="95%" stopColor={stopColorUp}   stopOpacity={0} />
+                  </linearGradient>
+                  <linearGradient id="colorDown" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%"  stopColor={stopColorDown} stopOpacity={0.22} />
+                    <stop offset="60%" stopColor={stopColorDown} stopOpacity={0.05} />
+                    <stop offset="95%" stopColor={stopColorDown} stopOpacity={0} />
+                  </linearGradient>
+                </>
+              )}
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" vertical={false} />
             <XAxis
