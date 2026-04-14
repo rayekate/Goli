@@ -115,69 +115,157 @@ export default function WithdrawPage() {
 
   if (submitted) {
     return (
-      <div className="animate-in" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', padding: '20px' }}>
-        <div style={{ textAlign: 'center', maxWidth: '500px', background: 'rgba(8,14,26,0.9)', backdropFilter: 'blur(20px)', border: '1px solid rgba(212,175,55,0.15)', borderRadius: '20px', padding: '3rem 2rem', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, var(--gold), transparent)' }} />
-          <div style={{ width: '64px', height: '64px', margin: '0 auto 1.25rem', background: 'rgba(0,230,138,0.08)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(0,230,138,0.2)' }}>
-            <Check size={28} color="var(--success)" />
+      <div className="animate-in" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', padding: '0' }}>
+        <div className="glass-card" style={{ 
+          textAlign: 'center', 
+          maxWidth: '540px', 
+          width: '100%',
+          padding: '4rem 2.5rem', 
+          borderRadius: '32px',
+          borderTop: '2px solid var(--success)',
+          position: 'relative'
+        }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '100%', background: 'radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.05) 0%, transparent 70%)', pointerEvents: 'none' }} />
+          
+          <div className="icon-box" style={{ 
+            width: '80px', height: '80px', margin: '0 auto 2rem', 
+            background: 'rgba(16, 185, 129, 0.1)', 
+            borderRadius: '50%', 
+            color: 'var(--success)' 
+          }}>
+            <Check size={36} strokeWidth={3} />
           </div>
-          <h2 className="text-gradient-gold" style={{ fontSize: '1.6rem', marginBottom: '0.75rem' }}>Request Submitted</h2>
-          <p style={{ color: 'var(--text-muted)', marginBottom: '0.5rem', lineHeight: 1.7, fontSize: '0.92rem' }}>
-            Your withdrawal of <strong style={{ color: '#fff' }}>${Number(amount).toFixed(2)}</strong> will be reviewed and processed within 1-24 hours.
-          </p>
-          <button className="btn btn-gold" style={{ padding: '0.8rem 2rem', marginTop: '1.5rem' }} onClick={() => router.push('/dashboard')}>Back to Dashboard</button>
+          
+          <div className="badge" style={{ background: 'rgba(16, 185, 129, 0.1)', color: 'var(--success)', border: '1px solid rgba(16, 185, 129, 0.2)', marginBottom: '1rem' }}>
+            EXTRACTION REQUEST LOGGED
+          </div>
+          
+          <h2 style={{ fontSize: '2.5rem', fontWeight: 950, color: '#fff', letterSpacing: '-0.04em', lineHeight: 1, marginBottom: '1.5rem' }}>
+            Liquidation <span style={{ color: 'var(--success)' }}>Submitted</span>
+          </h2>
+          
+          <div style={{ background: 'rgba(255,255,255,0.02)', padding: '1.5rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)', marginBottom: '2.5rem' }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.6 }}>
+              Your extraction of <strong style={{ color: '#fff' }}>${Number(amount).toLocaleString()}</strong> is queued for institutional review.
+            </p>
+            <div style={{ height: '1px', background: 'rgba(255,255,255,0.05)', margin: '1rem 0' }} />
+            <p style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--success)', letterSpacing: '0.1em' }}>
+              SETTLEMENT VERIFICATION IN PROGRESS
+            </p>
+          </div>
+          
+          <button 
+            className="btn btn-gold" 
+            style={{ width: '100%', padding: '1.15rem', borderRadius: '100px', fontWeight: 950 }} 
+            onClick={() => router.push('/dashboard')}
+          >
+            RETURN TO TERMINAL
+          </button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="animate-in" style={{ padding: '24px 16px', maxWidth: '700px', margin: '0 auto' }}>
-      <div style={{ background: 'rgba(8,14,26,0.9)', backdropFilter: 'blur(20px)', border: '1px solid rgba(212,175,55,0.1)', borderRadius: '16px', padding: '2rem', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, var(--gold), transparent)' }} />
-        <div style={{ marginBottom: '1.75rem', paddingBottom: '1.25rem', borderBottom: '1px solid var(--border)' }}>
-          <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 1.8rem)', color: '#fff', marginBottom: '0.2rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <ArrowDownCircle size={22} color="var(--gold)" /> <span className="text-gradient-gold">Withdraw Funds</span>
-          </h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem' }}>All withdrawals are manually reviewed by our admin team.</p>
+    <div className="animate-in" style={{ padding: '0', maxWidth: '800px', margin: '0 auto' }}>
+      {/* Institutional Header */}
+      <div style={{ marginBottom: '3rem', position: 'relative' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
+          <div className="badge" style={{ background: 'rgba(255,255,255,0.03)', color: 'var(--text-muted)', border: '1px solid rgba(255,255,255,0.05)' }}>LIQUIDATION TERMINAL</div>
+          <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--success)', boxShadow: '0 0 10px var(--success)' }} />
+          <span style={{ fontSize: '0.65rem', fontWeight: 900, color: 'var(--success)', letterSpacing: '0.2em' }}>SECURE CHANNEL ACTIVE</span>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.85rem 1rem', background: 'rgba(212,175,55,0.03)', borderRadius: '12px', marginBottom: '1.5rem', border: '1px solid rgba(212,175,55,0.08)' }}>
-          <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center' }}><Wallet size={18} color="var(--gold)" /><span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Available Balance</span></div>
-          <span style={{ fontWeight: 700, color: 'var(--gold)', fontSize: '1.05rem', fontFamily: 'var(--font-mono, monospace)' }}>${user.balance.toFixed(2)}</span>
-        </div>
-        {error && (<div style={{ background: 'rgba(255,71,87,0.08)', color: 'var(--danger)', padding: '0.65rem 0.85rem', borderRadius: '10px', fontSize: '0.82rem', border: '1px solid rgba(255,71,87,0.15)', marginBottom: '1rem', display: 'flex', gap: '0.5rem', alignItems: 'flex-start' }}><AlertTriangle size={15} style={{ flexShrink: 0, marginTop: '1px' }} /> {error}</div>)}
-        <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <label>Withdrawal Amount (USD)</label>
-            <input type="number" placeholder={`Min $${limits.minWithdrawal}`} required min={limits.minWithdrawal} max={user.balance} step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} />
-            {Number(amount) > 0 && (<p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '0.3rem' }}>You will receive approx. <strong style={{ color: 'var(--gold)' }}>${Number(amount).toFixed(2)}</strong></p>)}
+        <h1 style={{ 
+          fontSize: 'clamp(2.2rem, 5vw, 3rem)', 
+          marginBottom: '0.5rem', 
+          fontWeight: 950,
+          letterSpacing: '-0.04em',
+          lineHeight: 1,
+          color: '#fff' 
+        }}>
+          Liquidate <span className="text-gradient-gold">Reserve Assets</span>
+        </h1>
+        <p style={{ color: 'var(--text-muted)', fontSize: '1rem', fontWeight: 500, opacity: 0.8 }}>
+          Finalize asset extraction via institutional-grade encrypted bridge.
+        </p>
+      </div>
+
+      <div className="glass-card" style={{ padding: '3rem', borderRadius: '32px', borderTop: '2px solid var(--gold)', position: 'relative' }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '100%', background: 'radial-gradient(circle at 50% 0%, rgba(212,175,55,0.03) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        
+        {/* Balance Module */}
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          padding: '1.5rem 2rem', 
+          background: 'rgba(212,175,55,0.04)', 
+          borderRadius: '20px', 
+          marginBottom: '2.5rem', 
+          border: '1px solid rgba(212,175,55,0.1)',
+          boxShadow: '0 10px 30px rgba(0,0,0,0.2)'
+        }}>
+          <div>
+            <span style={{ fontSize: '0.7rem', fontWeight: 900, color: 'var(--gold)', textTransform: 'uppercase', letterSpacing: '0.15em', display: 'block', marginBottom: '0.25rem' }}>AVAILABLE LIQUIDITY</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <Wallet size={18} color="var(--gold)" />
+              <span style={{ fontWeight: 950, color: '#fff', fontSize: '1.8rem', fontFamily: 'var(--font-mono, monospace)', letterSpacing: '-0.05em' }}>${user.balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+            </div>
           </div>
+          <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: 'var(--gold)', boxShadow: '0 0 15px var(--gold)', animation: 'pulse-gold 2s infinite' }} />
+        </div>
+
+        {error && (
+          <div style={{ 
+            background: 'rgba(255,71,87,0.08)', 
+            color: 'var(--danger)', 
+            padding: '1.25rem', 
+            borderRadius: '16px', 
+            fontSize: '0.85rem', 
+            border: '1px solid rgba(255,71,87,0.15)', 
+            marginBottom: '2rem',
+            display: 'flex',
+            gap: '0.75rem',
+            alignItems: 'center'
+          }}>
+            <AlertTriangle size={20} /> {error}
+          </div>
+        )}
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
           <div className="input-group">
-            <label>Network / Currency</label>
+            <label>EXTRACTION AMOUNT (USD)</label>
+            <input type="number" placeholder={`MINIMUM TIER: $${limits.minWithdrawal}`} required min={limits.minWithdrawal} max={user.balance} step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} />
+            {Number(amount) > 0 && (<p style={{ fontSize: '0.72rem', color: 'var(--success)', fontWeight: 800, marginTop: '0.6rem', letterSpacing: '0.05em' }}>NET LIQUIDATION VALUE: ${Number(amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}</p>)}
+          </div>
+
+          <div className="input-group">
+            <label>SETTLEMENT CHAIN / NETWORK</label>
             <div ref={dropdownRef} style={{ position: 'relative' }}>
               <button
                 type="button"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="hover-glow"
                 style={{
                   width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)',
-                  borderRadius: '10px', padding: '0.7rem 1rem', color: '#fff', fontSize: '0.92rem',
-                  cursor: 'pointer', transition: 'border-color 0.2s',
-                  borderColor: dropdownOpen ? 'var(--gold)' : 'var(--border)',
+                  background: 'rgba(8,10,15,0.6)', border: '1px solid rgba(255,255,255,0.08)',
+                  borderRadius: '16px', padding: '1rem 1.5rem', color: '#fff', fontSize: '1rem',
+                  cursor: 'pointer', transition: 'all 0.3s ease',
+                  borderColor: dropdownOpen ? 'var(--gold)' : 'rgba(255,255,255,0.08)',
                 }}
               >
-                <span style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                  <CoinIcon symbol={networkOptions.find(o => o.value === network)?.coin || ''} size={20} />
+                <span style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontWeight: 700 }}>
+                  <CoinIcon symbol={networkOptions.find(o => o.value === network)?.coin || ''} size={22} />
                   {networkOptions.find(o => o.value === network)?.label}
                 </span>
-                <ChevronDown size={16} color="var(--gold)" style={{ transform: dropdownOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
+                <ChevronDown size={18} color="var(--gold)" style={{ transform: dropdownOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)' }} />
               </button>
               {dropdownOpen && (
                 <div style={{
-                  position: 'absolute', top: 'calc(100% + 4px)', left: 0, right: 0, zIndex: 50,
-                  background: 'rgba(10, 18, 34, 0.98)', backdropFilter: 'blur(20px)',
-                  border: '1px solid rgba(212,175,55,0.2)', borderRadius: '12px',
-                  overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+                  position: 'absolute', top: 'calc(100% + 8px)', left: 0, right: 0, zIndex: 100,
+                  background: 'rgba(8, 10, 15, 0.98)', backdropFilter: 'blur(32px)',
+                  border: '1px solid rgba(212,175,55,0.3)', borderRadius: '20px',
+                  overflow: 'hidden', boxShadow: '0 20px 60px rgba(0,0,0,0.8)',
+                  animation: 'scale-up-center 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
                 }}>
                   {networkOptions.map((opt) => (
                     <button
@@ -185,56 +273,93 @@ export default function WithdrawPage() {
                       type="button"
                       onClick={() => { setNetwork(opt.value); setDropdownOpen(false); }}
                       style={{
-                        width: '100%', display: 'flex', alignItems: 'center', gap: '0.6rem',
-                        padding: '0.75rem 1rem', background: network === opt.value ? 'rgba(212,175,55,0.1)' : 'transparent',
-                        border: 'none', borderBottom: '1px solid rgba(255,255,255,0.04)',
+                        width: '100%', display: 'flex', alignItems: 'center', gap: '1rem',
+                        padding: '1.15rem 1.5rem', background: network === opt.value ? 'rgba(212,175,55,0.12)' : 'transparent',
+                        border: 'none', borderBottom: '1px solid rgba(255,255,255,0.03)',
                         color: network === opt.value ? 'var(--gold)' : '#e0e4ea',
-                        fontSize: '0.9rem', cursor: 'pointer', transition: 'background 0.15s',
-                        fontWeight: network === opt.value ? 600 : 400, textAlign: 'left',
+                        fontSize: '0.95rem', cursor: 'pointer', transition: 'all 0.2s',
+                        fontWeight: network === opt.value ? 800 : 500, textAlign: 'left',
                       }}
-                      onMouseEnter={(e) => { if (network !== opt.value) (e.currentTarget.style.background = 'rgba(255,255,255,0.04)'); }}
-                      onMouseLeave={(e) => { if (network !== opt.value) (e.currentTarget.style.background = 'transparent'); }}
+                      className="hover-white"
                     >
-                      <CoinIcon symbol={opt.coin} size={18} />
+                      <CoinIcon symbol={opt.coin} size={20} />
                       {opt.label}
-                      {network === opt.value && <Check size={14} color="var(--gold)" style={{ marginLeft: 'auto' }} />}
+                      {network === opt.value && <div style={{ marginLeft: 'auto', width: '8px', height: '8px', borderRadius: '50%', background: 'var(--gold)', boxShadow: '0 0 10px var(--gold)' }} />}
                     </button>
                   ))}
                 </div>
               )}
             </div>
           </div>
-          <div className="input-group"><label>Your Wallet Address</label><input type="text" placeholder="Enter your withdrawal wallet address" required value={walletAddress} onChange={(e) => setWalletAddress(e.target.value)} /></div>
-          <div style={{ background: 'rgba(0,230,138,0.03)', padding: '0.85rem', borderRadius: '10px', marginBottom: '1.25rem', display: 'flex', gap: '0.6rem', border: '1px solid rgba(0,230,138,0.08)' }}><ShieldCheck size={16} color="var(--success)" style={{ flexShrink: 0, marginTop: '1px' }} /><p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>Once approved, funds are sent directly to your wallet. Processing time: 1-24 hours.</p></div>
+
+          <div className="input-group">
+            <label>DESTINATION WALLET ADDRESS</label>
+            <input type="text" placeholder="Enter institutional-grade wallet address" required value={walletAddress} onChange={(e) => setWalletAddress(e.target.value)} style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.95rem', letterSpacing: '0.05em' }} />
+          </div>
+
           {user?.withdrawalOtpEnabled && (
-            <div style={{ padding: '1.25rem', background: 'rgba(212,175,55,0.03)', border: '1px solid rgba(212,175,55,0.1)', borderRadius: '12px', marginBottom: '1.25rem' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--gold)', fontSize: '0.85rem', marginBottom: '0.75rem' }}>
-                <ShieldCheck size={16} /> Email Verification
-              </label>
-              <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+            <div className="glass-card animate-in" style={{ padding: '2rem', borderRadius: '24px', background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                <ShieldCheck size={20} color="var(--gold)" />
+                <h4 style={{ color: 'var(--gold)', fontSize: '0.8rem', fontWeight: 950, textTransform: 'uppercase', letterSpacing: '0.15em' }}>Biometric / Email Authorization</h4>
+              </div>
+              <div style={{ display: 'flex', gap: '1rem' }}>
                 <input
                   type="text"
-                  placeholder="Enter 6-digit OTP"
+                  placeholder="000000"
                   required
                   value={otpCode}
                   onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
                   maxLength={6}
-                  style={{ letterSpacing: '4px', fontFamily: 'monospace', fontSize: '1.1rem', textAlign: 'center', flex: 1 }}
+                  style={{ letterSpacing: '0.8em', fontFamily: 'var(--font-mono, monospace)', fontSize: '1.4rem', textAlign: 'center', flex: 1, padding: '1rem', background: 'rgba(0,0,0,0.3)' }}
                 />
                 <button
                   type="button"
                   onClick={sendOtp}
                   disabled={otpSending || otpCooldown > 0}
                   className="btn btn-outline"
-                  style={{ whiteSpace: 'nowrap', padding: '0.6rem 1rem', fontSize: '0.8rem', borderColor: 'var(--gold)', color: 'var(--gold)', minWidth: '110px' }}
+                  style={{ 
+                    whiteSpace: 'nowrap', padding: '0 1.5rem', fontSize: '0.85rem', fontWeight: 900,
+                    borderColor: 'var(--gold)', color: 'var(--gold)', minWidth: '140px', borderRadius: '16px'
+                  }}
                 >
-                  {otpSending ? <GoldCoinLoader mini label={null} /> : otpCooldown > 0 ? `Resend (${otpCooldown}s)` : otpSent ? 'Resend OTP' : 'Send OTP'}
+                  {otpSending ? <GoldCoinLoader mini label={null} /> : otpCooldown > 0 ? `RETRY (${otpCooldown}s)` : 'GENERATE OTP'}
                 </button>
               </div>
-              {otpSent && <p style={{ fontSize: '0.72rem', color: 'var(--success)', marginTop: '0.5rem' }}>OTP sent to your registered email. Valid for 5 minutes.</p>}
+              {otpSent && <p style={{ fontSize: '0.75rem', color: 'var(--success)', marginTop: '1rem', fontWeight: 700, textAlign: 'center' }}>[!] AUTHENTICATION TOKEN DISPATCHED TO REGISTERED TERMINAL</p>}
             </div>
           )}
-          <button type="submit" className="btn btn-gold" style={{ width: '100%', fontSize: '0.95rem', padding: '0.85rem', borderRadius: '10px' }} disabled={submitting}>{submitting ? 'Processing...' : 'Request Withdrawal'}</button>
+
+          <div style={{ 
+            background: 'rgba(16, 185, 129, 0.05)', 
+            padding: '1.25rem', 
+            borderRadius: '16px', 
+            border: '1px solid rgba(16, 185, 129, 0.15)',
+            display: 'flex',
+            gap: '1rem',
+            alignItems: 'center'
+          }}>
+            <ShieldCheck size={20} color="var(--success)" style={{ flexShrink: 0 }} />
+            <p style={{ fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.7)', lineHeight: 1.6 }}>
+              Upon authorization, your extraction request will undergo institutional review. <strong style={{ color: '#fff' }}>ETA: 1-24 HOURS</strong>.
+            </p>
+          </div>
+
+          <button 
+            type="submit" 
+            className="btn btn-gold" 
+            style={{ 
+              width: '100%', 
+              fontSize: '1.1rem', 
+              padding: '1.25rem', 
+              borderRadius: '100px', 
+              fontWeight: 950,
+              boxShadow: '0 20px 50px rgba(212, 175, 55, 0.2)' 
+            }} 
+            disabled={submitting}
+          >
+            {submitting ? <GoldCoinLoader mini label="PROCESSING..." /> : 'INITIALIZE LIQUIDATION'}
+          </button>
         </form>
       </div>
     </div>

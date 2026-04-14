@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { Clock, ArrowUpRight, ArrowDownLeft, TrendingUp, TrendingDown, History, BarChart2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Clock, ArrowUpRight, ArrowDownLeft, TrendingUp, TrendingDown, History, BarChart2, ChevronLeft, ChevronRight, AlertTriangle } from 'lucide-react';
+import GoldCoinLoader from '@/components/GoldCoinLoader';
 
 const ITEMS_PER_PAGE = 15;
 
@@ -78,172 +79,294 @@ export default function HistoryPage() {
   };
 
   return (
-    <div className="container animate-in stagger-1" style={{ padding: '30px 15px', maxWidth: '1000px' }}>
-      <div style={{ marginBottom: '2.5rem', borderBottom: '1px solid var(--border)', paddingBottom: '1.5rem' }}>
-        <h1 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.2rem)', marginBottom: '0.5rem', color: '#fff' }} className="text-gradient-gold">Activity History</h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>Complete record of your trading and financial activities.</p>
+    <div className="container animate-in" style={{ maxWidth: '1000px', margin: '0 auto' }}>
+      {/* Institutional Header */}
+      <div style={{ marginBottom: '3.5rem', position: 'relative' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
+          <div className="badge" style={{ background: 'rgba(255,255,255,0.03)', color: 'var(--text-muted)', border: '1px solid rgba(255,255,255,0.05)' }}>AUDIT LOGS</div>
+          <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--gold)', boxShadow: '0 0 10px var(--gold)' }} />
+          <span style={{ fontSize: '0.65rem', fontWeight: 900, color: 'var(--gold)', letterSpacing: '0.2em' }}>TERMINAL SYNCHRONIZED</span>
+        </div>
+        <h1 style={{ 
+          fontSize: 'clamp(2.2rem, 5vw, 3rem)', 
+          marginBottom: '0.5rem', 
+          fontWeight: 950,
+          letterSpacing: '-0.04em',
+          lineHeight: 1,
+          color: '#fff' 
+        }}>
+          Activity <span className="text-gradient-gold">Archives</span>
+        </h1>
+        <p style={{ color: 'var(--text-muted)', fontSize: '1rem', fontWeight: 500, opacity: 0.8 }}>
+          Immutable ledger of trading operations and financial settlements.
+        </p>
       </div>
 
-      {/* Summary stats */}
       {fetchError && (
-        <div style={{ background: 'rgba(255,170,0,0.08)', color: '#ffaa00', padding: '0.75rem 1rem', borderRadius: '8px', marginBottom: '1.5rem', fontSize: '0.85rem', border: '1px solid rgba(255,170,0,0.2)' }}>
-          {fetchError}
+        <div style={{ 
+          background: 'rgba(255,170,0,0.08)', 
+          color: '#ffaa00', 
+          padding: '1.25rem', 
+          borderRadius: '16px', 
+          marginBottom: '2rem', 
+          fontSize: '0.85rem', 
+          border: '1px solid rgba(255,170,0,0.2)',
+          display: 'flex',
+          gap: '0.75rem',
+          alignItems: 'center'
+        }}>
+          <AlertTriangle size={18} /> {fetchError}
         </div>
       )}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '1rem', marginBottom: '3rem' }}>
-        <div className="glass-card" style={{ padding: '1.25rem' }}>
-          <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '0.4rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Total Trades</p>
-          <p style={{ fontSize: '1.8rem', fontWeight: 800, color: '#fff', textShadow: '0 0 10px rgba(255,255,255,0.2)' }}>{trades.length}</p>
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>{wins}W / {losses}L</p>
+
+      {/* Summary stats */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '1rem', marginBottom: '2.5rem' }}>
+        <div className="glass-card" style={{ padding: '1.25rem', borderRadius: '24px', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'rgba(255,255,255,0.05)' }} />
+          <p style={{ fontSize: '0.6rem', fontWeight: 900, color: 'var(--text-muted)', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.2em' }}>Total Operations</p>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
+            <p style={{ fontSize: '1.8rem', fontWeight: 950, color: '#fff', letterSpacing: '-0.05em' }}>{tradeTotal}</p>
+            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700 }}>{wins}W / {losses}L</p>
+          </div>
         </div>
-        <div className="glass-card" style={{ padding: '1.25rem' }}>
-          <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '0.4rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Net Profit / Loss</p>
-          <p style={{ fontSize: '1.8rem', fontWeight: 800, color: totalProfit >= 0 ? 'var(--success)' : 'var(--danger)', textShadow: totalProfit >= 0 ? '0 0 10px var(--success-glow)' : '0 0 10px var(--danger-glow)' }}>
-            ${Math.abs(totalProfit).toFixed(2)}
+        
+        <div className="glass-card" style={{ padding: '1.25rem', borderRadius: '24px', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: totalProfit >= 0 ? 'var(--success)' : 'var(--danger)', opacity: 0.3 }} />
+          <p style={{ fontSize: '0.6rem', fontWeight: 900, color: 'var(--text-muted)', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.2em' }}>Performance</p>
+          <p style={{ 
+            fontSize: '1.8rem', 
+            fontWeight: 950, 
+            color: totalProfit >= 0 ? 'var(--success)' : 'var(--danger)', 
+            letterSpacing: '-0.05em'
+          }}>
+            {totalProfit >= 0 ? '+' : '-'}${Math.abs(totalProfit).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
           </p>
         </div>
-        <div className="glass-card" style={{ padding: '1.25rem' }}>
-          <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '0.4rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Win Rate</p>
-          <p style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--gold)', textShadow: '0 0 10px var(--gold-glow)' }}>
+
+        <div className="glass-card" style={{ padding: '1.25rem', borderRadius: '24px', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'var(--gold)', opacity: 0.3 }} />
+          <p style={{ fontSize: '0.6rem', fontWeight: 900, color: 'var(--text-muted)', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.2em' }}>Precision</p>
+          <p style={{ fontSize: '1.8rem', fontWeight: 950, color: 'var(--gold)', letterSpacing: '-0.05em' }}>
             {trades.length > 0 ? ((wins / trades.length) * 100).toFixed(0) : 0}%
           </p>
         </div>
       </div>
 
-      <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
+      {/* Tabs */}
+      <div style={{ display: 'flex', gap: '0.35rem', marginBottom: '2rem', background: 'rgba(255,255,255,0.03)', padding: '0.35rem', borderRadius: '100px', border: '1px solid rgba(255,255,255,0.05)', width: '100%', maxWidth: '500px' }}>
         <button 
           onClick={() => setActiveTab('trades')}
-          className={`btn ${activeTab === 'trades' ? 'btn-gold' : 'btn-outline'}`}
-          style={{ padding: '0.7rem 1.5rem', flex: 1, minWidth: '140px' }}
+          className="hover-glow"
+          style={{ 
+            flex: 1,
+            padding: '0.75rem 0.5rem', 
+            borderRadius: '100px',
+            fontSize: 'clamp(0.65rem, 2.5vw, 0.85rem)',
+            fontWeight: 800,
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            transition: 'all 0.3s ease',
+            background: activeTab === 'trades' ? 'var(--gold)' : 'transparent',
+            color: activeTab === 'trades' ? '#000' : 'var(--text-muted)',
+            border: 'none',
+            cursor: 'pointer',
+            textAlign: 'center',
+            whiteSpace: 'nowrap'
+          }}
         >
-          <BarChart2 size={18} /> Trades ({tradeTotal})
+          TRADES ({tradeTotal})
         </button>
         <button 
           onClick={() => setActiveTab('transactions')}
-          className={`btn ${activeTab === 'transactions' ? 'btn-gold' : 'btn-outline'}`}
-          style={{ padding: '0.7rem 1.5rem', flex: 1, minWidth: '140px' }}
+          className="hover-glow"
+          style={{ 
+            flex: 1,
+            padding: '0.75rem 0.5rem', 
+            borderRadius: '100px',
+            fontSize: 'clamp(0.65rem, 2.5vw, 0.85rem)',
+            fontWeight: 800,
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            transition: 'all 0.3s ease',
+            background: activeTab === 'transactions' ? 'var(--gold)' : 'transparent',
+            color: activeTab === 'transactions' ? '#000' : 'var(--text-muted)',
+            border: 'none',
+            cursor: 'pointer',
+            textAlign: 'center',
+            whiteSpace: 'nowrap'
+          }}
         >
-          <ArrowUpRight size={18} /> Transactions ({txTotal})
+          FINANCE ({txTotal})
         </button>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         {fetching ? (
-          <div className="glass-card" style={{ padding: '4rem', textAlign: 'center', color: 'var(--text-muted)' }}>Loading records...</div>
+          <div className="glass-card" style={{ padding: '6rem', textAlign: 'center', color: 'var(--text-muted)', borderRadius: '24px' }}>
+            <GoldCoinLoader label="SYNCHRONIZING ARCHIVES..." />
+          </div>
         ) : (
           <>
             {activeTab === 'trades' ? (
               trades.length > 0 ? (
                 <>
                   {trades.map((trade, i) => (
-                <div key={trade._id} className={`glass-card stagger-${Math.min(i % 4 + 1, 4)}`} style={{ padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', borderLeft: `4px solid ${trade.result === 'win' ? 'var(--success)' : 'var(--danger)'}` }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', minWidth: 0, flex: '1 1 auto' }}>
-                    <div style={{ padding: '0.75rem', background: 'rgba(255,255,255,0.03)', borderRadius: '12px' }}>
-                      {trade.direction === 'up' 
-                        ? <TrendingUp size={24} color="var(--success)" style={{ filter: 'drop-shadow(0 0 5px var(--success-glow))' }} /> 
-                        : <TrendingDown size={24} color="var(--danger)" style={{ filter: 'drop-shadow(0 0 5px var(--danger-glow))' }} />
-                      }
-                    </div>
-                    <div>
-                      <span style={{ fontSize: '1.1rem', fontWeight: 800, color: '#fff', display: 'block', marginBottom: '0.2rem' }}>
-                        Gold {trade.direction === 'up' ? 'UP' : 'DOWN'}
-                      </span>
-                      <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                        Stake: <strong style={{ color: '#fff' }}>${trade.amount?.toFixed(2)}</strong> • Entry: ${trade.entryPrice?.toFixed(2)}
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div style={{ textAlign: 'right' }}>
-                    <p style={{ 
-                      fontWeight: 900,
-                      fontSize: '1.2rem',
-                      color: trade.result === 'win' ? 'var(--success)' : 'var(--danger)',
-                      textShadow: trade.result === 'win' ? '0 0 10px var(--success-glow)' : '0 0 10px var(--danger-glow)',
+                    <div key={trade._id} className="glass-card" style={{ 
+                      padding: 'clamp(0.75rem, 3vw, 1.25rem) clamp(0.75rem, 4vw, 1.5rem)', 
+                      borderRadius: '20px',
+                      display: 'flex', 
+                      justifyContent: 'space-between', 
+                      alignItems: 'center', 
+                      gap: '0.75rem',
+                      flexWrap: 'wrap',
+                      borderLeft: `4px solid ${trade.result === 'win' ? 'var(--success)' : 'var(--danger)'}`,
+                      transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                      position: 'relative',
+                      overflow: 'hidden'
                     }}>
-                      {trade.profitOrLoss >= 0 ? '+' : '-'}{trade.profitOrLoss != null ? `$${Math.abs(trade.profitOrLoss).toFixed(2)}` : `$${trade.amount?.toFixed(2)}`}
-                    </p>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '0.25rem' }}>
-                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                        {new Date(trade.createdAt).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}
-                      </span>
-                      <span className={`badge ${trade.result === 'win' ? 'badge-approved' : 'badge-rejected'}`} style={{ fontSize: '0.65rem', padding: '0.15rem 0.6rem' }}>
-                        {trade.result}
-                      </span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.5rem, 2vw, 1rem)', flex: '1 1 180px', minWidth: 0 }}>
+                        <div style={{ 
+                          width: 'clamp(32px, 8vw, 44px)', height: 'clamp(32px, 8vw, 44px)', borderRadius: '12px', 
+                          flexShrink: 0,
+                          background: 'rgba(255,255,255,0.03)', 
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          border: '1px solid rgba(255,255,255,0.05)'
+                        }}>
+                          {trade.direction === 'up' 
+                            ? <TrendingUp size={16} color="var(--success)" /> 
+                            : <TrendingDown size={16} color="var(--danger)" />
+                          }
+                        </div>
+                        <div style={{ minWidth: 0 }}>
+                          <span style={{ fontSize: 'clamp(0.8rem, 3vw, 1rem)', fontWeight: 900, color: '#fff', display: 'block', marginBottom: '0.25rem', letterSpacing: '-0.02em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                            XAU/USD {trade.direction === 'up' ? 'LONG' : 'SHORT'}
+                          </span>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: 'clamp(0.6rem, 2vw, 0.75rem)', color: 'var(--text-muted)', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                            <span>$<strong style={{ color: '#fff' }}>{trade.amount?.toFixed(0)}</strong></span>
+                            <div style={{ width: '3px', height: '3px', borderRadius: '50%', background: 'rgba(255,255,255,0.2)' }} />
+                            <span>@{trade.entryPrice?.toFixed(1)}</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                        <p style={{ 
+                          fontWeight: 950,
+                          fontSize: 'clamp(1rem, 4vw, 1.4rem)',
+                          color: trade.result === 'win' ? 'var(--success)' : 'var(--danger)',
+                          letterSpacing: '-0.04em',
+                          lineHeight: 1
+                        }}>
+                          {trade.profitOrLoss >= 0 ? '+' : '-'}${trade.profitOrLoss != null ? Math.abs(trade.profitOrLoss).toFixed(1) : trade.amount?.toFixed(1)}
+                        </p>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '0.4rem' }}>
+                          <span style={{ fontSize: '0.6rem', color: 'var(--text-muted)', fontWeight: 700 }}>
+                            {new Date(trade.createdAt).toLocaleDateString([], { month: 'numeric', day: 'numeric' })}
+                          </span>
+                          <span className="badge" style={{ 
+                            fontSize: '0.55rem', padding: '0.15rem 0.4rem', 
+                            background: trade.result === 'win' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                            color: trade.result === 'win' ? 'var(--success)' : 'var(--danger)',
+                            border: `1px solid ${trade.result === 'win' ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)'}`
+                          }}>
+                            {trade.result?.toUpperCase()}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
                   ))}
                   {tradeTotalPages > 1 && (
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '1rem', marginTop: '1.5rem' }}>
-                      <button className="btn btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }} onClick={() => handleTradePage(tradePage - 1)} disabled={tradePage <= 1}>
-                        <ChevronLeft size={16} /> Prev
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.75rem', marginTop: '2.5rem' }}>
+                      <button className="btn btn-outline" style={{ padding: '0.6rem 1.25rem', borderRadius: '12px', fontSize: '0.8rem', fontWeight: 800 }} onClick={() => handleTradePage(tradePage - 1)} disabled={tradePage <= 1}>
+                        <ChevronLeft size={16} /> PREV
                       </button>
-                      <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                        Page <strong style={{ color: '#fff' }}>{tradePage}</strong> of {tradeTotalPages}
-                      </span>
-                      <button className="btn btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }} onClick={() => handleTradePage(tradePage + 1)} disabled={tradePage >= tradeTotalPages}>
-                        Next <ChevronRight size={16} />
+                      <div className="glass-card" style={{ padding: '0.6rem 1.5rem', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 900 }}>
+                        <span style={{ color: 'var(--gold)' }}>{tradePage}</span> <span style={{ opacity: 0.3 }}>/</span> {tradeTotalPages}
+                      </div>
+                      <button className="btn btn-outline" style={{ padding: '0.6rem 1.25rem', borderRadius: '12px', fontSize: '0.8rem', fontWeight: 800 }} onClick={() => handleTradePage(tradePage + 1)} disabled={tradePage >= tradeTotalPages}>
+                        NEXT <ChevronRight size={16} />
                       </button>
                     </div>
                   )}
                 </>
               ) : (
-                <div className="glass-card" style={{ padding: '4rem', textAlign: 'center', color: 'var(--text-muted)' }}>
-                  <History size={48} style={{ marginBottom: '1.5rem', opacity: 0.3, margin: '0 auto' }} />
-                  <h3 style={{ color: '#fff', marginBottom: '0.5rem' }}>No trades recorded yet</h3>
-                  <p>Your trading history will appear here once you place a trade.</p>
+                <div className="glass-card" style={{ padding: '6rem', textAlign: 'center', color: 'var(--text-muted)', borderRadius: '32px' }}>
+                  <History size={48} style={{ marginBottom: '1.5rem', opacity: 0.1, margin: '0 auto' }} />
+                  <h3 style={{ color: '#fff', marginBottom: '0.75rem', fontWeight: 900, fontSize: '1.5rem' }}>NO OPERATIONAL HISTORY</h3>
+                  <p style={{ maxWidth: '400px', margin: '0 auto', lineHeight: 1.6 }}>Your initialized trade contracts will be archived and presented here for terminal audits.</p>
                 </div>
               )
             ) : (
               transactions.length > 0 ? (
                 <>
                   {transactions.map((tx, i) => (
-                <div key={tx._id} className={`glass-card stagger-${Math.min(i % 4 + 1, 4)}`} style={{ padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', borderLeft: `4px solid ${tx.type === 'deposit' ? 'var(--success)' : 'var(--warning)'}` }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', minWidth: 0, flex: '1 1 auto' }}>
-                    <div style={{ padding: '0.75rem', background: 'rgba(255,255,255,0.03)', borderRadius: '12px' }}>
-                      {tx.type === 'deposit' 
-                        ? <ArrowUpRight size={24} color="var(--success)" style={{ filter: 'drop-shadow(0 0 5px var(--success-glow))' }} /> 
-                        : <ArrowDownLeft size={24} color="var(--warning)" style={{ filter: 'drop-shadow(0 0 5px rgba(255,204,0,0.3))' }} />
-                      }
+                    <div key={tx._id} className="glass-card" style={{ 
+                      padding: 'clamp(0.75rem, 3vw, 1.25rem) clamp(0.75rem, 4vw, 1.5rem)', 
+                      borderRadius: '20px',
+                      display: 'flex', 
+                      justifyContent: 'space-between', 
+                      alignItems: 'center',
+                      gap: '0.75rem',
+                      flexWrap: 'wrap',
+                      borderLeft: `4px solid ${tx.type === 'deposit' ? 'var(--success)' : 'var(--gold)'}`,
+                      position: 'relative',
+                      overflow: 'hidden'
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.5rem, 2vw, 1rem)', flex: '1 1 180px', minWidth: 0 }}>
+                        <div style={{ 
+                          width: 'clamp(32px, 8vw, 44px)', height: 'clamp(32px, 8vw, 44px)', borderRadius: '12px', 
+                          flexShrink: 0,
+                          background: 'rgba(255,255,255,0.03)', 
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          border: '1px solid rgba(255,255,255,0.05)'
+                        }}>
+                          {tx.type === 'deposit' 
+                            ? <ArrowUpRight size={16} color="var(--success)" /> 
+                            : <ArrowDownLeft size={16} color="var(--gold)" />
+                          }
+                        </div>
+                        <div style={{ minWidth: 0 }}>
+                          <span style={{ fontWeight: 950, fontSize: 'clamp(0.8rem, 3vw, 1rem)', color: '#fff', display: 'block', marginBottom: '0.25rem', letterSpacing: '-0.02em', textTransform: 'uppercase', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                            {tx.type} ARCHIVE {tx.cryptoType && `(${tx.cryptoType})`}
+                          </span>
+                          <span className="badge" style={{ 
+                            fontSize: '0.6rem', padding: '0.2rem 0.6rem', 
+                            background: tx.status === 'approved' ? 'rgba(16, 185, 129, 0.1)' : tx.status === 'pending' ? 'rgba(212, 175, 55, 0.1)' : 'rgba(255,255,255,0.05)',
+                            color: tx.status === 'approved' ? 'var(--success)' : tx.status === 'pending' ? 'var(--gold)' : 'var(--text-muted)',
+                            border: `1px solid ${tx.status === 'approved' ? 'rgba(16,185,129,0.2)' : tx.status === 'pending' ? 'rgba(212,175,55,0.2)' : 'rgba(255,255,255,0.1)'}`
+                          }}>{tx.status?.toUpperCase()}</span>
+                        </div>
+                      </div>
+                      
+                      <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                        <span style={{ fontWeight: 950, fontSize: 'clamp(1rem, 4vw, 1.4rem)', color: tx.type === 'deposit' ? 'var(--success)' : '#fff', letterSpacing: '-0.04em', lineHeight: 1 }}>
+                          {tx.type === 'deposit' ? '+' : '-'}${tx.amount?.toLocaleString(undefined, { minimumFractionDigits: tx.amount >= 1000 ? 0 : 1, maximumFractionDigits: 1 })}
+                        </span>
+                        <p style={{ fontSize: '0.6rem', color: 'var(--text-muted)', marginTop: '0.4rem', fontWeight: 700 }}>
+                          {new Date(tx.createdAt).toLocaleDateString([], { month: 'numeric', day: 'numeric' })}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <span style={{ textTransform: 'capitalize', fontWeight: 800, fontSize: '1.1rem', color: '#fff', display: 'block', marginBottom: '0.2rem' }}>
-                        {tx.type} {tx.cryptoType && `(${tx.cryptoType})`}
-                      </span>
-                      <span className={`badge badge-${tx.status}`} style={{ fontSize: '0.65rem' }}>{tx.status}</span>
-                    </div>
-                  </div>
-                  
-                  <div style={{ textAlign: 'right' }}>
-                    <span style={{ fontWeight: 900, fontSize: '1.2rem', color: tx.type === 'deposit' ? 'var(--success)' : '#fff' }}>
-                      {tx.type === 'deposit' ? '+' : '-'}${tx.amount?.toFixed(2)}
-                    </span>
-                    <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
-                      {new Date(tx.createdAt).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}
-                    </p>
-                  </div>
-                </div>
                   ))}
                   {txTotalPages > 1 && (
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '1rem', marginTop: '1.5rem' }}>
-                      <button className="btn btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }} onClick={() => handleTxPage(txPage - 1)} disabled={txPage <= 1}>
-                        <ChevronLeft size={16} /> Prev
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.75rem', marginTop: '2.5rem' }}>
+                      <button className="btn btn-outline" style={{ padding: '0.6rem 1.25rem', borderRadius: '12px', fontSize: '0.8rem', fontWeight: 800 }} onClick={() => handleTxPage(txPage - 1)} disabled={txPage <= 1}>
+                        <ChevronLeft size={16} /> PREV
                       </button>
-                      <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                        Page <strong style={{ color: '#fff' }}>{txPage}</strong> of {txTotalPages}
-                      </span>
-                      <button className="btn btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }} onClick={() => handleTxPage(txPage + 1)} disabled={txPage >= txTotalPages}>
-                        Next <ChevronRight size={16} />
+                      <div className="glass-card" style={{ padding: '0.6rem 1.5rem', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 900 }}>
+                        <span style={{ color: 'var(--gold)' }}>{txPage}</span> <span style={{ opacity: 0.3 }}>/</span> {txTotalPages}
+                      </div>
+                      <button className="btn btn-outline" style={{ padding: '0.6rem 1.25rem', borderRadius: '12px', fontSize: '0.8rem', fontWeight: 800 }} onClick={() => handleTxPage(txPage + 1)} disabled={txPage >= txTotalPages}>
+                        NEXT <ChevronRight size={16} />
                       </button>
                     </div>
                   )}
                 </>
               ) : (
-                <div className="glass-card" style={{ padding: '4rem', textAlign: 'center', color: 'var(--text-muted)' }}>
-                  <Clock size={48} style={{ marginBottom: '1.5rem', opacity: 0.3, margin: '0 auto' }} />
-                  <h3 style={{ color: '#fff', marginBottom: '0.5rem' }}>No transactions found</h3>
-                  <p>Your deposit and withdrawal history will appear here.</p>
+                <div className="glass-card" style={{ padding: '6rem', textAlign: 'center', color: 'var(--text-muted)', borderRadius: '32px' }}>
+                  <Clock size={48} style={{ marginBottom: '1.5rem', opacity: 0.1, margin: '0 auto' }} />
+                  <h3 style={{ color: '#fff', marginBottom: '0.75rem', fontWeight: 900, fontSize: '1.5rem' }}>NO FINANCIAL ARCHIVES</h3>
+                  <p style={{ maxWidth: '400px', margin: '0 auto', lineHeight: 1.6 }}>Your funding events and extraction settlements will be logged here for fiscal tracking.</p>
                 </div>
               )
             )}

@@ -22,46 +22,51 @@ export default function Navbar() {
     <div className={styles.navbarWrapper}>
       <nav className={styles.navbar}>
         <div className={styles.inner}>
-          <Link href="/" className={`${styles.logo} text-gradient-gold`}>
-            GOLD<span>TRADEX</span>
-          </Link>
-
-          {/* Live price chip — visible to everyone */}
-          <div className={styles.livePriceChip}>
-            <LivePriceTicker compact />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+            <Link href="/" className={`${styles.logo} text-gradient-gold`}>
+              GOLD<span>TRADEX</span>
+            </Link>
+            
+            <div className={styles.statusContainer}>
+              <div className={styles.statusDot} />
+              <span className={styles.statusText}>Live Terminal</span>
+              <div style={{ width: '1px', height: '12px', background: 'rgba(255,255,255,0.1)', margin: '0 4px' }} />
+              <LivePriceTicker compact />
+            </div>
           </div>
 
-          {/* Hamburger toggle */}
-          <button
-            className={styles.menuToggle}
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle menu"
-          >
-            {menuOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+            {/* Hamburger toggle */}
+            <button
+              className={styles.menuToggle}
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Toggle menu"
+            >
+              {menuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
 
-          <div className={`${styles.links} ${menuOpen ? styles.linksOpen : ''}`}>
-            {user ? (
-              <>
-                {user.role === 'admin' ? (
-                  <Link href="/admin" className={styles.adminLink}>Admin Panel</Link>
-                ) : (
-                  <Link href="/dashboard" className={styles.adminLink} style={{ color: 'var(--gold)', borderColor: 'var(--gold)' }}>Dashboard</Link>
-                )}
-                <div className={styles.userSection}>
-                  <span className={styles.balance}>
-                    ${user.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                  </span>
-                  <button onClick={logout} className={styles.logoutBtn}>Logout</button>
-                </div>
-              </>
-            ) : (
-              <>
-                <Link href="/contact" className={pathname === '/contact' ? styles.active : ''}>Contact</Link>
-                <Link href="/login" className={pathname === '/login' ? styles.active : ''}>Login</Link>
-                <Link href="/register" className={styles.getStartedBtn}>Get Started</Link>
-              </>
-            )}
+            <div className={`${styles.links} ${menuOpen ? styles.linksOpen : ''}`}>
+              {user ? (
+                <>
+                  <Link href="/dashboard" className={pathname === '/dashboard' ? styles.active : ''}>Dashboard</Link>
+                  <Link href="/trade" className={pathname === '/trade' ? styles.active : ''}>Trade</Link>
+                  {user.role === 'admin' && (
+                    <Link href="/admin" className={pathname === '/admin' ? styles.active : ''}>Admin</Link>
+                  )}
+                  <div className={styles.userSection}>
+                    <span className={styles.balance}>
+                      ${user.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </span>
+                    <button onClick={logout} className={styles.logoutBtn}>Logout</button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Link href="/login" className={pathname === '/login' ? styles.active : ''}>Login</Link>
+                  <Link href="/register" className={styles.getStartedBtn}>Register Now</Link>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </nav>

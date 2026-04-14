@@ -145,21 +145,26 @@ function LoginContent() {
   };
 
   return (
-    <div style={{ position: 'relative', minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div className="ambient-orb orb-gold" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '500px', height: '500px' }} />
-
+    <div style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+      {/* Immersive Background System */}
+      <div className="noise-texture" />
+      <div className="mesh-gradient" />
+      <div className="grid-overlay" />
+      
       <div className="container animate-in" style={{ maxWidth: '440px', width: '100%', padding: '40px 20px', zIndex: 1 }}>
-        <div style={{
-          background: 'rgba(8, 14, 26, 0.9)',
-          backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(212, 175, 55, 0.1)',
-          borderRadius: '20px',
-          padding: '2.5rem 2rem',
-          position: 'relative',
-          overflow: 'hidden',
-        }}>
-          {/* Top accent */}
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, var(--gold), transparent)' }} />
+        <div className="glass-card" style={{ padding: '2.5rem 2rem' }}>
+          {/* Internal Polish Glows */}
+          <div style={{ 
+            position: 'absolute', 
+            top: '-50px', 
+            right: '-50px', 
+            width: '200px', 
+            height: '200px', 
+            background: 'var(--gold)', 
+            filter: 'blur(100px)', 
+            opacity: 0.03,
+            zIndex: 0 
+          }} />
 
           {!otpStep ? (
             <>
@@ -183,13 +188,22 @@ function LoginContent() {
                 </div>
               )}
 
-              <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                <div style={{ width: '56px', height: '56px', margin: '0 auto 1rem', background: 'rgba(212, 175, 55, 0.08)', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(212,175,55,0.15)' }}>
-                  <Lock size={24} color="var(--gold)" />
+              <div style={{ textAlign: 'center', marginBottom: '2.5rem', position: 'relative', zIndex: 1 }}>
+                <div className="icon-box" style={{ width: '64px', height: '64px', margin: '0 auto 1.25rem', borderRadius: '16px' }}>
+                  <Lock size={26} />
                 </div>
-                <h2 className="text-gradient-gold" style={{ fontSize: '1.8rem', marginBottom: '0.4rem' }}>Welcome Back</h2>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem' }}>
-                  Sign in to access your trading dashboard
+                <h2 style={{ 
+                  fontSize: '2rem', 
+                  marginBottom: '0.5rem', 
+                  fontWeight: 950,
+                  background: 'linear-gradient(135deg, #fff 0%, var(--gold) 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}>
+                  Security Access
+                </h2>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 500 }}>
+                  Enter credentials to initialize session
                 </p>
               </div>
 
@@ -293,11 +307,19 @@ function LoginContent() {
                   <Link href="/forgot-password" style={{ fontSize: '0.85rem', color: 'var(--gold)', opacity: 0.8 }}>Forgot password?</Link>
                 </div>
 
-                <button type="submit" className="btn btn-gold" style={{ width: '100%', marginTop: '0.5rem', fontSize: '1rem', padding: '0.85rem', borderRadius: '10px' }} disabled={loading}>
+                <button type="submit" className="btn btn-gold" style={{ 
+                  width: '100%', 
+                  marginTop: '0.5rem', 
+                  fontSize: '1rem', 
+                  padding: '1rem', 
+                  borderRadius: '100px',
+                  fontWeight: 900,
+                  boxShadow: '0 10px 30px rgba(212, 175, 55, 0.1)'
+                }} disabled={loading}>
                   {loading ? (
                     <><GoldCoinLoader mini label={null} /> Authenticating...</>
                   ) : (
-                    <>Sign In <ArrowRight size={16} /></>
+                    <>Initialize Session <ArrowRight size={18} /></>
                   )}
                 </button>
               </form>

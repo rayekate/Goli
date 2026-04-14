@@ -111,45 +111,108 @@ export default function DepositPage() {
 
   if (submitted) {
     return (
-      <div className="animate-in" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', padding: '20px' }}>
-        <div style={{ textAlign: 'center', maxWidth: '500px', background: 'rgba(8,14,26,0.9)', backdropFilter: 'blur(20px)', border: '1px solid rgba(212,175,55,0.15)', borderRadius: '20px', padding: '3rem 2rem', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, var(--gold), transparent)' }} />
-          <div style={{ width: '64px', height: '64px', margin: '0 auto 1.25rem', background: 'rgba(0,230,138,0.08)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(0,230,138,0.2)' }}>
-            <Check size={28} color="var(--success)" />
+      <div className="animate-in" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', padding: '0' }}>
+        <div className="glass-card" style={{ 
+          textAlign: 'center', 
+          maxWidth: '540px', 
+          width: '100%',
+          padding: '4rem 2.5rem', 
+          borderRadius: '32px',
+          borderTop: '2px solid var(--success)',
+          position: 'relative'
+        }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '100%', background: 'radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.05) 0%, transparent 70%)', pointerEvents: 'none' }} />
+          
+          <div className="icon-box" style={{ 
+            width: '80px', height: '80px', margin: '0 auto 2rem', 
+            background: 'rgba(16, 185, 129, 0.1)', 
+            borderRadius: '50%', 
+            color: 'var(--success)' 
+          }}>
+            <Check size={36} strokeWidth={3} />
           </div>
-          <h2 className="text-gradient-gold" style={{ fontSize: '1.6rem', marginBottom: '0.75rem' }}>Deposit Submitted</h2>
-          <p style={{ color: 'var(--text-muted)', marginBottom: '0.5rem', lineHeight: 1.7, fontSize: '0.92rem' }}>
-            Your deposit of <strong style={{ color: '#fff' }}>${Number(amount).toFixed(2)}</strong> via <strong style={{ color: '#fff' }}>{selectedCrypto?.name}</strong> is being reviewed.
-          </p>
-          <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: '2rem' }}>Typical verification: 1-6 hours</p>
-          <button className="btn btn-gold" style={{ padding: '0.8rem 2rem' }} onClick={() => router.push('/dashboard')}>Back to Dashboard</button>
+          
+          <div className="badge" style={{ background: 'rgba(16, 185, 129, 0.1)', color: 'var(--success)', border: '1px solid rgba(16, 185, 129, 0.2)', marginBottom: '1rem' }}>
+            TRANSACTION CAPTURED
+          </div>
+          
+          <h2 style={{ fontSize: '2.5rem', fontWeight: 950, color: '#fff', letterSpacing: '-0.04em', lineHeight: 1, marginBottom: '1.5rem' }}>
+            Asset <span style={{ color: 'var(--success)' }}>Initialization</span>
+          </h2>
+          
+          <div style={{ background: 'rgba(255,255,255,0.02)', padding: '1.5rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)', marginBottom: '2.5rem' }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.6 }}>
+              Your deposit of <strong style={{ color: '#fff' }}>${Number(amount).toLocaleString()}</strong> via <strong style={{ color: '#fff' }}>{selectedCoin}</strong> has been received by the terminal.
+            </p>
+            <div style={{ height: '1px', background: 'rgba(255,255,255,0.05)', margin: '1rem 0' }} />
+            <p style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--success)', letterSpacing: '0.1em' }}>
+              RESERVE SYNCHRONIZATION IN PROGRESS
+            </p>
+          </div>
+          
+          <button 
+            className="btn btn-gold" 
+            style={{ width: '100%', padding: '1.15rem', borderRadius: '100px', fontWeight: 950 }} 
+            onClick={() => router.push('/dashboard')}
+          >
+            RETURN TO TERMINAL
+          </button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="animate-in" style={{ padding: '24px 16px', maxWidth: '1000px', margin: '0 auto' }}>
-      <div style={{ marginBottom: '2rem', paddingBottom: '1.25rem', borderBottom: '1px solid var(--border)' }}>
-        <h1 style={{ fontSize: 'clamp(1.6rem, 3vw, 2rem)', color: '#fff', marginBottom: '0.2rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <ArrowUpCircle size={24} color="var(--gold)" /> <span className="text-gradient-gold">Deposit Funds</span>
-        </h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Send crypto to our wallet and submit your transaction proof.</p>
-      </div>
-      <div className="grid-responsive-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
-        <div>
-          <h3 style={{ 
-            marginBottom: '1.5rem', 
-            fontSize: '0.75rem', 
-            color: '#7B8CA8', 
-            textTransform: 'uppercase', 
-            letterSpacing: '2px', 
-            fontWeight: 700 
+    <div className="animate-in" style={{ padding: '0', maxWidth: '1100px', margin: '0 auto' }}>
+      {/* Institutional Header */}
+      <div style={{ 
+        marginBottom: '3rem', 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        flexWrap: 'wrap', 
+        gap: '2rem',
+        position: 'relative'
+      }}>
+        <div style={{ flex: 1, minWidth: '300px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
+            <div className="badge" style={{ background: 'rgba(255,255,255,0.03)', color: 'var(--text-muted)', border: '1px solid rgba(255,255,255,0.05)' }}>FUNDING TERMINAL</div>
+            <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--success)', boxShadow: '0 0 10px var(--success)' }} />
+            <span style={{ fontSize: '0.65rem', fontWeight: 900, color: 'var(--success)', letterSpacing: '0.2em' }}>SECURE CHANNEL ESTABLISHED</span>
+          </div>
+          <h1 style={{ 
+            fontSize: 'clamp(2rem, 5vw, 2.8rem)', 
+            marginBottom: '0.5rem', 
+            fontWeight: 950,
+            letterSpacing: '-0.04em',
+            lineHeight: 1,
+            color: '#fff' 
           }}>
-            Step 1 - Select Currency
-          </h3>
+            Initialize <span className="text-gradient-gold">Asset Funding</span>
+          </h1>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', fontWeight: 500, maxWidth: '600px', opacity: 0.8 }}>
+            Synchronize your local reserves with our institutional bullion vault via encrypted blockchain bridge.
+          </p>
+        </div>
+      </div>
+
+      <div className="grid-responsive-2col" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.2fr) minmax(0, 1fr)', gap: '2.5rem', alignItems: 'start' }}>
+        {/* Left Column: Asset Selection */}
+        <div className="animate-in stagger-1">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+            <div style={{ width: '20px', height: '1px', background: 'var(--gold)' }} />
+            <h3 style={{ 
+              fontSize: '0.7rem', 
+              color: '#fff', 
+              textTransform: 'uppercase', 
+              letterSpacing: '0.25em', 
+              fontWeight: 900 
+            }}>
+              01 CONFIGURATION
+            </h3>
+          </div>
           
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '2rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2.5rem' }}>
             {Array.from(new Set(cryptoOptions.map(c => c.name))).map((coinName) => {
               const isSelected = selectedCoin === coinName;
               const option = cryptoOptions.find(c => c.name === coinName);
@@ -162,60 +225,42 @@ export default function DepositPage() {
                     const firstNetwork = cryptoOptions.find(c => c.name === coinName)?.network || '';
                     setSelectedNetwork(firstNetwork);
                   }} 
+                  className="glass-card"
                   style={{ 
-                    padding: '1.25rem', 
+                    padding: '1.5rem', 
                     cursor: 'pointer', 
                     display: 'flex', 
                     alignItems: 'center', 
                     justifyContent: 'space-between',
-                    borderRadius: '16px', 
-                    border: isSelected ? '1px solid var(--gold)' : '1px solid rgba(255,255,255,0.05)', 
-                    background: isSelected ? 'rgba(212,175,55,0.08)' : 'rgba(12,18,32,0.4)', 
-                    boxShadow: isSelected ? '0 0 20px rgba(212,175,55,0.1)' : 'none',
-                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                    position: 'relative',
-                    overflow: 'hidden'
+                    borderRadius: '20px', 
+                    background: isSelected ? 'rgba(212,175,55,0.06)' : 'rgba(8,10,15,0.3)', 
+                    borderColor: isSelected ? 'rgba(212,175,55,0.4)' : 'rgba(255,255,255,0.05)', 
+                    boxShadow: isSelected ? '0 0 40px rgba(212,175,55,0.05)' : 'none',
+                    transform: isSelected ? 'translateX(4px)' : 'none'
                   }}
                 >
-                  {/* Selected Indicator Glow */}
-                  {isSelected && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
                     <div style={{ 
-                      position: 'absolute', 
-                      top: 0, left: 0, bottom: 0, 
-                      width: '3px', background: 'var(--gold)' 
-                    }} />
-                  )}
-
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <div style={{ 
-                      width: '44px', height: '44px', 
+                      width: '48px', height: '48px', 
                       display: 'flex', alignItems: 'center', justifyContent: 'center', 
-                      background: isSelected ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.03)', 
-                      borderRadius: '12px',
-                      transition: 'all 0.3s'
+                      background: isSelected ? 'var(--gold)' : 'rgba(255,255,255,0.02)', 
+                      borderRadius: '14px',
+                      transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                      color: isSelected ? '#000' : 'var(--gold)',
+                      boxShadow: isSelected ? '0 0 20px rgba(212, 175, 55, 0.3)' : 'none'
                     }}>
                       <CoinIcon symbol={coinName} size={24} />
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.1rem' }}>
-                      <span style={{ fontWeight: 700, color: '#fff', fontSize: '1rem' }}>{coinName}</span>
-                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{option?.network} Network</span>
+                    <div>
+                      <span style={{ fontWeight: 900, color: '#fff', fontSize: '1.1rem', letterSpacing: '-0.02em', display: 'block' }}>{coinName}</span>
+                      <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{option?.network} NETWORK</span>
                     </div>
                   </div>
 
-                  {isSelected ? (
-                    <div style={{ 
-                      width: '20px', height: '20px', 
-                      background: 'var(--gold)', borderRadius: '50%', 
-                      display: 'flex', alignItems: 'center', justifyContent: 'center' 
-                    }}>
-                      <Check size={12} color="#000" strokeWidth={4} />
+                  {isSelected && (
+                    <div className="icon-box" style={{ width: '24px', height: '24px', borderRadius: '50%', background: 'var(--gold)', color: '#000' }}>
+                      <Check size={14} strokeWidth={4} />
                     </div>
-                  ) : (
-                    <div style={{ 
-                      width: '20px', height: '20px', 
-                      border: '1.5px solid rgba(255,255,255,0.1)', 
-                      borderRadius: '50%' 
-                    }} />
                   )}
                 </div>
               );
@@ -247,39 +292,132 @@ export default function DepositPage() {
                 );
               })}
             </div>
-          </div>
-
-          {selectedCrypto && (
-            <div style={{ padding: '1rem', background: 'rgba(212,175,55,0.03)', borderRadius: '12px', border: '1px solid rgba(212,175,55,0.1)' }}>
-              <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '1px' }}>{selectedCoin} Address ({selectedNetwork})</p>
-              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                <code style={{ background: 'rgba(0,0,0,0.3)', padding: '0.65rem 0.7rem', borderRadius: '8px', flex: 1, fontSize: '0.75rem', wordBreak: 'break-all', color: 'var(--gold)', border: '1px solid rgba(255,255,255,0.04)' }}>{selectedCrypto.address}</code>
-                <button onClick={handleCopy} style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', borderRadius: '8px', padding: '0.65rem', cursor: 'pointer', color: 'var(--gold)', flexShrink: 0 }}>{copied ? <Check size={16} color="var(--success)" /> : <Copy size={16} />}</button>
+          </div>          {selectedCrypto && (
+            <div className="glass-card animate-in" style={{ padding: '2rem', borderRadius: '24px', borderStyle: 'dashed' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
+                <div style={{ padding: '0.5rem', borderRadius: '8px', background: 'rgba(212,175,55,0.1)' }}>
+                  <ImageIcon size={18} color="var(--gold)" />
+                </div>
+                <h4 style={{ color: 'var(--gold)', fontSize: '0.75rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em' }}>DEPOSIT ADDRESS</h4>
               </div>
-              {copied && <p style={{ fontSize: '0.7rem', color: 'var(--success)', marginTop: '0.5rem' }}>Copied to clipboard!</p>}
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div style={{ 
+                  background: 'rgba(0,0,0,0.3)', 
+                  padding: '1.25rem', 
+                  borderRadius: '16px', 
+                  border: '1px solid rgba(255,255,255,0.05)',
+                  position: 'relative',
+                  overflow: 'hidden'
+                }}>
+                  <p style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 700, wordBreak: 'break-all', fontFamily: 'monospace', letterSpacing: '0.05em' }}>
+                    {selectedCrypto.address}
+                  </p>
+                </div>
+                
+                <button 
+                  onClick={handleCopy} 
+                  className="btn btn-gold" 
+                  style={{ width: '100%', borderRadius: '14px', fontWeight: 900 }}
+                >
+                  {copied ? <><Check size={18} /> COPIED</> : <><Copy size={18} /> COPY ADDRESS</>}
+                </button>
+              </div>
+
+              <div style={{ marginTop: '1.5rem', display: 'flex', gap: '0.75rem', padding: '1rem', background: 'rgba(255,71,87,0.05)', borderRadius: '12px', border: '1px solid rgba(255,71,87,0.1)' }}>
+                <AlertTriangle size={18} color="var(--danger)" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.7)', lineHeight: 1.6 }}>
+                  Strictly send <strong style={{ color: '#fff' }}>{selectedCoin}</strong> via <strong style={{ color: '#fff' }}>{selectedNetwork}</strong> network. External chain errors are irreversible.
+                </p>
+              </div>
             </div>
           )}
-
-          <div style={{ marginTop: '0.75rem', display: 'flex', gap: '0.5rem', padding: '0.7rem', background: 'rgba(212,175,55,0.02)', borderRadius: '8px', border: '1px solid rgba(212,175,55,0.06)' }}>
-            <Info size={14} color="var(--gold)" style={{ flexShrink: 0, marginTop: '1px' }} />
-            <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>Only send <strong style={{ color: '#fff' }}>{selectedCoin}</strong> via the <strong style={{ color: '#fff' }}>{selectedNetwork}</strong> network. Incorrect sends will result in permanent loss.</p>
-          </div>
         </div>
-        <div style={{ background: 'rgba(8,14,26,0.9)', backdropFilter: 'blur(20px)', border: '1px solid rgba(212,175,55,0.1)', borderRadius: '16px', padding: '1.75rem', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, var(--gold), transparent)' }} />
-          <h3 style={{ marginBottom: '1.25rem', fontSize: '0.82rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1.5px', fontWeight: 600 }}>Step 2 - Submit Proof</h3>
-          {error && (<div style={{ background: 'rgba(255,71,87,0.08)', color: 'var(--danger)', padding: '0.65rem 0.85rem', borderRadius: '10px', fontSize: '0.82rem', border: '1px solid rgba(255,71,87,0.15)', marginBottom: '1rem' }}>{error}</div>)}
-          <form onSubmit={handleSubmit}>
-            <div className="input-group"><label>Amount Sent (USD)</label><input type="number" placeholder="e.g. 100" required min="1" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} /></div>
-            <div className="input-group"><label>Transaction Hash / ID</label><input type="text" placeholder="Paste your transaction hash" required value={txHash} onChange={(e) => setTxHash(e.target.value)} /></div>
-            <div className="input-group">
-              <label>Payment Screenshot (max 2MB)</label>
-              <div style={{ border: '1px dashed rgba(212,175,55,0.2)', padding: '1.25rem', borderRadius: '12px', textAlign: 'center', background: 'rgba(212,175,55,0.02)', position: 'relative', cursor: 'pointer' }}>
-                {proofImage ? (<div><img src={proofImage} alt="proof" style={{ maxWidth: '100%', maxHeight: '120px', borderRadius: '8px', objectFit: 'contain' }} /><button type="button" onClick={() => setProofImage('')} style={{ marginTop: '0.5rem', background: 'none', border: 'none', color: 'var(--danger)', cursor: 'pointer', fontSize: '0.75rem', display: 'block', margin: '0.5rem auto 0' }}>Remove</button></div>) : (<div><ImageIcon size={24} style={{ color: 'rgba(212,175,55,0.4)', marginBottom: '0.4rem' }} /><p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Click to upload</p><p style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: '0.15rem' }}>PNG, JPG - max 2MB</p><input type="file" accept="image/*" onChange={handleImageChange} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0, cursor: 'pointer' }} /></div>)}
+
+        {/* Right Column: Submission Form */}
+        <div className="animate-in stagger-2">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+            <div style={{ width: '20px', height: '1px', background: 'var(--gold)' }} />
+            <h3 style={{ 
+              fontSize: '0.7rem', 
+              color: '#fff', 
+              textTransform: 'uppercase', 
+              letterSpacing: '0.25em', 
+              fontWeight: 900 
+            }}>
+              02 VERIFICATION
+            </h3>
+          </div>
+
+          <div className="glass-card" style={{ padding: '2.5rem', borderRadius: '28px', borderTop: '2px solid var(--gold)' }}>
+            {error && (
+              <div style={{ 
+                background: 'rgba(255,71,87,0.08)', 
+                color: 'var(--danger)', 
+                padding: '1rem', 
+                borderRadius: '12px', 
+                fontSize: '0.85rem', 
+                border: '1px solid rgba(255,71,87,0.15)', 
+                marginBottom: '1.5rem',
+                display: 'flex',
+                gap: '0.75rem',
+                alignItems: 'center'
+              }}>
+                <AlertTriangle size={18} /> {error}
               </div>
-            </div>
-            <button type="submit" className="btn btn-gold" style={{ width: '100%', marginTop: '0.5rem', fontSize: '0.95rem', padding: '0.85rem', borderRadius: '10px' }} disabled={submitting}>{submitting ? <GoldCoinLoader mini label={null} /> : 'Submit Deposit Request'}</button>
-          </form>
+            )}
+            
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              <div className="input-group">
+                <label>Amount (USD Value)</label>
+                <input type="number" placeholder="0.00" required min="1" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} />
+              </div>
+              
+              <div className="input-group">
+                <label>Institutional TX Hash</label>
+                <input type="text" placeholder="Enter transaction fingerprint" required value={txHash} onChange={(e) => setTxHash(e.target.value)} />
+              </div>
+              
+              <div style={{ marginTop: '0.5rem' }}>
+                <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 800, color: 'var(--text-muted)', marginBottom: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>TRANSFER PROOF SCAN</label>
+                <div style={{ 
+                  border: '1px dashed rgba(212,175,55,0.25)', 
+                  padding: '2.5rem 1.5rem', 
+                  borderRadius: '20px', 
+                  textAlign: 'center', 
+                  background: 'rgba(212,175,55,0.02)', 
+                  position: 'relative', 
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease'
+                }} className="hover-glow">
+                  {proofImage ? (
+                    <div>
+                      <img src={proofImage} alt="proof" style={{ maxWidth: '100%', maxHeight: '180px', borderRadius: '12px', objectFit: 'contain', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }} />
+                      <button type="button" onClick={() => setProofImage('')} style={{ marginTop: '1rem', background: 'rgba(255,71,87,0.1)', border: '1px solid rgba(255,71,87,0.2)', color: 'var(--danger)', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 900, padding: '0.4rem 1rem', borderRadius: '100px' }}>REMOVE SCAN</button>
+                    </div>
+                  ) : (
+                    <div>
+                      <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'rgba(212,175,55,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem', border: '1px solid rgba(212,175,55,0.1)' }}>
+                        <ImageIcon size={28} style={{ opacity: 0.4, color: 'var(--gold)' }} />
+                      </div>
+                      <p style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 700 }}>Inject Terminal Proof</p>
+                      <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>PNG, JPG, HEIC · MAXIMUM 2MB</p>
+                      <input type="file" accept="image/*" onChange={handleImageChange} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0, cursor: 'pointer' }} />
+                    </div>
+                  )}
+                </div>
+              </div>
+              
+              <button 
+                type="submit" 
+                className="btn btn-gold" 
+                style={{ width: '100%', marginTop: '1rem', fontSize: '1rem', padding: '1.15rem', borderRadius: '100px', fontWeight: 950, letterSpacing: '0.02em', boxShadow: '0 20px 40px rgba(212,175,55,0.15)' }} 
+                disabled={submitting}
+              >
+                {submitting ? <GoldCoinLoader mini label="VERIFYING..." /> : 'AUTHORIZE DEPOSIT REQUEST'}
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>

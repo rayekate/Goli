@@ -15,58 +15,78 @@ interface StatCardProps {
 
 export default function StatCard({ title, value, icon: Icon, trend }: StatCardProps) {
   return (
-    <div className="animate-in stagger-2" style={{
-      position: 'relative',
-      background: 'rgba(8, 14, 26, 0.85)',
-      backdropFilter: 'blur(20px)',
-      border: '1px solid rgba(212, 175, 55, 0.08)',
-      borderRadius: '14px',
-      padding: '1rem 1.15rem',
+    <div className="glass-card animate-in stagger-2" style={{
+      padding: '1.25rem 1.5rem',
       display: 'flex',
       flexDirection: 'column',
-      gap: '0.4rem',
-      overflow: 'hidden',
-      transition: 'all 0.35s ease',
+      gap: '0.5rem',
+      borderRadius: '24px',
+      overflow: 'visible', // allow glow to bleed
+      minHeight: '120px',
+      justifyContent: 'center'
     }}>
-      {/* Top light line */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, rgba(212,175,55,0.15), transparent)', pointerEvents: 'none' }} />
-      
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-        <div>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.72rem', marginBottom: '0.3rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.5px' }}>{title}</p>
-          <h2 style={{ fontSize: '1.4rem', margin: 0, color: '#fff', fontWeight: 800 }}>{value}</h2>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <p style={{ 
+            color: 'var(--text-muted)', 
+            fontSize: '0.7rem', 
+            marginBottom: '0.4rem', 
+            fontWeight: 800, 
+            textTransform: 'uppercase', 
+            letterSpacing: '0.1em' 
+          }}>{title}</p>
+          <h2 style={{ 
+            fontSize: '1.75rem', 
+            margin: 0, 
+            color: '#fff', 
+            fontWeight: 950,
+            letterSpacing: '-0.02em',
+            background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent'
+          }}>{value}</h2>
           
           {trend && (
             <div style={{ 
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.25rem',
-              marginTop: '0.5rem',
-              fontSize: '0.7rem', 
-              fontWeight: 600,
+              gap: '0.35rem',
+              marginTop: '0.75rem',
+              fontSize: '0.72rem', 
+              fontWeight: 800,
               color: trend.isPositive ? 'var(--success)' : 'var(--danger)',
-              background: trend.isPositive ? 'rgba(0,230,138,0.08)' : 'rgba(255,71,87,0.08)',
-              padding: '0.15rem 0.5rem',
-              borderRadius: '20px',
-              border: `1px solid ${trend.isPositive ? 'rgba(0,230,138,0.15)' : 'rgba(255,71,87,0.15)'}`,
+              background: trend.isPositive ? 'rgba(0,230,138,0.06)' : 'rgba(255,71,87,0.06)',
+              padding: '0.2rem 0.75rem',
+              borderRadius: '100px',
+              border: `1px solid ${trend.isPositive ? 'rgba(0,230,138,0.1)' : 'rgba(255,71,87,0.1)'}`,
             }}>
               {trend.isPositive ? '↑' : '↓'} {trend.value}
             </div>
           )}
         </div>
-        <div style={{ 
-          background: 'rgba(212, 175, 55, 0.06)', 
-          padding: '0.6rem', 
-          borderRadius: '12px',
-          color: 'var(--gold)',
-          border: '1px solid rgba(212, 175, 55, 0.1)',
+        <div className="icon-box" style={{ 
+          width: '52px', 
+          height: '52px', 
+          borderRadius: '14px',
+          flexShrink: 0
         }}>
-          <Icon size={22} />
+          <Icon size={24} />
         </div>
       </div>
       
-      {/* Corner glow */}
-      <div style={{ position: 'absolute', bottom: '-20px', right: '-20px', width: '60px', height: '60px', background: 'var(--gold)', filter: 'blur(40px)', opacity: 0.06, pointerEvents: 'none' }} />
+      {/* Dynamic Aura Glow */}
+      <div style={{ 
+        position: 'absolute', 
+        bottom: '-10%', 
+        right: '-10%', 
+        width: '100px', 
+        height: '100px', 
+        background: 'var(--gold)', 
+        filter: 'blur(50px)', 
+        opacity: 0.04, 
+        pointerEvents: 'none',
+        zIndex: 0
+      }} />
     </div>
   );
 }

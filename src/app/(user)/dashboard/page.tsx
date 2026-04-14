@@ -75,129 +75,164 @@ export default function DashboardPage() {
   const recentRejections = transactions.filter(t => t.status === 'rejected').slice(0, 3);
 
   return (
-    <div className="animate-in" style={{ padding: '24px 16px', maxWidth: '1200px', margin: '0 auto' }}>
-      {/* Header */}
-      <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', paddingBottom: '1.5rem', borderBottom: '1px solid var(--border)' }}>
-        <div>
-          <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.2rem)', marginBottom: '0.3rem', color: '#fff' }}>
-            Welcome back, <span className="text-gradient-gold">{user.name}</span>
+    <div className="animate-in" style={{ padding: '0', maxWidth: '1400px', margin: '0 auto' }}>
+      {/* Header Section */}
+      <div style={{ 
+        marginBottom: '3rem', 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'flex-end', 
+        flexWrap: 'wrap', 
+        gap: '2rem',
+        position: 'relative'
+      }}>
+        <div style={{ flex: 1, minWidth: '300px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
+            <div className="badge" style={{ background: 'rgba(255,255,255,0.03)', color: 'var(--text-muted)', border: '1px solid rgba(255,255,255,0.05)' }}>INSTITUTIONAL TERMINAL</div>
+            <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--success)', boxShadow: '0 0 10px var(--success)' }} />
+            <span style={{ fontSize: '0.65rem', fontWeight: 900, color: 'var(--success)', letterSpacing: '0.2em' }}>SYSTEM LIVE</span>
+          </div>
+          <h1 style={{ 
+            fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', 
+            marginBottom: '0.5rem', 
+            fontWeight: 950,
+            letterSpacing: '-0.04em',
+            lineHeight: 0.9,
+            color: '#fff' 
+          }}>
+            Welcome, <span className="text-gradient-gold" style={{ filter: 'drop-shadow(0 0 30px rgba(212,175,55,0.2))' }}>{user.name}</span>
           </h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-            <span style={{ color: 'var(--gold)', fontWeight: 500 }}>@{user.username}</span> · Here&apos;s an overview of your trading activity.
+          <p style={{ color: 'var(--text-muted)', fontSize: '1rem', fontWeight: 500, maxWidth: '600px', opacity: 0.8 }}>
+            Accessing encrypted markets. Your terminal is synchronized with global bullion reserves.
           </p>
         </div>
-        <div style={{ display: 'flex', gap: '0.75rem' }}>
-          <Link href="/deposit" className="btn btn-gold" style={{ padding: '0.7rem 1.3rem', fontSize: '0.88rem' }}>
-            <ArrowUpRight size={16} /> Deposit
+        <div style={{ display: 'flex', gap: '0.75rem', width: '100%', flexWrap: 'wrap' }}>
+          <Link href="/deposit" className="btn btn-gold" style={{ flex: '1 1 200px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem 2rem', borderRadius: '100px', fontWeight: 900, fontSize: '0.9rem' }}>
+            <ArrowUpRight size={18} /> Initialize Deposit
           </Link>
-          <Link href="/withdraw" className="btn btn-outline" style={{ padding: '0.7rem 1.3rem', fontSize: '0.88rem' }}>
-            <ArrowDownLeft size={16} /> Withdraw
+          <Link href="/withdraw" className="btn btn-outline" style={{ flex: '1 1 200px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem 2rem', borderRadius: '100px', fontWeight: 900, fontSize: '0.9rem', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <ArrowDownLeft size={18} /> Asset Withdrawal
           </Link>
         </div>
       </div>
 
       {/* Alerts */}
       {(pendingDeposits.length > 0 || pendingWithdrawals.length > 0 || recentRejections.length > 0) && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', marginBottom: '1.5rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '2rem' }}>
           {pendingDeposits.length > 0 && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '10px', background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}>
-              <AlertCircle size={16} color="var(--gold)" style={{ flexShrink: 0 }} />
-              <p style={{ fontSize: '0.82rem', color: '#E2E8F0', flex: 1 }}>
-                <strong style={{ color: 'var(--gold)' }}>{pendingDeposits.length} deposit{pendingDeposits.length > 1 ? 's' : ''}</strong> pending verification.
-              </p>
-              <Link href="/history" style={{ fontSize: '0.75rem', color: 'var(--gold)', flexShrink: 0 }}>View →</Link>
+            <div className="glass-card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem 1.5rem', borderLeft: '4px solid var(--gold)', borderRadius: '12px' }}>
+              <AlertCircle size={20} color="var(--gold)" />
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 700 }}>Deposit Pending</p>
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{pendingDeposits.length} transaction awaiting terminal verification.</p>
+              </div>
+              <Link href="/history" className="btn-outline" style={{ padding: '0.5rem 1rem', borderRadius: '100px', fontSize: '0.75rem' }}>Track Status</Link>
             </div>
           )}
           {pendingWithdrawals.length > 0 && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '10px', background: 'rgba(255,179,71,0.04)', border: '1px solid rgba(255,179,71,0.1)' }}>
-              <Clock size={16} color="var(--warning)" style={{ flexShrink: 0 }} />
-              <p style={{ fontSize: '0.82rem', color: '#E2E8F0', flex: 1 }}>
-                <strong style={{ color: 'var(--warning)' }}>{pendingWithdrawals.length} withdrawal{pendingWithdrawals.length > 1 ? 's' : ''}</strong> under review.
-              </p>
-              <Link href="/history" style={{ fontSize: '0.75rem', color: 'var(--warning)', flexShrink: 0 }}>View →</Link>
+            <div className="glass-card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem 1.5rem', borderLeft: '4px solid #ffb347', borderRadius: '12px' }}>
+              <Clock size={20} color="#ffb347" />
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 700 }}>Withdrawal Processing</p>
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Security review in progress for {pendingWithdrawals.length} assets.</p>
+              </div>
+              <Link href="/history" className="btn-outline" style={{ padding: '0.5rem 1rem', borderRadius: '100px', fontSize: '0.75rem' }}>View Detail</Link>
             </div>
           )}
-          {recentRejections.map((t: any) => (
-            <div key={t._id} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '10px', background: 'rgba(255,71,87,0.04)', border: '1px solid rgba(255,71,87,0.1)' }}>
-              <XCircle size={16} color="var(--danger)" style={{ flexShrink: 0 }} />
-              <p style={{ fontSize: '0.82rem', color: '#E2E8F0' }}>
-                <strong style={{ color: 'var(--danger)' }}>{t.type}</strong> of <strong style={{ color: '#fff' }}>${t.amount.toFixed(2)}</strong> was rejected.
-              </p>
-            </div>
-          ))}
         </div>
       )}
 
-      {/* Stats */}
-      <div className="dashboard-grid" style={{ marginTop: 0 }}>
-        <StatCard title="Current Balance" value={`$${user.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} icon={Wallet} />
-        <StatCard title="Total Profit / Loss" value={`$${Math.abs(stats.totalProfit).toFixed(2)}`} icon={TrendingUp} trend={{ value: stats.totalProfit >= 0 ? 'Profitable' : 'In Loss', isPositive: stats.totalProfit >= 0 }} />
-        <StatCard title="Win Rate" value={`${stats.winRate.toFixed(1)}%`} icon={Activity} trend={{ value: `${trades.filter((t: any) => t.result === 'win').length}W / ${trades.filter((t: any) => t.result === 'loss').length}L`, isPositive: stats.winRate >= 50 }} />
+      {/* Stats Section */}
+      <div className="dashboard-grid" style={{ marginTop: 0, gap: '1.5rem' }}>
+        <StatCard title="Liquidity Balance" value={`$${user.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} icon={Wallet} />
+        <StatCard title="Session Performance" value={`$${Math.abs(stats.totalProfit).toFixed(2)}`} icon={TrendingUp} trend={{ value: stats.totalProfit >= 0 ? 'Profit' : 'Loss', isPositive: stats.totalProfit >= 0 }} />
+        <StatCard title="Success Frequency" value={`${stats.winRate.toFixed(1)}%`} icon={Activity} trend={{ value: `${trades.filter((t: any) => t.result === 'win').length} Wins`, isPositive: stats.winRate >= 50 }} />
 
-        {/* Live Gold Price Card */}
-        <div style={{
-          background: 'rgba(8, 14, 26, 0.85)',
-          backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(212,175,55,0.1)',
-          borderRadius: '16px',
+        {/* Tactical Live Price Feed */}
+        <div className="glass-card" style={{
           padding: '1.25rem 1.5rem',
           position: 'relative',
           overflow: 'hidden',
+          borderRadius: '24px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '120px'
         }}>
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, var(--gold), transparent)' }} />
+          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '1px', background: 'linear-gradient(90deg, transparent, var(--gold), transparent)' }} />
           <LivePriceTicker />
         </div>
       </div>
 
-      {/* Chart + Recent Trades */}
-      <div className="grid-responsive-2col" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) minmax(0, 1fr)', gap: '1.5rem', marginTop: '1.5rem', overflow: 'hidden' }}>
-        <div style={{ minWidth: 0, overflow: 'hidden' }}>
+      {/* Analytical Terminal */}
+      <div className="grid-responsive-2col" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) minmax(0, 1fr)', gap: '1.5rem', marginTop: '2rem' }}>
+        <div style={{ minWidth: 0 }}>
           <ProfitChart />
         </div>
-        <div style={{
-          background: 'rgba(8, 14, 26, 0.85)',
-          backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(212,175,55,0.08)',
-          borderRadius: '16px',
-          padding: '1.5rem',
-          position: 'relative',
-          overflow: 'hidden',
+        <div className="glass-card" style={{
+          padding: 'clamp(1rem, 4vw, 2rem)',
+          borderRadius: '24px',
           minWidth: 0,
         }}>
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, rgba(212,175,55,0.15), transparent)' }} />
-          <h3 style={{ marginBottom: '1rem', color: '#fff', fontSize: '1rem' }}>Recent Trades</h3>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+            <h3 style={{ color: '#fff', fontSize: '1.1rem', fontWeight: 900, letterSpacing: '0.02em' }}>MISSION ACTIVITY</h3>
+            <div className="badge" style={{ padding: '0.25rem 0.6rem', background: 'rgba(255,255,255,0.05)', color: 'var(--text-muted)', border: '1px solid rgba(255,255,255,0.1)' }}>RECENT</div>
+          </div>
+          
           {trades.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '2rem 0', color: 'var(--text-muted)' }}>
-              <Clock size={36} style={{ marginBottom: '0.75rem', opacity: 0.4 }} />
-              <p style={{ fontSize: '0.88rem' }}>No trades yet.</p>
-              <Link href="/trade" style={{ color: 'var(--gold)', display: 'block', marginTop: '0.75rem', fontWeight: 600, fontSize: '0.85rem' }}>Start Trading →</Link>
+            <div style={{ textAlign: 'center', padding: '3rem 0', color: 'var(--text-muted)' }}>
+              <Clock size={48} style={{ marginBottom: '1rem', opacity: 0.2 }} />
+              <p style={{ fontSize: '0.9rem', fontWeight: 600 }}>No tactical data found.</p>
+              <Link href="/trade" style={{ color: 'var(--gold)', display: 'block', marginTop: '1rem', fontWeight: 800, fontSize: '0.85rem' }}>INITIALIZE TRADE →</Link>
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {trades.slice(0, 6).map((trade: any) => (
                 <div key={trade._id} style={{
                   display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                  padding: '0.65rem 0.75rem',
-                  background: 'rgba(212,175,55,0.02)',
-                  borderRadius: '10px',
-                  border: `1px solid ${trade.result === 'win' ? 'rgba(0,230,138,0.08)' : 'rgba(255,71,87,0.08)'}`,
+                  padding: '1rem',
+                  gap: '0.5rem',
+                  background: 'rgba(255,255,255,0.02)',
+                  borderRadius: '16px',
+                  border: `1px solid ${trade.result === 'win' ? 'rgba(0,230,138,0.1)' : 'rgba(255,71,87,0.1)'}`,
+                  transition: 'all 0.3s ease'
                 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    {trade.direction === 'up' ? <TrendingUp size={14} color="var(--success)" /> : <TrendingDown size={14} color="var(--danger)" />}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <div style={{ 
+                      padding: '0.5rem', 
+                      borderRadius: '10px', 
+                      background: trade.result === 'win' ? 'rgba(0,230,138,0.05)' : 'rgba(255,71,87,0.05)'
+                    }}>
+                      {trade.direction === 'up' ? <TrendingUp size={16} color="var(--success)" /> : <TrendingDown size={16} color="var(--danger)" />}
+                    </div>
                     <div>
-                      <p style={{ fontSize: '0.82rem', fontWeight: 600, color: '#fff' }}>Gold {trade.direction === 'up' ? 'UP' : 'DOWN'}</p>
-                      <p style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>${trade.amount.toFixed(2)}</p>
+                      <p style={{ fontSize: '0.85rem', fontWeight: 800, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '140px' }}>BU-GOLD {trade.direction.toUpperCase()}</p>
+                      <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600 }}>VALUE: ${trade.amount.toFixed(2)}</p>
                     </div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <p style={{ fontSize: '0.85rem', fontWeight: 700, color: trade.result === 'win' ? 'var(--success)' : 'var(--danger)' }}>
+                    <p style={{ fontSize: '1rem', fontWeight: 900, color: trade.result === 'win' ? 'var(--success)' : 'var(--danger)', letterSpacing: '-0.02em' }}>
                       {trade.profitOrLoss >= 0 ? '+' : ''}${trade.profitOrLoss.toFixed(2)}
                     </p>
-                    <span className={`badge ${trade.result === 'win' ? 'badge-approved' : 'badge-rejected'}`} style={{ fontSize: '0.58rem', padding: '0.1rem 0.5rem' }}>{trade.result}</span>
+                    <div style={{ 
+                      fontSize: '0.6rem', 
+                      fontWeight: 900, 
+                      color: trade.result === 'win' ? 'var(--success)' : 'var(--danger)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.1em',
+                      opacity: 0.8
+                    }}>{trade.result}</div>
                   </div>
                 </div>
               ))}
-              <Link href="/history" style={{ textAlign: 'center', fontSize: '0.82rem', color: 'var(--gold)', marginTop: '0.25rem', display: 'block' }}>View full history →</Link>
+              <Link href="/history" style={{ 
+                textAlign: 'center', 
+                fontSize: '0.8rem', 
+                color: 'var(--gold)', 
+                marginTop: '1rem', 
+                fontWeight: 900,
+                letterSpacing: '0.1em' 
+              }}>ACCESS ARCHIVE ACCESS →</Link>
             </div>
           )}
         </div>

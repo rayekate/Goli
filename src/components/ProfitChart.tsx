@@ -38,7 +38,7 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
       });
     });
     observer.observe(containerRef.current);
-    
+
     setDimensions({
       width: containerRef.current.clientWidth,
       height: containerRef.current.clientHeight
@@ -47,7 +47,7 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
     const checkMobile = () => setIsMobile(window.innerWidth < 600);
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    
+
     return () => { observer.disconnect(); window.removeEventListener('resize', checkMobile); };
   }, []);
 
@@ -64,7 +64,7 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
           const fetched = await res.json();
           if (fetched?.price > 0) basePrice = fetched.price;
         }
-      } catch (err) {}
+      } catch (err) { }
 
       if (isCancelled) return;
 
@@ -73,7 +73,7 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
       let now = Math.floor(Date.now() / 1000);
       let currentTime = now - (now % timeframe) - (100 * timeframe); // Gen up to 100 candles
       const initialData: Candle[] = [];
-      
+
       let price = basePrice;
       for (let i = 0; i < 100; i++) {
         const open = price + (Math.random() * 2 - 1) * (volatility * 0.8);
@@ -90,7 +90,7 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
         price = close;
         currentTime += timeframe;
       }
-      
+
       setData(initialData);
       setCurrentPrice(price);
 
@@ -99,10 +99,10 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
           if (prev.length === 0) return prev;
           const arr = [...prev];
           let last = { ...arr[arr.length - 1] };
-          
+
           const currentNow = Math.floor(Date.now() / 1000);
           const currentCandleTime = currentNow - (currentNow % timeframe);
-          
+
           const change = (Math.random() * 1.5 - 0.75); // Live tick stays volatile per second
           const newCurrentPrice = last.close + change;
           setCurrentPrice(newCurrentPrice);
@@ -132,9 +132,9 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
     };
 
     initData();
-    return () => { 
-        isCancelled = true;
-        if (updateInterval) clearInterval(updateInterval); 
+    return () => {
+      isCancelled = true;
+      if (updateInterval) clearInterval(updateInterval);
     };
   }, [timeframe]);
 
@@ -144,11 +144,11 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
   const chartW = Math.max(1, width - padding.left - padding.right);
   const chartH = Math.max(1, height - padding.top - padding.bottom);
   const volumeH = Math.min(60, chartH * 0.25);
-  
+
   const minPrice = visibleData.length ? Math.min(...visibleData.map(d => d.low)) : 0;
   const maxPrice = visibleData.length ? Math.max(...visibleData.map(d => d.high)) : 0;
   const range = (maxPrice - minPrice) || 1;
-  const yMin = minPrice - range * 0.1; 
+  const yMin = minPrice - range * 0.1;
   const yMax = maxPrice + range * 0.1;
   const yRange = yMax - yMin;
 
@@ -161,10 +161,10 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
   const candleWidth = chartW / (visibleData.length || 1);
   const bodyWidth = Math.max(1, Math.floor(candleWidth * 0.75));
 
-  const colorUp = '#26a69a';
-  const colorDown = '#ef5350';
-  const gridColor = 'rgba(212, 175, 55, 0.05)';
-  const textColor = '#7B8CA8';
+  const colorUp = '#10B981';
+  const colorDown = '#EF4444';
+  const gridColor = '#1F2937';
+  const textColor = '#9CA3AF';
 
   const timeframes = [
     { label: '1M', val: 60 },
@@ -196,107 +196,122 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
 
   const renderDateStr = (timestamp: number) => {
     const date = new Date(timestamp * 1000);
-    if (timeframe >= 86400) return `${date.getDate()}/${date.getMonth()+1}`;
-    if (timeframe >= 3600) return `${date.getDate()}/${date.getMonth()+1} ${date.getHours().toString().padStart(2, '0')}:00`;
+    if (timeframe >= 86400) return `${date.getDate()}/${date.getMonth() + 1}`;
+    if (timeframe >= 3600) return `${date.getDate()}/${date.getMonth() + 1} ${date.getHours().toString().padStart(2, '0')}:00`;
     return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
   };
 
   return (
     <div style={{
-      background: 'rgba(8, 14, 26, 0.85)',
-      backdropFilter: 'blur(20px)',
-      border: '1px solid rgba(212, 175, 55, 0.15)',
-      borderRadius: '16px',
-      padding: isMobile ? '1rem 0.5rem' : '1.25rem 1.5rem',
+      background: 'rgba(5, 5, 8, 0.75)',
+      backdropFilter: 'blur(16px)',
+      WebkitBackdropFilter: 'blur(16px)',
+      border: '1px solid rgba(212, 175, 55, 0.08)',
+      borderRadius: '24px',
+      padding: isMobile ? '1.25rem' : '1.75rem',
       height: '100%',
-      minHeight: isMobile ? '350px' : '500px',
+      minHeight: isMobile ? '380px' : '520px',
       position: 'relative',
       overflow: 'hidden',
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column',
+      boxShadow: '0 40px 100px rgba(0, 0, 0, 0.8)',
     }}>
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, rgba(212,175,55,0.25), transparent)' }} />
-      
+      {/* Premium Accent Sweep */}
+      <div style={{ position: 'absolute', top: 0, left: '10%', right: '10%', height: '1.5px', background: 'linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent)', zIndex: 5 }} />
+
       {/* Chart Controls Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.25rem', position: 'relative', zIndex: 10, flexWrap: 'wrap', gap: '0.5rem' }}>
         <div style={{ minWidth: 0 }}>
-          <h3 style={{ fontSize: isMobile ? '0.9rem' : '1.1rem', color: '#fff', fontWeight: 600 }}>LIVE PRICE: <span className="text-gradient-gold">{symbol}</span></h3>
-          <div style={{ display: 'flex', gap: '4px', marginTop: '8px', flexWrap: 'wrap' }}>
+          <h3 style={{ fontSize: isMobile ? '0.85rem' : '1rem', color: '#fff', fontWeight: 700, letterSpacing: '0.05em' }}>LIVE PRICE: <span style={{ color: 'var(--gold)' }}>{symbol}</span></h3>
+          <div style={{ display: 'flex', gap: '6px', marginTop: '10px', flexWrap: 'wrap' }}>
             {timeframes.map(tf => (
-               <button 
-                  key={tf.val}
-                  onClick={() => setTimeframe(tf.val)}
-                  style={{
-                    background: timeframe === tf.val ? 'rgba(212,175,55,0.15)' : 'transparent',
-                    border: `1px solid ${timeframe === tf.val ? 'rgba(212,175,55,0.5)' : 'rgba(255,255,255,0.1)'}`,
-                    color: timeframe === tf.val ? '#D4AF37' : '#7B8CA8',
-                    padding: isMobile ? '3px 8px' : '4px 12px',
-                    borderRadius: '6px',
-                    fontSize: isMobile ? '0.68rem' : '0.75rem',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease',
-                    fontWeight: timeframe === tf.val ? 600 : 400
-                  }}
-               >
-                 {tf.label}
-               </button>
+              <button
+                key={tf.val}
+                onClick={() => setTimeframe(tf.val)}
+                style={{
+                  background: timeframe === tf.val ? 'rgba(250, 204, 21, 0.1)' : 'transparent',
+                  border: `1px solid ${timeframe === tf.val ? 'var(--gold)' : 'var(--border)'}`,
+                  color: timeframe === tf.val ? 'var(--gold)' : 'var(--text-muted)',
+                  padding: isMobile ? '2px 8px' : '4px 12px',
+                  borderRadius: '4px',
+                  fontSize: isMobile ? '0.65rem' : '0.75rem',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  fontWeight: 700
+                }}
+              >
+                {tf.label}
+              </button>
             ))}
           </div>
         </div>
-        {!isMobile && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'rgba(15, 23, 42, 0.6)', padding: '6px 16px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
-            <span style={{ fontSize: '0.75rem', color: '#7B8CA8', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>Zoom</span>
-            <input 
-              type="range" 
-              min="20" 
-              max="120" 
-              value={140 - zoom} 
-              onChange={(e) => setZoom(140 - parseInt(e.target.value))} 
-              style={{ width: '80px', accentColor: '#D4AF37', cursor: 'ew-resize' }}
-            />
-          </div>
-        )}
+
       </div>
 
       {/* OHLC Bar */}
-      <div style={{ minHeight: '24px', display: 'flex', gap: isMobile ? '8px' : '15px', alignItems: 'center', fontSize: isMobile ? '0.7rem' : '0.8rem', color: '#7B8CA8', zIndex: 10, flexWrap: 'wrap', overflow: 'hidden' }}>
+      <div style={{ minHeight: '20px', display: 'flex', gap: isMobile ? '8px' : '12px', alignItems: 'center', fontSize: isMobile ? '0.65rem' : '0.75rem', color: 'var(--text-muted)', zIndex: 10, flexWrap: 'wrap', overflow: 'hidden', marginTop: '5px' }}>
         {currentHoverCandle && (
           <>
-            <span>O <span style={{color: '#fff', fontWeight: 500}}>{currentHoverCandle.open.toFixed(2)}</span></span>
-            <span>H <span style={{color: '#fff', fontWeight: 500}}>{currentHoverCandle.high.toFixed(2)}</span></span>
-            <span>L <span style={{color: '#fff', fontWeight: 500}}>{currentHoverCandle.low.toFixed(2)}</span></span>
-            <span>C <span style={{color: '#fff', fontWeight: 500}}>{currentHoverCandle.close.toFixed(2)}</span></span>
-            <span style={{ color: currentHoverCandle.isUp ? colorUp : colorDown, fontWeight: 600 }}>
+            <span>O <span style={{ color: '#fff', fontWeight: 600 }}>{currentHoverCandle.open.toFixed(2)}</span></span>
+            <span>H <span style={{ color: '#fff', fontWeight: 600 }}>{currentHoverCandle.high.toFixed(2)}</span></span>
+            <span>L <span style={{ color: '#fff', fontWeight: 600 }}>{currentHoverCandle.low.toFixed(2)}</span></span>
+            <span>C <span style={{ color: '#fff', fontWeight: 600 }}>{currentHoverCandle.close.toFixed(2)}</span></span>
+            <span style={{ color: currentHoverCandle.isUp ? colorUp : colorDown, fontWeight: 700 }}>
               {currentHoverCandle.isUp ? '▲' : '▼'} {Math.abs(currentHoverCandle.close - currentHoverCandle.open).toFixed(2)}
             </span>
           </>
         )}
       </div>
-      
+
       <div ref={containerRef} style={{ width: '100%', flex: 1, position: 'relative', marginTop: '5px', minWidth: 0, overflow: 'hidden' }}>
         {visibleData.length > 0 && (
-          <svg 
-            width={width} 
-            height={height} 
+          <svg
+            width={width}
+            height={height}
             style={{ position: 'absolute', top: 0, left: 0, cursor: 'crosshair' }}
             onMouseMove={handleMouseMove}
             onMouseLeave={() => setHoverData(null)}
           >
-            {/* Background Grid */}
-            {[0.25, 0.50, 0.75].map((multiplier) => (
-              <line key={multiplier} x1={0} y1={getY(yMin + yRange * multiplier)} x2={chartW} y2={getY(yMin + yRange * multiplier)} stroke={gridColor} strokeWidth={1} />
-            ))}
-
+            {/* SVG Background Gradient & Effects */}
             <defs>
+              <linearGradient id="chartBg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#080a0f" stopOpacity={0.8} />
+                <stop offset="100%" stopColor="#020408" stopOpacity={1} />
+              </linearGradient>
+
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="2.5" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+              </filter>
+
               <linearGradient id="volUp" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor={colorUp} stopOpacity={0.4} />
+                <stop offset="0%" stopColor={colorUp} stopOpacity={0.3} />
                 <stop offset="100%" stopColor={colorUp} stopOpacity={0.0} />
               </linearGradient>
               <linearGradient id="volDown" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor={colorDown} stopOpacity={0.4} />
+                <stop offset="0%" stopColor={colorDown} stopOpacity={0.3} />
                 <stop offset="100%" stopColor={colorDown} stopOpacity={0.0} />
               </linearGradient>
             </defs>
+
+            {/* Main Area Background */}
+            <rect x={0} y={0} width={width} height={height} fill="url(#chartBg)" />
+
+            {/* Professional Grid Lines */}
+            {[0.25, 0.50, 0.75].map((multiplier) => (
+              <line
+                key={multiplier}
+                x1={0}
+                y1={getY(yMin + yRange * multiplier)}
+                x2={chartW}
+                y2={getY(yMin + yRange * multiplier)}
+                stroke={gridColor}
+                strokeWidth={1}
+                strokeDasharray="4 8"
+                opacity={0.3}
+              />
+            ))}
 
             {/* Elements */}
             {visibleData.map((d, i) => {
@@ -332,30 +347,36 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
 
             {/* Time X-Axis Labels */}
             {visibleData.map((d, i) => {
-               const step = Math.max(1, Math.floor(zoom / 6));
-               if (i % step !== 0) return null;
-               const x = padding.left + i * candleWidth;
-               return <text key={i} x={x} y={padding.top + chartH + 18} fill={textColor} fontSize="10" textAnchor="middle" fontFamily="monospace">{renderDateStr(d.time)}</text>;
+              const step = Math.max(1, Math.floor(zoom / 6));
+              if (i % step !== 0) return null;
+              const x = padding.left + i * candleWidth;
+              return <text key={i} x={x} y={padding.top + chartH + 18} fill={textColor} fontSize="10" textAnchor="middle" fontFamily="monospace">{renderDateStr(d.time)}</text>;
             })}
 
-            {/* TradingView-Style Current Price Polygon Tag */}
+            {/* Current Price Ticker with Pulse Glow */}
             {currentPrice && (
-               <g>
-                 <line x1={padding.left} y1={getY(currentPrice)} x2={chartW} y2={getY(currentPrice)} stroke="#D4AF37" strokeWidth="1" strokeDasharray="3 3" opacity={0.6}/>
-                 
-                 {/* Vector Polygon for sharp tag feel */}
-                 <path 
-                   d={`M ${chartW} ${getY(currentPrice)} 
+              <g>
+                <line x1={padding.left} y1={getY(currentPrice)} x2={chartW} y2={getY(currentPrice)} stroke="var(--gold)" strokeWidth="1" strokeDasharray="4 2" opacity={0.4} />
+
+                {/* Pulse Glow Effect */}
+                <circle cx={chartW} cy={getY(currentPrice)} r="6" fill="var(--gold)">
+                  <animate attributeName="r" values="6;12;6" dur="2s" repeatCount="indefinite" />
+                  <animate attributeName="opacity" values="0.6;0;0.6" dur="2s" repeatCount="indefinite" />
+                </circle>
+
+                <path
+                  d={`M ${chartW} ${getY(currentPrice)} 
                        L ${chartW + 8} ${getY(currentPrice) - 10} 
                        L ${chartW + 65} ${getY(currentPrice) - 10} 
                        L ${chartW + 65} ${getY(currentPrice) + 10} 
-                       L ${chartW + 8} ${getY(currentPrice) + 10} Z`} 
-                   fill="#D4AF37" 
-                 />
-                 <text x={chartW + 36} y={getY(currentPrice) + 4} fill="#000" fontSize="11" fontWeight="700" fontFamily="monospace" textAnchor="middle">
-                   {currentPrice.toFixed(2)}
-                 </text>
-               </g>
+                       L ${chartW + 8} ${getY(currentPrice) + 10} Z`}
+                  fill="var(--gold)"
+                  filter="url(#glow)"
+                />
+                <text x={chartW + 36} y={getY(currentPrice) + 4} fill="#0F172A" fontSize="11" fontWeight="900" fontFamily="monospace" textAnchor="middle">
+                  {currentPrice.toFixed(2)}
+                </text>
+              </g>
             )}
 
             {/* Interactive Crosshair overlay */}
@@ -363,22 +384,22 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
               <g pointerEvents="none">
                 <line x1={hoverData.x} y1={padding.top} x2={hoverData.x} y2={padding.top + chartH} stroke="rgba(255,255,255,0.3)" strokeDasharray="4 4" strokeWidth={1} />
                 <line x1={padding.left} y1={hoverData.y} x2={chartW} y2={hoverData.y} stroke="rgba(255,255,255,0.3)" strokeDasharray="4 4" strokeWidth={1} />
-                
+
                 {/* Crosshair Price Tag */}
-                <path 
+                <path
                   d={`M ${chartW} ${hoverData.y} 
                       L ${chartW + 8} ${hoverData.y - 10} 
                       L ${chartW + 65} ${hoverData.y - 10} 
                       L ${chartW + 65} ${hoverData.y + 10} 
-                      L ${chartW + 8} ${hoverData.y + 10} Z`} 
-                  fill="#1E2A3B" 
+                      L ${chartW + 8} ${hoverData.y + 10} Z`}
+                  fill="#1F2937"
                 />
                 <text x={chartW + 36} y={hoverData.y + 4} fill="#fff" fontSize="11" fontFamily="monospace" textAnchor="middle">
                   {getPriceFromY(hoverData.y).toFixed(2)}
                 </text>
 
                 {/* Crosshair Time Tag */}
-                <rect x={hoverData.x - 30} y={padding.top + chartH + 5} width={60} height={18} fill="#1E2A3B" rx={2} />
+                <rect x={hoverData.x - 30} y={padding.top + chartH + 5} width={60} height={18} fill="#1F2937" rx={2} />
                 <text x={hoverData.x} y={padding.top + chartH + 18} fill="#fff" fontSize="10" fontFamily="monospace" textAnchor="middle">
                   {renderDateStr(hoverData.candle!.time)}
                 </text>

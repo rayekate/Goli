@@ -9,129 +9,202 @@ export default function Home() {
   const { user } = useAuth();
 
   return (
-    <div className="animate-in">
-      {/* Ambient Background */}
-      <div className="ambient-orb orb-gold" style={{ top: '5%', left: '15%', width: '600px', height: '600px' }} />
-      <div className="ambient-orb orb-purple" style={{ top: '30%', right: '5%', width: '500px', height: '500px' }} />
-      <div className="ambient-orb orb-gold" style={{ bottom: '0', left: '40%', width: '700px', height: '700px', opacity: 0.15 }} />
+    <div className="animate-in" style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh' }}>
+      {/* Premium Texture Layers */}
+      <div className="noise-texture" />
+      
+      {/* Drifting Mesh Gradient - Subliminal Depth */}
+      <div 
+        style={{ 
+          position: 'fixed', 
+          top: 0, 
+          left: 0, 
+          right: 0, 
+          bottom: 0,
+          background: `
+            radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(67, 56, 202, 0.03) 0%, transparent 50%)
+          `,
+          filter: 'blur(80px)',
+          zIndex: 0,
+          pointerEvents: 'none'
+        }} 
+      />
 
-      {/* Hero */}
-      <section className="hero-section" style={{ padding: '20px 0 60px', position: 'relative' }}>
-        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-          <div className="hero-grid" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '4rem' }}>
+      {/* Dynamic Micro-Grid */}
+      <div 
+        style={{ 
+          position: 'absolute', 
+          top: 0, 
+          left: 0, 
+          right: 0, 
+          height: '100%', 
+          backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.02) 1px, transparent 0)',
+          backgroundSize: '40px 40px',
+          pointerEvents: 'none',
+          zIndex: 1
+        }} 
+      />
+      
+      {/* Ambient Focused Glows */}
+      <div className="ambient-orb" style={{ top: '-10%', left: '10%', width: '1000px', height: '1000px', background: 'radial-gradient(circle, rgba(212, 175, 55, 0.05) 0%, transparent 70%)', zIndex: 1 }} />
+      <div className="ambient-orb" style={{ bottom: '-10%', right: '-5%', width: '800px', height: '800px', background: 'radial-gradient(circle, rgba(67, 56, 202, 0.03) 0%, transparent 70%)', zIndex: 1 }} />
+
+      {/* Hero Section */}
+      <section className="hero-section" style={{ padding: '100px 0 140px', position: 'relative', zIndex: 1 }}>
+        <div className="container">
+          <div className="hero-grid" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '5rem' }}>
             
             {/* Left Content */}
-            <div className="hero-content" style={{ flex: '1 1 320px', minWidth: 0 }}>
-              <div className="badge badge-primary animate-float" style={{ marginBottom: '2rem', display: 'inline-flex' }}>
-                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--gold)', boxShadow: '0 0 8px var(--gold-glow)', display: 'inline-block', marginRight: '8px' }} />
-                LIVE GOLD PRICE: XAU/USD
+            <div className="hero-content" style={{ flex: '1 1 480px', minWidth: 0 }}>
+              <div style={{ 
+                marginBottom: '2rem', 
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '12px',
+                background: 'rgba(212, 175, 55, 0.03)',
+                border: '1px solid rgba(212, 175, 55, 0.1)',
+                padding: '0.6rem 1.2rem',
+                borderRadius: '100px',
+              }}>
+                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--success)', boxShadow: '0 0 12px var(--success)', animation: 'pulse 2s infinite' }} />
+                <span style={{ fontSize: '0.7rem', fontWeight: 900, color: 'var(--text-muted)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+                  Live Terminal Active
+                </span>
+                <div style={{ width: '1px', height: '12px', background: 'rgba(255,255,255,0.1)' }} />
+                <span style={{ fontSize: '0.7rem', fontWeight: 900, color: 'var(--gold)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+                  XAU / USD
+                </span>
               </div>
 
-              <h1 style={{ fontSize: 'clamp(2rem, 6vw, 4.5rem)', marginBottom: '1.5rem', lineHeight: 1.15, fontWeight: 800 }}>
-                Trade Gold Price<br />
-                <span className="text-gradient-gold">Movements & Profit</span>
+              <h1 style={{ 
+                fontSize: 'clamp(3rem, 7vw, 5rem)', 
+                marginBottom: '1.5rem', 
+                lineHeight: 1, 
+                fontWeight: 950, 
+                color: '#fff', 
+                letterSpacing: '-3px',
+                textShadow: '0 10px 40px rgba(0,0,0,0.5)'
+              }}>
+                Trade Gold with<br />
+                <span style={{ 
+                  background: 'linear-gradient(135deg, #fff 0%, var(--gold) 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}>High Precision</span>
               </h1>
 
-              <p style={{ color: 'var(--text-muted)', fontSize: 'clamp(0.95rem, 2vw, 1.15rem)', maxWidth: '540px', marginBottom: '2rem', lineHeight: 1.7 }}>
-                Deposit funds, predict gold price direction, and earn up to{' '}
-                <strong style={{ color: '#fff' }}>80% profit</strong> on every winning trade. Experience next-gen trading.
+              <p style={{ color: 'var(--text-muted)', fontSize: 'clamp(1.1rem, 2vw, 1.25rem)', maxWidth: '580px', marginBottom: '3.5rem', lineHeight: 1.7 }}>
+                Harness institutional-grade tools to predict gold price movements easily. 
+                Earn up to <strong style={{ color: 'var(--success)' }}>80% profit</strong> on accurate predictions.
               </p>
               
-              <div className="hero-buttons" style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+              <div className="hero-buttons" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
                 {user ? (
                   <>
-                    <Link href="/dashboard" className="btn btn-gold" style={{ padding: '0.9rem 2.5rem', fontSize: '1.05rem', boxShadow: '0 0 20px rgba(212, 175, 55, 0.4)' }}>
-                      Go to Dashboard <ArrowRight size={18} />
+                    <Link href="/dashboard" className="btn btn-gold" style={{ padding: '1.2rem 4rem', fontSize: '1rem', fontWeight: 800, borderRadius: '100px' }}>
+                      Dashboard <ArrowRight size={18} />
                     </Link>
-                    <Link href="/trade" className="btn btn-outline" style={{ padding: '0.9rem 2.5rem', fontSize: '1.05rem' }}>
+                    <Link href="/trade" className="btn btn-outline" style={{ padding: '1.2rem 3rem', fontSize: '1rem', borderRadius: '100px' }}>
                       Start Trading
                     </Link>
                   </>
                 ) : (
                   <>
-                    <Link href="/register" className="btn btn-gold neon-pulse" style={{ padding: '0.9rem 2.5rem', fontSize: '1.05rem' }}>
-                      Start Trading Now <ArrowRight size={18} />
+                    <Link href="/register" className="btn btn-gold" style={{ padding: '1.25rem 4.5rem', fontSize: '1rem', fontWeight: 900, borderRadius: '100px', boxShadow: '0 10px 30px rgba(212, 175, 55, 0.2)' }}>
+                      Register Now <ArrowRight size={18} />
                     </Link>
-                    <Link href="/login" className="btn btn-outline" style={{ padding: '0.9rem 2.5rem', fontSize: '1.05rem' }}>
-                      Login to Account
+                    <Link href="/login" className="btn btn-outline" style={{ padding: '1.25rem 3.5rem', fontSize: '1rem', borderRadius: '100px' }}>
+                      Login
                     </Link>
                   </>
                 )}
               </div>
+
+              <div style={{ marginTop: '3rem', display: 'flex', alignItems: 'center', gap: '2rem', opacity: 0.6 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Shield size={16} color="var(--gold)" />
+                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)' }}>Verified Security</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Zap size={16} color="var(--gold)" />
+                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)' }}>Instant Payouts</span>
+                </div>
+              </div>
             </div>
 
-            {/* Right Content - The Chart */}
-            <div style={{ flex: '1 1 320px', width: '100%', minWidth: 0, perspective: '1000px' }}>
-              <div className="animate-float" style={{ animationDelay: '0.5s', transformStyle: 'preserve-3d', transform: 'rotateY(-5deg) rotateX(2deg)', boxShadow: '-20px 20px 60px rgba(0,0,0,0.5)' }}>
+            <div style={{ flex: '1 1 480px', width: '100%', minWidth: 0 }}>
+              <div style={{ 
+                boxShadow: '0 40px 100px rgba(0,0,0,0.8)', 
+                border: '1px solid rgba(212,175,55,0.1)', 
+                borderRadius: '24px', 
+                overflow: 'hidden',
+                background: '#02040a',
+                transition: 'all 0.4s ease'
+              }}>
                 <ProfitChart />
               </div>
             </div>
           </div>
 
-          {/* Stats Bar */}
-          <div style={{
-            display: 'flex',
-            gap: 'clamp(1.5rem, 4vw, 3rem)',
-            flexWrap: 'wrap',
-            justifyContent: 'space-around',
-            marginTop: '6rem',
-            padding: 'clamp(1.5rem, 3vw, 2.5rem)',
-            background: 'rgba(8, 14, 26, 0.6)',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(212,175,55,0.15)',
-            borderTop: '2px solid rgba(212,175,55,0.4)',
-            borderRadius: '24px',
-            position: 'relative',
-            overflow: 'hidden',
-            boxShadow: '0 20px 40px rgba(0,0,0,0.4)'
+            {/* Floating Institutional Stats Cards */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '2rem',
+              marginTop: '12rem',
+            }}>
+              {[
+                { label: 'Settlement Speed', value: 'Instant', icon: <Clock size={20} />, subtext: 'Auto-settled trades' },
+                { label: 'Target Yield', value: '80%', icon: <TrendingUp size={20} />, subtext: 'Fixed profit model' },
+                { label: 'Asset Security', value: 'Verified', icon: <Shield size={20} />, subtext: 'Multi-layer encryption' },
+              ].map((stat, idx) => (
+                <div key={idx} className="glass-card" style={{ 
+                  padding: '2.5rem', 
+                  animation: `fadeInSlide 0.5s ease forwards ${idx * 0.1}s`,
+                  opacity: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '1rem'
+                }}>
+                  <div className="icon-box">{stat.icon}</div>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>{stat.label}</div>
+                  <div style={{ fontSize: '2.2rem', fontWeight: 950, color: '#fff', letterSpacing: '-1px' }}>{stat.value}</div>
+                  <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>{stat.subtext}</div>
+                </div>
+              ))}
+            </div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section style={{ padding: '140px 0', background: 'var(--background-base)' }}>
+        <div className="container">
+          <div style={{ textAlign: 'center', marginBottom: '8rem' }}>
+            <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', marginBottom: '1.5rem', fontWeight: 900, color: '#fff', letterSpacing: '-2px' }}>How it <span style={{ color: 'var(--gold)' }}>Works</span></h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: '1.15rem', maxWidth: '640px', margin: '0 auto', lineHeight: 1.8 }}>Simple and fast. Follow these steps to start your gold trading journey.</p>
+          </div>
+          <div className="dashboard-grid" style={{ 
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', 
+            gap: '1.5rem',
+            width: '100%'
           }}>
             {[
-              { label: 'Profit Per Win', value: '80%' },
-              { label: 'Supported Crypto', value: 'BTC · ETH · USDT' },
-              { label: 'Withdrawals', value: 'Admin Verified' },
-            ].map((stat) => (
-              <div key={stat.label} style={{ textAlign: 'center', flex: '1 1 150px', minWidth: 0 }}>
-                <p style={{ fontSize: 'clamp(1.5rem, 4vw, 2.4rem)', fontWeight: 900, color: '#fff', textShadow: '0 0 20px rgba(212,175,55,0.3)' }}>{stat.value}</p>
-                <p style={{ fontSize: '0.8rem', color: 'var(--gold)', marginTop: '0.5rem', textTransform: 'uppercase', letterSpacing: '3px', fontWeight: 700 }}>{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section style={{ padding: '80px 0', position: 'relative' }}>
-        <div className="container">
-          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-            <h2 className="text-gradient-gold" style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', marginBottom: '0.75rem' }}>How It Works</h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>Four simple steps to start trading</p>
-          </div>
-          <div className="dashboard-grid">
-            {[
-              { step: '01', title: 'Create Account', desc: 'Sign up with email and password. Takes less than 60 seconds.', icon: Zap },
-              { step: '02', title: 'Deposit Funds', desc: 'Send crypto (BTC, ETH, USDT) to our wallet. Submit your transaction hash.', icon: Wallet },
-              { step: '03', title: 'Trade Gold', desc: 'Predict gold price direction — UP or DOWN. Earn 80% profit if correct.', icon: TrendingUp },
-              { step: '04', title: 'Withdraw Profit', desc: 'Request a withdrawal. Our admin team reviews and processes it.', icon: Clock },
+              { step: '01', title: 'Onboarding', desc: 'Securely register your professional trading account within seconds.', icon: Zap },
+              { step: '02', title: 'Asset Funding', desc: 'Initialize your balance with Bitcoin, Ethereum, or USDT.', icon: Wallet },
+              { step: '03', title: 'Execution', desc: 'Set your market direction—Long or Short—on real-time gold data.', icon: TrendingUp },
+              { step: '04', title: 'Liquidation', desc: 'Secure your accrued profits with priority administrative review.', icon: Clock },
             ].map((item, i) => {
               const Icon = item.icon;
               return (
-                <div key={item.step} className={`stagger-${i+1}`} style={{
-                  position: 'relative',
-                  background: 'rgba(8, 14, 26, 0.85)',
-                  backdropFilter: 'blur(20px)',
-                  border: '1px solid rgba(212,175,55,0.08)',
-                  borderRadius: '16px',
-                  padding: '2rem',
-                  overflow: 'hidden',
-                  transition: 'all 0.35s ease',
-                }}>
-                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, rgba(212,175,55,0.15), transparent)' }} />
-                  <div style={{ position: 'absolute', top: '-10px', right: '15px', fontSize: '5rem', fontWeight: 900, color: 'rgba(212,175,55,0.03)', lineHeight: 1 }}>{item.step}</div>
-                  <div style={{ width: '48px', height: '48px', background: 'rgba(212,175,55,0.06)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem', border: '1px solid rgba(212,175,55,0.12)' }}>
-                    <Icon size={22} color="var(--gold)" />
+                <div key={item.step} className="glass-card" style={{ padding: '3.5rem 2.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                  <div className="step-label">{item.step}</div>
+                  <div className="icon-box">
+                    <Icon size={28} />
                   </div>
-                  <h3 style={{ color: '#fff', marginBottom: '0.75rem', fontSize: '1.15rem' }}>{item.title}</h3>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', lineHeight: 1.6 }}>{item.desc}</p>
+                  <h3 style={{ color: '#fff', fontSize: '1.4rem', fontWeight: 900, letterSpacing: '-0.5px' }}>{item.title}</h3>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.8 }}>{item.desc}</p>
                 </div>
               );
             })}
@@ -139,36 +212,27 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features */}
-      <section style={{ padding: '60px 0 80px' }}>
+      {/* Feature Sets */}
+      <section style={{ padding: '140px 0' }}>
         <div className="container">
-          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-            <h2 className="text-gradient-gold" style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', marginBottom: '0.75rem' }}>Platform Features</h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>Everything you need to trade with confidence</p>
+          <div style={{ textAlign: 'center', marginBottom: '8rem' }}>
+            <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', marginBottom: '1.5rem', fontWeight: 900, color: '#fff', letterSpacing: '-2px' }}>Platform <span style={{ color: 'var(--gold)' }}>Infrastructure</span></h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: '1.15rem', maxWidth: '640px', margin: '0 auto', lineHeight: 1.8 }}>Utilize our high-performance architecture designed for transparency and security.</p>
           </div>
-          <div className="dashboard-grid">
+          <div className="dashboard-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
             {[
-              { title: 'Live Gold Price', desc: 'Real-time XAU/USD price updates with a live chart so you can make informed decisions.', icon: TrendingUp },
-              { title: 'Profit Analytics', desc: 'Visual performance metrics showcasing balance growth, win rates, and profits.', icon: BarChart2 },
-              { title: 'Crypto Integrations', desc: 'Fund your account via Bitcoin, Ethereum, or USDT with transaction proofs.', icon: Wallet },
-              { title: 'Secure Payouts', desc: 'All withdrawals are manually reviewed by our admin team for maximum security.', icon: Shield },
-            ].map((item, i) => {
-              const Icon = item.icon;
+              { title: 'Real-Time Pricing', desc: 'Direct XAU/USD data aggregation for pinpoint accuracy in every market trade.', icon: TrendingUp },
+              { title: 'Advanced Performance', desc: 'Visual analytics to monitor your win-ratio, total volume, and gross profit.', icon: BarChart2 },
+              { title: 'Seamless Liquidity', desc: 'Instant settlement engine ensuring your capital is always prioritized.', icon: Zap },
+            ].map((feature, i) => {
+              const Icon = feature.icon;
               return (
-                <div key={item.title} className={`stagger-${i+1}`} style={{
-                  position: 'relative',
-                  background: 'rgba(8, 14, 26, 0.85)',
-                  backdropFilter: 'blur(20px)',
-                  border: '1px solid rgba(212,175,55,0.08)',
-                  borderTop: '2px solid rgba(212,175,55,0.2)',
-                  borderRadius: '16px',
-                  padding: '2rem',
-                  overflow: 'hidden',
-                  transition: 'all 0.35s ease',
-                }}>
-                  <Icon size={40} color="var(--gold)" style={{ marginBottom: '1.25rem', opacity: 0.9 }} />
-                  <h3 style={{ color: '#fff', marginBottom: '0.75rem', fontSize: '1.2rem' }}>{item.title}</h3>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', lineHeight: 1.6 }}>{item.desc}</p>
+                <div key={i} className="glass-card" style={{ padding: '3rem 2.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                  <div className="icon-box">
+                    <Icon size={28} />
+                  </div>
+                  <h3 style={{ color: '#fff', fontSize: '1.4rem', fontWeight: 900, letterSpacing: '-0.5px' }}>{feature.title}</h3>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.8 }}>{feature.desc}</p>
                 </div>
               );
             })}
@@ -176,28 +240,49 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* Call To Action */}
       {!user && (
-        <section style={{ padding: '40px 0 80px', textAlign: 'center', position: 'relative' }}>
-          <div className="container">
-            <div style={{
-              position: 'relative',
-              background: 'rgba(8, 14, 26, 0.85)',
-              backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(212,175,55,0.1)',
-              borderRadius: '20px',
-              padding: 'clamp(2rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem)',
-              overflow: 'hidden',
+        <section style={{ padding: '40px 0 140px' }}>
+          <div className="container" style={{ maxWidth: '1000px' }}>
+            <div className="glass-card" style={{ 
+              padding: '5rem 2rem', 
+              textAlign: 'center',
+              borderRadius: '32px'
             }}>
-              <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '2px', background: 'linear-gradient(90deg, transparent, var(--gold), transparent)' }} />
-              <div style={{ position: 'absolute', bottom: '-50px', right: '-50px', width: '200px', height: '200px', background: 'var(--gold)', filter: 'blur(100px)', opacity: 0.06 }} />
-              <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', marginBottom: '1rem', color: '#fff' }}>Ready to Start Trading?</h2>
-              <p style={{ color: 'var(--text-muted)', marginBottom: '2.5rem', maxWidth: '480px', margin: '0 auto 2.5rem', fontSize: '1.05rem' }}>
-                Join traders who profit from gold price movements every day.
-              </p>
-              <Link href="/register" className="btn btn-gold" style={{ padding: '1rem 3rem', fontSize: '1.1rem', borderRadius: '12px' }}>
-                Create Free Account <ArrowRight size={18} />
-              </Link>
+              {/* Internal Polish Glows */}
+              <div style={{ 
+                position: 'absolute', 
+                top: '50%', 
+                left: '50%', 
+                transform: 'translate(-50%, -50%)',
+                width: '300px', 
+                height: '300px', 
+                background: 'var(--gold)', 
+                filter: 'blur(150px)', 
+                opacity: 0.05,
+                zIndex: 0,
+                pointerEvents: 'none'
+              }} />
+              
+              <div style={{ position: 'relative', zIndex: 1 }}>
+                <h2 style={{ 
+                  fontSize: 'clamp(2.2rem, 5vw, 3.5rem)', 
+                  marginBottom: '1.25rem', 
+                  fontWeight: 950, 
+                  letterSpacing: '-2px',
+                  background: 'linear-gradient(135deg, #fff 0%, var(--gold) 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}>
+                  Ready to Start?
+                </h2>
+                <p style={{ color: 'var(--text-muted)', marginBottom: '3.5rem', maxWidth: '540px', margin: '0 auto 3.5rem', fontSize: '1.1rem', lineHeight: 1.7 }}>
+                  Join thousands of traders and start profiting from gold price movements with top-tier precision today.
+                </p>
+                <Link href="/register" className="btn btn-gold" style={{ padding: '1.2rem 4.5rem', fontSize: '1.1rem', fontWeight: 900, borderRadius: '100px', boxShadow: '0 10px 30px rgba(212, 175, 55, 0.2)' }}>
+                  Join Now <ArrowRight size={20} />
+                </Link>
+              </div>
             </div>
           </div>
         </section>
