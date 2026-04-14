@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { ArrowDownCircle, ShieldCheck, Wallet, AlertTriangle, Loader2, Check } from 'lucide-react';
+import { ArrowDownCircle, ShieldCheck, Wallet, AlertTriangle, Loader2, Check, ChevronDown } from 'lucide-react';
+import CoinIcon from '@/components/CoinIcon';
 import { useRouter } from 'next/navigation';
 
 export default function WithdrawPage() {
@@ -18,7 +19,25 @@ export default function WithdrawPage() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
   const [limits, setLimits] = useState({ minWithdrawal: 10, maxWithdrawal: 50000 });
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+
+  const networkOptions = [
+    { value: 'USDT_TRC20', label: 'USDT (TRC20 / Tron)', coin: 'USDT' },
+    { value: 'USDT_ERC20', label: 'USDT (ERC20 / Ethereum)', coin: 'USDT' },
+    { value: 'BTC', label: 'Bitcoin (BTC)', coin: 'Bitcoin' },
+    { value: 'ETH', label: 'Ethereum (ETH)', coin: 'Ethereum' },
+  ];
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) setDropdownOpen(false);
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
 
   // Fetch withdrawal limits from platform settings
   useEffect(() => {
@@ -132,7 +151,58 @@ export default function WithdrawPage() {
             <input type="number" placeholder={`Min $${limits.minWithdrawal}`} required min={limits.minWithdrawal} max={user.balance} step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} />
             {Number(amount) > 0 && (<p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '0.3rem' }}>You will receive approx. <strong style={{ color: 'var(--gold)' }}>${Number(amount).toFixed(2)}</strong></p>)}
           </div>
-          <div className="input-group"><label>Network / Currency</label><select value={network} onChange={(e) => setNetwork(e.target.value)}><option value="USDT_TRC20">USDT (TRC20 / Tron)</option><option value="USDT_ERC20">USDT (ERC20 / Ethereum)</option><option value="BTC">Bitcoin (BTC)</option><option value="ETH">Ethereum (ETH)</option></select></div>
+          <div className="input-group">
+            <label>Network / Currency</label>
+            <div ref={dropdownRef} style={{ position: 'relative' }}>
+              <button
+                type="button"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                style={{
+                  width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)',
+                  borderRadius: '10px', padding: '0.7rem 1rem', color: '#fff', fontSize: '0.92rem',
+                  cursor: 'pointer', transition: 'border-color 0.2s',
+                  borderColor: dropdownOpen ? 'var(--gold)' : 'var(--border)',
+                }}
+              >
+                <span style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                  <CoinIcon symbol={networkOptions.find(o => o.value === network)?.coin || ''} size={20} />
+                  {networkOptions.find(o => o.value === network)?.label}
+                </span>
+                <ChevronDown size={16} color="var(--gold)" style={{ transform: dropdownOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
+              </button>
+              {dropdownOpen && (
+                <div style={{
+                  position: 'absolute', top: 'calc(100% + 4px)', left: 0, right: 0, zIndex: 50,
+                  background: 'rgba(10, 18, 34, 0.98)', backdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(212,175,55,0.2)', borderRadius: '12px',
+                  overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+                }}>
+                  {networkOptions.map((opt) => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      onClick={() => { setNetwork(opt.value); setDropdownOpen(false); }}
+                      style={{
+                        width: '100%', display: 'flex', alignItems: 'center', gap: '0.6rem',
+                        padding: '0.75rem 1rem', background: network === opt.value ? 'rgba(212,175,55,0.1)' : 'transparent',
+                        border: 'none', borderBottom: '1px solid rgba(255,255,255,0.04)',
+                        color: network === opt.value ? 'var(--gold)' : '#e0e4ea',
+                        fontSize: '0.9rem', cursor: 'pointer', transition: 'background 0.15s',
+                        fontWeight: network === opt.value ? 600 : 400, textAlign: 'left',
+                      }}
+                      onMouseEnter={(e) => { if (network !== opt.value) (e.currentTarget.style.background = 'rgba(255,255,255,0.04)'); }}
+                      onMouseLeave={(e) => { if (network !== opt.value) (e.currentTarget.style.background = 'transparent'); }}
+                    >
+                      <CoinIcon symbol={opt.coin} size={18} />
+                      {opt.label}
+                      {network === opt.value && <Check size={14} color="var(--gold)" style={{ marginLeft: 'auto' }} />}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
           <div className="input-group"><label>Your Wallet Address</label><input type="text" placeholder="Enter your withdrawal wallet address" required value={walletAddress} onChange={(e) => setWalletAddress(e.target.value)} /></div>
           <div style={{ background: 'rgba(0,230,138,0.03)', padding: '0.85rem', borderRadius: '10px', marginBottom: '1.25rem', display: 'flex', gap: '0.6rem', border: '1px solid rgba(0,230,138,0.08)' }}><ShieldCheck size={16} color="var(--success)" style={{ flexShrink: 0, marginTop: '1px' }} /><p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>Once approved, funds are sent directly to your wallet. Processing time: 1-24 hours.</p></div>
           {user?.withdrawalOtpEnabled && (

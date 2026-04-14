@@ -1,16 +1,19 @@
 import nodemailer from 'nodemailer';
 
+const smtpUser = process.env.MAIL_USER || process.env.SMTP_USER;
+const smtpPass = process.env.MAIL_PASS || process.env.SMTP_PASS;
+
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'mail.spacemail.com',
-  port: Number(process.env.SMTP_PORT) || 465,
+  host: 'mail.spacemail.com',
+  port: 465,
   secure: true,
   auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
+    user: smtpUser,
+    pass: smtpPass,
   },
 });
 
-const fromAddress = process.env.SMTP_FROM || process.env.SMTP_USER || 'noreply@goldxchange.org';
+const fromAddress = `"GoldXchange" <${smtpUser}>`;
 
 export async function sendOtpEmail(to: string, otp: string, purpose: 'withdrawal' | 'login' = 'withdrawal'): Promise<void> {
   const purposeText = purpose === 'login' ? 'login verification' : 'withdrawal verification';

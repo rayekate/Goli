@@ -566,7 +566,7 @@ export default function TradePage() {
             {placingTrade ? (
               <><Loader2 size={20} style={{ animation: 'spin 1s linear infinite' }} /> Executing Contract...</>
             ) : (
-              <>Lock Forecast & Pay</>
+              <>Trade</>
             )}
           </button>
 

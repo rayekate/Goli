@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useCallback } from 'react';
+import CoinIcon from '@/components/CoinIcon';
 import {
   Wallet,
   Plus,
@@ -172,7 +173,9 @@ export default function AdminWalletsPage() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
                 <GripVertical size={16} color="var(--text-muted)" style={{ opacity: 0.4 }} />
-                <span style={{ fontSize: '1.5rem', lineHeight: 1 }}>{w.logo || '💰'}</span>
+                <div style={{ width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(212,175,55,0.08)', borderRadius: '10px', border: '1px solid rgba(212,175,55,0.15)' }}>
+                  <CoinIcon symbol={w.coinName || w.logo || '?'} size={22} />
+                </div>
                 <div>
                   <span style={{ fontWeight: 700, color: '#fff', fontSize: '1rem' }}>
                     {w.coinName || 'New Wallet'}
@@ -205,17 +208,7 @@ export default function AdminWalletsPage() {
             </div>
 
             {/* Fields */}
-            <div style={{ display: 'grid', gridTemplateColumns: '80px repeat(2, minmax(0, 1fr))', gap: '0.75rem', marginBottom: '0.75rem' }} className="grid-responsive-2col">
-              <div>
-                <label style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: 600 }}>Logo</label>
-                <input
-                  style={{ ...inputStyle, textAlign: 'center', fontSize: '1.3rem', padding: '0.45rem' }}
-                  placeholder="🪙"
-                  maxLength={10}
-                  value={w.logo}
-                  onChange={(e) => updateWallet(idx, 'logo', e.target.value)}
-                />
-              </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '0.75rem', marginBottom: '0.75rem' }} className="grid-responsive-2col">
               <div>
                 <label style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: 600 }}>Coin Name</label>
                 <input
