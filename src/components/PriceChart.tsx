@@ -8,6 +8,7 @@ import {
 interface ChartProps {
   data: { time: string; price: number }[];
   singleColor?: string;
+  minimal?: boolean;
 }
 
 // Custom tooltip for the chart
@@ -30,7 +31,7 @@ function CustomTooltip({ active, payload, label }: any) {
   );
 }
 
-export default function PriceChart({ data, singleColor }: ChartProps) {
+export default function PriceChart({ data, singleColor, minimal = false }: ChartProps) {
   const [isMobile, setIsMobile] = React.useState(false);
 
   React.useEffect(() => {
@@ -70,37 +71,39 @@ export default function PriceChart({ data, singleColor }: ChartProps) {
     <div style={{
       width: '100%',
       height: '100%',
-      background: 'rgba(8,14,26,0.7)',
-      borderRadius: '16px',
-      border: '1px solid rgba(212,175,55,0.06)',
-      padding: isMobile ? '0.75rem 0.25rem 0.25rem' : '1rem 0.5rem 0.5rem',
+      background: minimal ? 'transparent' : 'rgba(8,14,26,0.7)',
+      borderRadius: minimal ? '0' : '16px',
+      border: minimal ? 'none' : '1px solid rgba(212,175,55,0.06)',
+      padding: minimal ? '0' : (isMobile ? '0.75rem 0.25rem 0.25rem' : '1rem 0.5rem 0.5rem'),
       overflow: 'hidden',
       display: 'flex',
       flexDirection: 'column',
       minHeight: 0,
     }}>
       {/* Mini header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 0.5rem', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.25rem' }}>
-        <span style={{ fontSize: '0.72rem', color: '#7B8CA8', letterSpacing: '1px', textTransform: 'uppercase' }}>
-          XAU/USD · MARKET DATA
-        </span>
-        {data.length >= 2 && (
-          <span style={{
-            fontSize: '0.75rem',
-            fontWeight: 700,
-            color: singleColor || (isUp ? '#00e68a' : '#ff4757'),
-            background: singleColor ? `rgba(245, 158, 11, 0.07)` : (isUp ? 'rgba(0,230,138,0.07)' : 'rgba(255,71,87,0.07)'),
-            border: `1px solid ${singleColor ? 'rgba(245, 158, 11, 0.15)' : (isUp ? 'rgba(0,230,138,0.15)' : 'rgba(255,71,87,0.15)')}`,
-            borderRadius: '6px',
-            padding: '2px 8px',
-            fontVariantNumeric: 'tabular-nums',
-          }}>
-            {singleColor ? (isUp ? '▲' : '▼') : (isUp ? '▲' : '▼')} {Math.abs(data[data.length - 1].price - data[0].price).toFixed(2)}
+      {!minimal && (
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 0.5rem', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.25rem' }}>
+          <span style={{ fontSize: '0.72rem', color: '#7B8CA8', letterSpacing: '1px', textTransform: 'uppercase' }}>
+            XAU/USD · MARKET DATA
           </span>
-        )}
-      </div>
+          {data.length >= 2 && (
+            <span style={{
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              color: singleColor || (isUp ? '#00e68a' : '#ff4757'),
+              background: singleColor ? `rgba(245, 158, 11, 0.07)` : (isUp ? 'rgba(0,230,138,0.07)' : 'rgba(255,71,87,0.07)'),
+              border: `1px solid ${singleColor ? 'rgba(245, 158, 11, 0.15)' : (isUp ? 'rgba(0,230,138,0.15)' : 'rgba(255,71,87,0.15)')}`,
+              borderRadius: '6px',
+              padding: '2px 8px',
+              fontVariantNumeric: 'tabular-nums',
+            }}>
+              {singleColor ? (isUp ? '▲' : '▼') : (isUp ? '▲' : '▼')} {Math.abs(data[data.length - 1].price - data[0].price).toFixed(2)}
+            </span>
+          )}
+        </div>
+      )}
 
-      <div style={{ flex: 1, minHeight: '230px', minWidth: 0 }}>
+      <div style={{ flex: 1, minHeight: '230px', minWidth: 0, paddingTop: minimal ? '1rem' : '0' }}>
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data} margin={{ top: 4, right: 4, left: isMobile ? -10 : 0, bottom: 0 }}>
             <defs>
