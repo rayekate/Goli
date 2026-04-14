@@ -34,18 +34,28 @@ export default function UserLayout({
     checkMaintenance();
   }, [user, router]);
 
-  // Auth guard effect
+  // Auth guard effect — only redirect after auth state is resolved
+  const hasRedirected = React.useRef(false);
   React.useEffect(() => {
-    if (!loading && !user) {
+    if (!loading && !user && !hasRedirected.current) {
+      hasRedirected.current = true;
       router.replace('/login');
     }
   }, [user, loading, router]);
 
-  if (loading || !user) {
+  if (loading) {
     return (
       <div className="container" style={{ padding: '80px 20px', textAlign: 'center' }}>
         <div className="skeleton-loader" style={{ margin: '0 auto', width: '40px', height: '40px' }} />
         <p style={{ marginTop: '1rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>Connecting to platform...</p>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="container" style={{ padding: '80px 20px', textAlign: 'center' }}>
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Redirecting to login...</p>
       </div>
     );
   }

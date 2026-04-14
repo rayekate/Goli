@@ -101,7 +101,7 @@ export default function AdminSupportQueue() {
         </div>
       </div>
 
-      <div className="grid-responsive-2col" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 2fr', gap: '1.5rem', minHeight: '500px' }}>
+      <div className="grid-responsive-2col" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 2fr', gap: '1.5rem', height: 'calc(100vh - 220px)' }}>
         
         {/* Master Active List */}
         <div className="card glass" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
@@ -110,7 +110,7 @@ export default function AdminSupportQueue() {
               <Headset size={18} color="#d4af37" /> Queue
             </h3>
           </div>
-          <div style={{ overflowY: 'auto', flex: 1 }}>
+          <div style={{ overflowY: 'auto', flex: 1, minHeight: 0 }}>
             {tickets.map(t => (
               <div 
                 key={t._id} 
@@ -169,7 +169,7 @@ export default function AdminSupportQueue() {
               </div>
 
               {/* Chat Thread */}
-              <div style={{ flex: 1, padding: '2rem', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              <div style={{ flex: 1, padding: '2rem', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '1.5rem', minHeight: 0 }}>
                 {activeTicket.messages.map((m: any, i: number) => {
                   const isAdmin = m.sender === 'admin';
                   return (

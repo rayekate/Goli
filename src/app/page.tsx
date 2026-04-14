@@ -16,28 +16,28 @@ export default function Home() {
       <div className="ambient-orb orb-gold" style={{ bottom: '0', left: '40%', width: '700px', height: '700px', opacity: 0.15 }} />
 
       {/* Hero */}
-      <section style={{ padding: '20px 0 60px', position: 'relative' }}>
+      <section className="hero-section" style={{ padding: '20px 0 60px', position: 'relative' }}>
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '4rem' }}>
+          <div className="hero-grid" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '4rem' }}>
             
             {/* Left Content */}
-            <div style={{ flex: '1 1 320px', textAlign: 'left', minWidth: 0 }}>
+            <div className="hero-content" style={{ flex: '1 1 320px', minWidth: 0 }}>
               <div className="badge badge-primary animate-float" style={{ marginBottom: '2rem', display: 'inline-flex' }}>
                 <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--gold)', boxShadow: '0 0 8px var(--gold-glow)', display: 'inline-block', marginRight: '8px' }} />
                 LIVE GOLD PRICE: XAU/USD
               </div>
 
-              <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', marginBottom: '1.5rem', lineHeight: 1.15, fontWeight: 800 }}>
+              <h1 style={{ fontSize: 'clamp(2rem, 6vw, 4.5rem)', marginBottom: '1.5rem', lineHeight: 1.15, fontWeight: 800 }}>
                 Trade Gold Price<br />
                 <span className="text-gradient-gold">Movements & Profit</span>
               </h1>
 
-              <p style={{ color: 'var(--text-muted)', fontSize: 'clamp(1rem, 2vw, 1.15rem)', maxWidth: '540px', marginBottom: '2.5rem', lineHeight: 1.7 }}>
+              <p style={{ color: 'var(--text-muted)', fontSize: 'clamp(0.95rem, 2vw, 1.15rem)', maxWidth: '540px', marginBottom: '2rem', lineHeight: 1.7 }}>
                 Deposit funds, predict gold price direction, and earn up to{' '}
                 <strong style={{ color: '#fff' }}>80% profit</strong> on every winning trade. Experience next-gen trading.
               </p>
               
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+              <div className="hero-buttons" style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
                 {user ? (
                   <>
                     <Link href="/dashboard" className="btn btn-gold" style={{ padding: '0.9rem 2.5rem', fontSize: '1.05rem', boxShadow: '0 0 20px rgba(212, 175, 55, 0.4)' }}>

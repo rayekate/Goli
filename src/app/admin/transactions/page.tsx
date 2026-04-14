@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useAuth } from '@/context/AuthContext';
 import { 
   ArrowLeftRight, Check, X, ExternalLink, Search, Plus, 
@@ -21,12 +22,24 @@ export default function AdminTransactionsPage() {
   const [filterStatus, setFilterStatus] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all');
   const [manualModal, setManualModal] = useState<ManualTxModal>(null);
   const [selectedUserId, setSelectedUserId] = useState('');
+  const [userSearch, setUserSearch] = useState('');
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [txAmount, setTxAmount] = useState('');
   const [txNote, setTxNote] = useState('');
   const [fulfillmentHash, setFulfillmentHash] = useState('');
   const [saving, setSaving] = useState(false);
   const [proofModal, setProofModal] = useState<{ image: string; txId: string } | null>(null);
   const [fulfillmentModal, setFulfillmentModal] = useState<{ txId: string; type: string } | null>(null);
+  const portalRef = useRef<HTMLDivElement | null>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const el = document.createElement('div');
+    el.id = 'tx-modal-portal';
+    document.body.appendChild(el);
+    portalRef.current = el;
+    return () => { document.body.removeChild(el); };
+  }, []);
 
   const fetchData = async () => {
     try {
@@ -48,6 +61,25 @@ export default function AdminTransactionsPage() {
     const id = setInterval(fetchData, 30000);
     return () => clearInterval(id);
   }, []);
+
+  // Close user dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setUserDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const filteredUsers = useMemo(() => {
+    if (!userSearch.trim()) return users;
+    const q = userSearch.toLowerCase();
+    return users.filter(u => u.name?.toLowerCase().includes(q) || u.email?.toLowerCase().includes(q));
+  }, [users, userSearch]);
+
+  const selectedUser = useMemo(() => users.find(u => u._id === selectedUserId), [users, selectedUserId]);
 
   const handleAction = async (transactionId: string, action: 'approve' | 'reject', hash?: string) => {
     setSaving(true);
@@ -139,31 +171,39 @@ export default function AdminTransactionsPage() {
   );
 
   const modalOverlay: React.CSSProperties = {
-    position: 'fixed', inset: 0, zIndex: 9999,
-    background: 'rgba(5, 8, 15, 0.9)', backdropFilter: 'blur(10px)',
+    position: 'fixed', inset: 0, zIndex: 99999,
+    background: 'rgba(5, 8, 15, 0.92)',
     display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px'
+  };
+
+  const modalCard: React.CSSProperties = {
+    background: 'rgba(12, 20, 38, 0.98)',
+    border: '1px solid rgba(212, 175, 55, 0.15)',
+    borderRadius: '16px',
+    boxShadow: '0 25px 60px rgba(0,0,0,0.7)',
   };
 
   return (
     <div className="animate-in" style={{ padding: '24px 16px', maxWidth: '1400px', margin: '0 auto' }}>
       
       {/* Proof Image Modal (Zoom Ready) */}
-      {proofModal && (
+      {proofModal && portalRef.current && createPortal(
         <div style={modalOverlay} onClick={() => setProofModal(null)}>
-          <div className="glass-card" style={{ maxWidth: '900px', width: '100%', padding: '10px', position: 'relative' }} onClick={e => e.stopPropagation()}>
+          <div style={{ ...modalCard, maxWidth: '900px', width: '100%', padding: '10px', position: 'relative' }} onClick={e => e.stopPropagation()}>
             <button onClick={() => setProofModal(null)} style={{ position: 'absolute', top: '-15px', right: '-15px', background: 'var(--danger)', color: '#fff', border: 'none', borderRadius: '50%', width: '30px', height: '30px', cursor: 'pointer', zIndex: 10 }}><X size={16} /></button>
             <img src={proofModal.image} alt="Payment Receipt" style={{ width: '100%', borderRadius: '12px', display: 'block' }} />
             <div style={{ padding: '1rem', textAlign: 'center' }}>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>Transaction ID: {proofModal.txId}</p>
             </div>
           </div>
-        </div>
+        </div>,
+        portalRef.current
       )}
 
       {/* Fulfillment Modal */}
-      {fulfillmentModal && (
+      {fulfillmentModal && portalRef.current && createPortal(
         <div style={modalOverlay} onClick={() => setFulfillmentModal(null)}>
-          <div className="glass-card" style={{ maxWidth: '480px', width: '100%', padding: '2rem' }} onClick={e => e.stopPropagation()}>
+          <div style={{ ...modalCard, maxWidth: '480px', width: '100%', padding: '2rem' }} onClick={e => e.stopPropagation()}>
             <h3 style={{ color: '#fff', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <ShieldCheck color="var(--success)" /> Fulfill Withdrawal
             </h3>
@@ -192,23 +232,80 @@ export default function AdminTransactionsPage() {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        portalRef.current
       )}
 
       {/* Manual Action Modal */}
-      {manualModal && (
+      {manualModal && portalRef.current && createPortal(
         <div style={modalOverlay} onClick={() => setManualModal(null)}>
-          <div className="glass-card" style={{ maxWidth: '440px', width: '100%', padding: '2rem' }} onClick={e => e.stopPropagation()}>
+          <div style={{ ...modalCard, maxWidth: '440px', width: '100%', padding: '2rem' }} onClick={e => e.stopPropagation()}>
             <h3 style={{ color: '#fff', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               {manualModal.type === 'deposit' ? <ArrowDownCircle color="var(--success)" /> : <ArrowUpCircle color="var(--danger)" />}
               Manual {manualModal.type}
             </h3>
             <div className="input-group">
               <label>Select User</label>
-              <select value={selectedUserId} onChange={e => setSelectedUserId(e.target.value)} style={{ padding: '0.75rem', background: 'rgba(0,0,0,0.3)', color: '#fff', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '10px', width: '100%' }}>
-                <option value="">Choose User...</option>
-                {users.map(u => <option key={u._id} value={u._id}>{u.name} (Bal: ${u.balance.toLocaleString()})</option>)}
-              </select>
+              <div ref={dropdownRef} style={{ position: 'relative' }}>
+                <div
+                  onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                  style={{
+                    padding: '0.75rem 1rem', background: 'rgba(0,0,0,0.35)', color: selectedUser ? '#fff' : 'rgba(255,255,255,0.4)',
+                    border: '1px solid rgba(212,175,55,0.15)', borderRadius: '10px', width: '100%', cursor: 'pointer',
+                    display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.9rem',
+                    transition: 'border-color 0.2s',
+                    ...(userDropdownOpen ? { borderColor: 'rgba(212,175,55,0.4)' } : {})
+                  }}
+                >
+                  <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {selectedUser ? `${selectedUser.name} — $${selectedUser.balance.toLocaleString()}` : 'Choose User...'}
+                  </span>
+                  <span style={{ transform: userDropdownOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s', fontSize: '0.7rem', opacity: 0.5 }}>▼</span>
+                </div>
+                {userDropdownOpen && (
+                  <div style={{
+                    position: 'absolute', top: 'calc(100% + 4px)', left: 0, right: 0, zIndex: 10,
+                    background: 'rgba(10, 15, 30, 0.98)', border: '1px solid rgba(212,175,55,0.2)',
+                    borderRadius: '10px', overflow: 'hidden', boxShadow: '0 12px 40px rgba(0,0,0,0.6)'
+                  }}>
+                    <div style={{ padding: '8px' }}>
+                      <input
+                        type="text" placeholder="Search users..." value={userSearch}
+                        onChange={e => setUserSearch(e.target.value)}
+                        autoFocus
+                        style={{
+                          width: '100%', padding: '0.6rem 0.75rem', background: 'rgba(255,255,255,0.05)',
+                          border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', color: '#fff',
+                          fontSize: '0.85rem', outline: 'none'
+                        }}
+                      />
+                    </div>
+                    <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                      {filteredUsers.length === 0 && (
+                        <div style={{ padding: '1rem', textAlign: 'center', color: 'rgba(255,255,255,0.3)', fontSize: '0.85rem' }}>No users found</div>
+                      )}
+                      {filteredUsers.map(u => (
+                        <div
+                          key={u._id}
+                          onClick={() => { setSelectedUserId(u._id); setUserDropdownOpen(false); setUserSearch(''); }}
+                          style={{
+                            padding: '0.6rem 1rem', cursor: 'pointer', display: 'flex', justifyContent: 'space-between',
+                            alignItems: 'center', fontSize: '0.88rem', transition: 'background 0.15s',
+                            background: selectedUserId === u._id ? 'rgba(212,175,55,0.12)' : 'transparent',
+                            color: selectedUserId === u._id ? 'var(--gold)' : '#fff',
+                            borderLeft: selectedUserId === u._id ? '2px solid var(--gold)' : '2px solid transparent',
+                          }}
+                          onMouseEnter={e => { if (selectedUserId !== u._id) (e.currentTarget.style.background = 'rgba(255,255,255,0.05)'); }}
+                          onMouseLeave={e => { if (selectedUserId !== u._id) (e.currentTarget.style.background = 'transparent'); }}
+                        >
+                          <span>{u.name}</span>
+                          <span style={{ fontSize: '0.78rem', color: 'var(--gold)', opacity: 0.8 }}>${u.balance.toLocaleString()}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
             <div className="input-group">
               <label>Amount (USD)</label>
@@ -222,7 +319,8 @@ export default function AdminTransactionsPage() {
               {saving ? 'Applying...' : `Execute ${manualModal.type}`}
             </button>
           </div>
-        </div>
+        </div>,
+        portalRef.current
       )}
 
       {/* Header & Stats Dock */}

@@ -2,15 +2,15 @@
 
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { Activity, Search, TrendingUp, TrendingDown, Clock, User, DollarSign, BarChart3, CheckCircle, XCircle, Loader2 } from 'lucide-react';
+import { Activity, Search, TrendingUp, TrendingDown, Clock, User, DollarSign, BarChart3 } from 'lucide-react';
 
 export default function AdminTradesPage() {
   const { user, loading } = useAuth();
   const [trades, setTrades] = useState<any[]>([]);
+  const [stats, setStats] = useState<any>({});
   const [searchTerm, setSearchTerm] = useState('');
   const [filterResult, setFilterResult] = useState<'all' | 'win' | 'loss' | 'pending'>('all');
   const [dataLoading, setDataLoading] = useState(true);
-  const [actionLoading, setActionLoading] = useState<string | null>(null);
 
   const fetchData = async () => {
     try {
@@ -18,27 +18,12 @@ export default function AdminTradesPage() {
       if (res.ok) {
         const data = await res.json();
         setTrades(data.trades);
+        if (data.stats) setStats(data.stats);
       }
     } catch (err) {
       console.error('Fetch error:', err);
     } finally {
       setDataLoading(false);
-    }
-  };
-
-  const handleForceResult = async (tradeId: string, action: 'force_win' | 'force_loss') => {
-    setActionLoading(tradeId);
-    try {
-      const res = await fetch('/api/admin/trades', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tradeId, action }),
-      });
-      if (res.ok) fetchData();
-    } catch (err) {
-      console.error('Force action error:', err);
-    } finally {
-      setActionLoading(null);
     }
   };
 
@@ -60,13 +45,13 @@ export default function AdminTradesPage() {
   });
 
 
-  // Platform stats
-  const totalVolume = trades.reduce((s, t) => s + t.amount, 0);
-  const totalWins = trades.filter(t => t.result === 'win').length;
-  const totalLosses = trades.filter(t => t.result === 'loss').length;
-  const winPayouts = trades.filter(t => t.result === 'win').reduce((s, t) => s + Math.abs(t.profitOrLoss), 0);
-  const lossCollected = trades.filter(t => t.result === 'loss').reduce((s, t) => s + Math.abs(t.profitOrLoss), 0);
-  const houseNet = lossCollected - winPayouts;
+  // Platform stats from backend
+  const totalVolume = stats.totalVolume || 0;
+  const totalWins = stats.totalWins || 0;
+  const totalLosses = stats.totalLosses || 0;
+  const winPayouts = stats.winPayouts || 0;
+  const lossCollected = stats.lossCollected || 0;
+  const houseNet = stats.houseNet || 0;
 
   return (
     <div className="container animate-in stagger-1" style={{ padding: '20px 15px', maxWidth: '1200px' }}>
@@ -101,7 +86,7 @@ export default function AdminTradesPage() {
         </div>
         <div className="glass-card" style={{ padding: '1.25rem', textAlign: 'center' }}>
           <BarChart3 size={20} style={{ color: '#00f0ff', marginBottom: '0.5rem' }} />
-          <p style={{ fontSize: '1.4rem', fontWeight: 800, color: '#00f0ff' }}>{trades.length}</p>
+          <p style={{ fontSize: '1.4rem', fontWeight: 800, color: '#00f0ff' }}>{stats.totalTrades || 0}</p>
           <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Total Trades</p>
         </div>
         <div className="glass-card" style={{ padding: '1.25rem', textAlign: 'center' }}>
@@ -174,50 +159,7 @@ export default function AdminTradesPage() {
               </p>
             </div>
 
-            {t.result === 'pending' && (
-              <div style={{ display: 'flex', gap: '0.5rem', minWidth: '160px' }}>
-                <button
-                  onClick={() => handleForceResult(t._id, 'force_win')}
-                  disabled={actionLoading === t._id}
-                  style={{
-                    padding: '0.45rem 0.75rem',
-                    borderRadius: '8px',
-                    border: '1px solid rgba(0,255,102,0.3)',
-                    background: 'rgba(0,255,102,0.08)',
-                    color: '#00ff66',
-                    fontSize: '0.75rem',
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '4px',
-                    opacity: actionLoading === t._id ? 0.5 : 1,
-                  }}
-                >
-                  {actionLoading === t._id ? <Loader2 size={12} style={{ animation: 'spin 1s linear infinite' }} /> : <CheckCircle size={12} />} Win
-                </button>
-                <button
-                  onClick={() => handleForceResult(t._id, 'force_loss')}
-                  disabled={actionLoading === t._id}
-                  style={{
-                    padding: '0.45rem 0.75rem',
-                    borderRadius: '8px',
-                    border: '1px solid rgba(255,0,85,0.3)',
-                    background: 'rgba(255,0,85,0.08)',
-                    color: '#ff0055',
-                    fontSize: '0.75rem',
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '4px',
-                    opacity: actionLoading === t._id ? 0.5 : 1,
-                  }}
-                >
-                  {actionLoading === t._id ? <Loader2 size={12} style={{ animation: 'spin 1s linear infinite' }} /> : <XCircle size={12} />} Loss
-                </button>
-              </div>
-            )}
+
           </div>
         ))}
         {filteredTrades.length === 0 && (

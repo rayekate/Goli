@@ -215,7 +215,7 @@ export default function SupportPage() {
       {view === 'detail' && activeTicket && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           {/* Messages Feed */}
-          <div className="glass-card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', maxHeight: '500px', overflowY: 'auto' }}>
+          <div className="glass-card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', maxHeight: '60vh', overflowY: 'auto' }}>
             {activeTicket.messages.map((m: any, i: number) => {
               const out = m.sender === 'user';
               return (

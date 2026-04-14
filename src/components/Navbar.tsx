@@ -4,11 +4,19 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import LivePriceTicker from './LivePriceTicker';
+import { Menu, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import styles from './Navbar.module.css';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
   const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Close menu on route change
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
 
   return (
     <div className={styles.navbarWrapper}>
@@ -23,7 +31,16 @@ export default function Navbar() {
             <LivePriceTicker compact />
           </div>
 
-          <div className={styles.links}>
+          {/* Hamburger toggle */}
+          <button
+            className={styles.menuToggle}
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+
+          <div className={`${styles.links} ${menuOpen ? styles.linksOpen : ''}`}>
             {user ? (
               <>
                 {user.role === 'admin' ? (

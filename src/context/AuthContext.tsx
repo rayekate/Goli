@@ -73,10 +73,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [user, fetchUser]);
 
   const login = useCallback(async (userData: User) => {
-    // Trust the server-returned user and navigate immediately.
-    // No need to re-fetch — the cookie is already set server-side.
     setUser(userData);
-    router.push(userData.role === 'admin' ? '/admin' : '/dashboard');
+    const dest = userData.role === 'admin' ? '/admin' : '/dashboard';
+    router.replace(dest);
+    router.refresh();
   }, [router]);
 
   const logout = useCallback(async () => {

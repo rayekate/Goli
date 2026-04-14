@@ -113,25 +113,14 @@ export default function AdminOverviewPage() {
         </div>
       )}
 
-      {/* User Stats Row */}
+      {/* Stats Grid */}
       <div className="dashboard-grid" style={{ marginBottom: '0.5rem' }}>
-        <StatCard title="Total Users" value={stats.totalUsers} icon={Users} />
-        <StatCard title="Active Users" value={stats.activeUsers} icon={Users} trend={{ value: `${stats.blockedUsers} blocked`, isPositive: stats.blockedUsers === 0 }} />
+        <StatCard title="Users" value={`${stats.activeUsers} / ${stats.totalUsers}`} icon={Users} trend={{ value: `${stats.blockedUsers} blocked`, isPositive: stats.blockedUsers === 0 }} />
         <StatCard title="Platform Balance" value={`$${stats.totalBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })}`} icon={Wallet} />
-      </div>
-
-      {/* Financial Stats Row */}
-      <div className="dashboard-grid" style={{ marginBottom: '0.5rem' }}>
+        <StatCard title="House Net P&L" value={`${stats.houseNet >= 0 ? '+' : '-'}$${Math.abs(stats.houseNet).toLocaleString(undefined, { minimumFractionDigits: 2 })}`} icon={DollarSign} trend={{ value: stats.houseNet >= 0 ? 'Profitable' : 'In deficit', isPositive: stats.houseNet >= 0 }} />
         <StatCard title="Total Deposited" value={`$${stats.totalDeposited.toLocaleString(undefined, { minimumFractionDigits: 2 })}`} icon={ArrowDownCircle} trend={{ value: `${stats.pendingDeposits} pending`, isPositive: stats.pendingDeposits === 0 }} />
         <StatCard title="Total Withdrawn" value={`$${stats.totalWithdrawn.toLocaleString(undefined, { minimumFractionDigits: 2 })}`} icon={ArrowUpCircle} trend={{ value: `${stats.pendingWithdrawals} pending`, isPositive: stats.pendingWithdrawals === 0 }} />
         <StatCard title="Net Flow" value={`$${(stats.totalDeposited - stats.totalWithdrawn).toLocaleString(undefined, { minimumFractionDigits: 2 })}`} icon={ArrowLeftRight} />
-      </div>
-
-      {/* Trade Stats Row */}
-      <div className="dashboard-grid" style={{ marginBottom: '0.5rem' }}>
-        <StatCard title="Total Trades" value={stats.totalTrades} icon={Activity} />
-        <StatCard title="User Win Rate" value={`${stats.winRate.toFixed(1)}%`} icon={TrendingUp} />
-        <StatCard title="House Net P&L" value={`${stats.houseNet >= 0 ? '+' : '-'}$${Math.abs(stats.houseNet).toLocaleString(undefined, { minimumFractionDigits: 2 })}`} icon={DollarSign} trend={{ value: stats.houseNet >= 0 ? 'Profitable' : 'In deficit', isPositive: stats.houseNet >= 0 }} />
       </div>
 
       {/* Quick Links */}
