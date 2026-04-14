@@ -43,49 +43,38 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    if (!user.isVerified) {
+      return NextResponse.json(
+        { error: 'Your email has not been verified. Please check your inbox and verify your account.' },
+        { status: 403 }
+      );
+    }
+
     const isMatch = await bcrypt.compare(password, user.password!);
     if (!isMatch) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     }
 
-    // If 2FA is enabled, send OTP email instead of logging in
-    if (user.twoFactorEnabled) {
-      const otp = generateOtp();
-      user.loginOtp = otp;
-      user.loginOtpExpiry = new Date(Date.now() + 5 * 60 * 1000);
-      await user.save();
 
-      try {
-        await sendOtpEmail(user.email, otp, 'login');
-      } catch {
-        return NextResponse.json({ error: 'Failed to send verification email. Please try again.' }, { status: 500 });
-      }
+    // Always send OTP for email verification on every login
+    const otp = generateOtp();
+    user.loginOtp = otp;
+    user.loginOtpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 min expiry
+    await user.save();
 
-      return NextResponse.json({
-        requires2FA: true,
-        message: 'Verification code sent to your email',
-        email: user.email.replace(/(.{2})(.*)(@.*)/, '$1***$3'),
-      });
+    try {
+      await sendOtpEmail(user.email, otp, 'login', user.name);
+    } catch {
+      return NextResponse.json({ error: 'Failed to send verification email. Please try again.' }, { status: 500 });
     }
 
-    const token = signToken({
-      userId: user._id.toString(),
-      email: user.email,
-      role: user.role,
+    return NextResponse.json({
+      requires2FA: true,
+      message: 'Verification code sent to your email',
+      email: user.email.replace(/(.{2})(.*)(@.*)/, '$1***$3'),
     });
 
-    await setAuthCookie(token);
 
-    return NextResponse.json({
-      message: 'Login successful',
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        balance: user.balance,
-        role: user.role,
-      },
-    }, { status: 200 });
   } catch (error) {
     console.error('Login error:', error);
     return NextResponse.json(

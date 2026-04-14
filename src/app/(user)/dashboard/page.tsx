@@ -82,7 +82,9 @@ export default function DashboardPage() {
           <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.2rem)', marginBottom: '0.3rem', color: '#fff' }}>
             Welcome back, <span className="text-gradient-gold">{user.name}</span>
           </h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>Here&apos;s an overview of your trading activity.</p>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
+            <span style={{ color: 'var(--gold)', fontWeight: 500 }}>@{user.username}</span> · Here&apos;s an overview of your trading activity.
+          </p>
         </div>
         <div style={{ display: 'flex', gap: '0.75rem' }}>
           <Link href="/deposit" className="btn btn-gold" style={{ padding: '0.7rem 1.3rem', fontSize: '0.88rem' }}>

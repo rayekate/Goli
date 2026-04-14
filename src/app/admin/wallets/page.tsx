@@ -7,13 +7,14 @@ import {
   Plus,
   Trash2,
   Save,
-  Loader2,
   CheckCircle,
   AlertCircle,
   GripVertical,
+  AtSign,
   Copy,
   Check,
 } from 'lucide-react';
+import GoldCoinLoader from '@/components/GoldCoinLoader';
 
 interface WalletEntry {
   coinName: string;
@@ -96,7 +97,11 @@ export default function AdminWalletsPage() {
     setTimeout(() => setCopiedIdx(null), 2000);
   };
 
-  if (loading) return <div style={{ padding: '2rem', color: 'var(--text-muted)' }}>Loading wallets...</div>;
+  if (loading) return (
+    <div style={{ padding: '60px 20px', textAlign: 'center' }}>
+      <GoldCoinLoader label="Loading wallet configurations..." />
+    </div>
+  );
 
   const inputStyle: React.CSSProperties = {
     background: 'rgba(255,255,255,0.05)',
@@ -298,7 +303,7 @@ export default function AdminWalletsPage() {
             opacity: saving ? 0.7 : 1,
           }}
         >
-          {saving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
+          {saving ? <GoldCoinLoader mini label={null} /> : <Save size={18} />}
           {saving ? 'Saving...' : 'Save Wallets'}
         </button>
       </div>

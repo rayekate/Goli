@@ -1,94 +1,117 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-import { UserPlus, Mail, Lock, Eye, EyeOff, User, CheckCircle2, XCircle, Loader2, ArrowRight } from 'lucide-react';
+import { UserPlus, Mail, Lock, Eye, EyeOff, User, AtSign, CheckCircle2, XCircle, ArrowRight, ShieldCheck } from 'lucide-react';
+import GoldCoinLoader from '@/components/GoldCoinLoader';
 
-function PasswordStrength({ password }: { password: string }) {
-  const checks = useMemo(() => [
-    { label: 'At least 8 characters', pass: password.length >= 8 },
-    { label: 'One uppercase letter', pass: /[A-Z]/.test(password) },
-    { label: 'One lowercase letter', pass: /[a-z]/.test(password) },
-    { label: 'One number', pass: /[0-9]/.test(password) },
-    { label: 'One special character', pass: /[^A-Za-z0-9]/.test(password) },
-  ], [password]);
-
-  const strength = checks.filter(c => c.pass).length;
-
+function PasswordHint({ password }: { password: string }) {
   if (!password) return null;
-
-  const colors = ['var(--danger)', 'var(--danger)', '#F59E0B', '#10B981', '#10B981', '#10B981'];
-  const labels = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong', 'Strong'];
-
   return (
-    <div style={{ marginTop: '0.75rem' }}>
-      <div style={{ display: 'flex', gap: '4px', marginBottom: '0.5rem' }}>
-        {[0, 1, 2, 3, 4].map(i => (
-          <div key={i} style={{
-            flex: 1, height: '3px', borderRadius: '2px',
-            background: i < strength ? colors[strength] : 'rgba(255,255,255,0.08)',
-            transition: 'background 0.3s',
-          }} />
-        ))}
-      </div>
-      <p style={{ fontSize: '0.75rem', color: colors[strength], marginBottom: '0.5rem' }}>{labels[strength]}</p>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.25rem' }}>
-        {checks.map((c, i) => (
-          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.75rem', color: c.pass ? '#10B981' : 'var(--text-muted)' }}>
-            {c.pass ? <CheckCircle2 size={12} /> : <XCircle size={12} />}
-            {c.label}
-          </div>
-        ))}
-      </div>
-    </div>
+    <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
+      Tip: Use uppercase, lowercase, numbers & special characters for a stronger password.
+    </p>
   );
 }
 
 export default function RegisterPage() {
-  const [formData, setFormData] = useState({ name: '', email: '', password: '', confirmPassword: '' });
+  const [formData, setFormData] = useState({ name: '', username: '', email: '', password: '', confirmPassword: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [otpStep, setOtpStep] = useState(false);
+  const [otp, setOtp] = useState('');
+  const [maskedEmail, setMaskedEmail] = useState('');
+  const [isRegistered, setIsRegistered] = useState(false);
   const { login } = useAuth();
   const router = useRouter();
 
-  const passwordValid = formData.password.length >= 8 && /[A-Z]/.test(formData.password) && /[a-z]/.test(formData.password) && /[0-9]/.test(formData.password) && /[^A-Za-z0-9]/.test(formData.password);
+  // Captcha state
+  const [captcha, setCaptcha] = useState({ num1: 0, num2: 0, sum: 0 });
+  const [captchaInput, setCaptchaInput] = useState('');
+
+  const generateCaptcha = () => {
+    const n1 = Math.floor(Math.random() * 9) + 1;
+    const n2 = Math.floor(Math.random() * 9) + 1;
+    setCaptcha({ num1: n1, num2: n2, sum: n1 + n2 });
+    setCaptchaInput('');
+  };
+
+  useEffect(() => {
+    generateCaptcha();
+  }, []);
+
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-
-    if (!passwordValid) {
-      setError('Password must be at least 8 characters with uppercase, lowercase, and a number.');
-      return;
-    }
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match.');
+      setError('Passwords do not match');
       return;
     }
 
+    if (parseInt(captchaInput) !== captcha.sum) {
+      setError('Incorrect captcha result');
+      generateCaptcha();
+      return;
+    }
+
+    setError('');
     setLoading(true);
 
     try {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: formData.name, email: formData.email, password: formData.password }),
+        body: JSON.stringify({
+          name: formData.name,
+          username: formData.username,
+          email: formData.email,
+          password: formData.password
+        }),
       });
 
       const data = await res.json();
       if (res.ok) {
-        setFormData({ name: '', email: '', password: '', confirmPassword: '' });
-        login(data.user);
+        if (data.requiresOtp) {
+          setMaskedEmail(data.email);
+          setIsRegistered(true); // Show the success/check inbox screen
+        } else {
+          login(data.user);
+        }
       } else {
-        setFormData(prev => ({ ...prev, password: '', confirmPassword: '' }));
         setError(data.error || 'Registration failed');
       }
     } catch (err) {
-      setFormData(prev => ({ ...prev, password: '', confirmPassword: '' }));
+      setError('An error occurred. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (otp.length !== 6) return;
+    setError('');
+    setLoading(true);
+
+    try {
+      const res = await fetch('/api/auth/verify-register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.email, otp }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        login(data.user);
+      } else {
+        setError(data.error || 'Verification failed');
+      }
+    } catch (err) {
       setError('An error occurred. Please try again.');
     } finally {
       setLoading(false);
@@ -96,40 +119,131 @@ export default function RegisterPage() {
   };
 
   return (
-    <div style={{ position: 'relative', minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 0' }}>
-      {/* Ambient Background Orbs */}
-      <div className="ambient-orb orb-purple" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '500px', height: '500px' }} />
+    <div style={{ position: 'relative', minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem 0' }}>
+      <div className="ambient-orb orb-gold" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '600px', height: '600px' }} />
+      
+      <div className="container animate-in" style={{ maxWidth: '480px', width: '100%', padding: '0 20px', zIndex: 1 }}>
+        <div style={{
+          background: 'rgba(8, 14, 26, 0.9)',
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(212, 175, 55, 0.1)',
+          borderRadius: '24px',
+          padding: '2.5rem 2rem',
+          position: 'relative',
+          overflow: 'hidden',
+          boxShadow: '0 20px 40px rgba(0,0,0,0.4)'
+        }}>
+          {/* Top accent */}
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, var(--gold), transparent)' }} />
 
-      <div className="container animate-in stagger-1" style={{ maxWidth: '480px', width: '100%', padding: '0 20px', zIndex: 1 }}>
-        <div className="glass-card" style={{ padding: '2.5rem 2rem' }}>
-
-          {/* Header with icon */}
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            <div style={{
-              width: '56px', height: '56px', borderRadius: '16px', margin: '0 auto 1rem',
-              background: 'linear-gradient(135deg, rgba(234,179,8,0.15), rgba(234,179,8,0.05))',
-              border: '1px solid rgba(234,179,8,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
-              <UserPlus size={26} color="var(--gold)" />
+            <div style={{ width: '56px', height: '56px', margin: '0 auto 1rem', background: 'rgba(212, 175, 55, 0.08)', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(212,175,55,0.1)' }}>
+              <UserPlus size={24} color="var(--gold)" />
             </div>
-            <h2 style={{ marginBottom: '0.4rem', fontSize: '1.75rem' }} className="text-gradient-gold">Create Account</h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem' }}>
-              Join and start trading gold price movements
+            <h2 className="text-gradient-gold" style={{ fontSize: '1.8rem', marginBottom: '0.4rem' }}>
+              {isRegistered ? 'Verify Your Email' : 'Join Goli Trade'}
+            </h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', lineHeight: 1.5 }}>
+              {isRegistered 
+                ? <>Please check your inbox to proceed with verification</>
+                : 'Start your journey into premium gold trading'}
             </p>
           </div>
 
           {error && (
-            <div style={{
-              background: 'rgba(239, 68, 68, 0.08)', color: 'var(--danger)', padding: '0.75rem 1rem',
-              borderRadius: '10px', marginBottom: '1.5rem', fontSize: '0.85rem',
-              border: '1px solid rgba(239, 68, 68, 0.15)', display: 'flex', alignItems: 'center', gap: '0.5rem',
+            <div style={{ 
+              background: 'rgba(239, 68, 68, 0.08)', 
+              color: '#ef4444', 
+              padding: '0.75rem 1rem', 
+              borderRadius: '12px', 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '0.75rem', 
+              fontSize: '0.85rem', 
+              marginBottom: '1.5rem',
+              border: '1px solid rgba(239, 68, 68, 0.15)'
             }}>
               <XCircle size={16} style={{ flexShrink: 0 }} />
-              {error}
+              <span style={{ flex: 1 }}>{error}</span>
             </div>
           )}
 
-          <form onSubmit={handleSubmit}>
+          {isRegistered ? (
+            <div className="animate-in" style={{ 
+              textAlign: 'center', 
+              background: 'rgba(8, 14, 26, 0.95)', 
+              backdropFilter: 'blur(20px)',
+              borderRadius: '24px', 
+              padding: '3.5rem 2rem', 
+              color: '#ffffff', 
+              boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
+              border: '1px solid rgba(212, 175, 55, 0.15)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              {/* Top accent */}
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, var(--gold), transparent)' }} />
+
+              {/* Brand Icon placeholder */}
+              <div style={{ width: '64px', height: '64px', margin: '0 auto 1.75rem', background: 'rgba(247, 147, 26, 0.1)', border: '1px solid rgba(247, 147, 26, 0.3)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f7931a', fontSize: '2rem', fontWeight: 'bold' }}>
+                B
+              </div>
+
+              <div style={{ marginBottom: '2.5rem' }}>
+                <div style={{ width: '56px', height: '56px', margin: '0 auto 1.25rem', background: 'rgba(255, 255, 255, 0.05)', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                  <Mail size={32} color="#ffffff" style={{ opacity: 0.9 }} />
+                </div>
+                <h2 className="text-gradient-gold" style={{ fontSize: '1.8rem', fontWeight: '800', marginBottom: '0.75rem' }}>Check Your Email</h2>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', lineHeight: 1.6 }}>
+                  We sent a verification link to<br />
+                  <strong style={{ color: '#fff' }}>{formData.email}</strong>
+                </p>
+              </div>
+
+              <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem', marginBottom: '2rem', lineHeight: 1.6 }}>
+                Click the link in the email to verify your account. The link expires in 10 minutes.
+              </p>
+
+              <div style={{ 
+                background: 'rgba(212, 175, 55, 0.05)', 
+                padding: '1rem', 
+                borderRadius: '16px', 
+                color: 'rgba(255,255,255,0.7)', 
+                fontSize: '0.82rem', 
+                border: '1px solid rgba(212, 175, 55, 0.1)', 
+                marginBottom: '2.5rem',
+                textAlign: 'center'
+              }}>
+                Can't find the email? Check your <strong>Spam</strong> or <strong>Junk</strong> folder.
+              </div>
+
+              <Link 
+                href="/login"
+                className="btn btn-gold"
+                style={{ 
+                  width: '100%', 
+                  padding: '1rem', 
+                  borderRadius: '12px', 
+                  fontSize: '1rem', 
+                  fontWeight: 'bold', 
+                  background: '#c09b2b', 
+                  color: '#fff',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  border: 'none',
+                  textDecoration: 'none'
+                }}
+              >
+                Back to Login
+              </Link>
+
+              <div style={{ marginTop: '2.5rem', fontSize: '0.85rem', color: '#666' }}>
+                Already have an account? <Link href="/login" style={{ color: '#c09b2b', fontWeight: '700', textDecoration: 'none' }}>Login</Link>
+              </div>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit}>
             {/* Name */}
             <div className="input-group">
               <label>Full Name</label>
@@ -144,6 +258,27 @@ export default function RegisterPage() {
                   style={{ paddingLeft: '2.5rem' }}
                 />
               </div>
+            </div>
+
+            {/* Username */}
+            <div className="input-group">
+              <label>Username</label>
+              <div style={{ position: 'relative' }}>
+                <AtSign size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', pointerEvents: 'none' }} />
+                <input
+                  type="text"
+                  placeholder="johndoe123"
+                  required
+                  minLength={3}
+                  maxLength={20}
+                  value={formData.username}
+                  onChange={(e) => setFormData({ ...formData, username: e.target.value.replace(/[^a-zA-Z0-9_]/g, '') })}
+                  style={{ paddingLeft: '2.5rem' }}
+                />
+              </div>
+              <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '0.3rem' }}>
+                3-20 characters. Letters, numbers, and underscores only.
+              </p>
             </div>
 
             {/* Email */}
@@ -184,7 +319,7 @@ export default function RegisterPage() {
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
-              <PasswordStrength password={formData.password} />
+              <PasswordHint password={formData.password} />
             </div>
 
             {/* Confirm Password */}
@@ -220,19 +355,51 @@ export default function RegisterPage() {
               )}
             </div>
 
+            {/* Captcha */}
+            <div className="input-group" style={{ marginBottom: '1.5rem' }}>
+              <label style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem' }}>Captcha</label>
+              <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.4rem' }}>
+                <div style={{
+                  flex: '0 0 140px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '1.25rem',
+                  fontWeight: '700',
+                  color: 'var(--gold)',
+                  letterSpacing: '2px',
+                  userSelect: 'none'
+                }}>
+                  {captcha.num1} + {captcha.num2} = ?
+                </div>
+                <input
+                  type="text"
+                  placeholder="Your answer"
+                  required
+                  value={captchaInput}
+                  onChange={(e) => setCaptchaInput(e.target.value.replace(/\D/g, ''))}
+                  style={{ flex: 1 }}
+                />
+              </div>
+            </div>
+
             <button
               type="submit"
               className="btn btn-gold"
               style={{ width: '100%', marginTop: '0.5rem', fontSize: '1rem', padding: '0.85rem 1rem', gap: '0.5rem' }}
-              disabled={loading || !passwordValid || formData.password !== formData.confirmPassword}
+              disabled={loading || !formData.password || formData.password !== formData.confirmPassword}
             >
               {loading ? (
-                <><Loader2 size={20} className="animate-spin" /> Creating Account...</>
+                <><GoldCoinLoader mini label={null} /> Sending Code...</>
               ) : (
                 <>Create Account <ArrowRight size={18} /></>
               )}
             </button>
           </form>
+          )}
 
           {/* Divider */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', margin: '1.5rem 0' }}>

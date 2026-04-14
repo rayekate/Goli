@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Headset, Send, Loader2, Info } from 'lucide-react';
+import { Headset, Send, Info } from 'lucide-react';
+import GoldCoinLoader from '@/components/GoldCoinLoader';
 import { useRouter } from 'next/navigation';
 
 export default function AdminSupportQueue() {
@@ -81,7 +82,7 @@ export default function AdminSupportQueue() {
   if (loading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '100px' }}>
-        <Loader2 className="animate-spin" size={40} color="#d4af37" />
+        <GoldCoinLoader label="Loading support queue..." />
       </div>
     );
   }
@@ -201,7 +202,7 @@ export default function AdminSupportQueue() {
                       style={{ flex: 1, margin: 0, padding: '1.2rem', borderRadius: '12px' }}
                     />
                     <button type="submit" className="btn btn-primary" disabled={submitting} style={{ padding: '0 2rem' }}>
-                      {submitting ? <Loader2 className="animate-spin" /> : <Send size={20} />}
+                      {submitting ? <GoldCoinLoader mini label={null} /> : <Send size={20} />}
                     </button>
                   </form>
                 ) : (

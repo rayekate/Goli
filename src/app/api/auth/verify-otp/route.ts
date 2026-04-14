@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     await connectToDatabase();
     const body = await req.json();
 
-    const { email, otp } = body;
+    const { email, otp, rememberMe } = body;
     if (!email || !otp || typeof otp !== 'string' || otp.length !== 6) {
       return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
     }
@@ -55,13 +55,17 @@ export async function POST(req: NextRequest) {
       { $unset: { loginOtp: '', loginOtpExpiry: '' } }
     );
 
+    // Calculate session duration
+    const expiresIn = rememberMe ? '30d' : '7d';
+    const maxAge = rememberMe ? 30 * 24 * 60 * 60 : 7 * 24 * 60 * 60;
+
     const token = signToken({
       userId: user._id.toString(),
       email: user.email,
       role: user.role,
-    });
+    }, expiresIn);
 
-    await setAuthCookie(token);
+    await setAuthCookie(token, maxAge);
 
     return NextResponse.json({
       message: 'Login successful',

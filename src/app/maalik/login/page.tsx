@@ -4,7 +4,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import { Mail, Shield, Eye, EyeOff, Loader2, ArrowRight } from 'lucide-react';
+import { Mail, Shield, Eye, EyeOff, ArrowRight } from 'lucide-react';
+import GoldCoinLoader from '@/components/GoldCoinLoader';
 
 export default function AdminLoginPage() {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -115,7 +116,7 @@ export default function AdminLoginPage() {
 
             <button type="submit" className="btn btn-gold" style={{ width: '100%', marginTop: '0.5rem', fontSize: '1rem', padding: '0.85rem', borderRadius: '10px' }} disabled={loading}>
               {loading ? (
-                <><Loader2 size={18} style={{ animation: 'spin 1s linear infinite' }} /> Authenticating...</>
+                <><GoldCoinLoader mini label={null} /> Authenticating...</>
               ) : (
                 <>Authorize Access <ArrowRight size={16} /></>
               )}

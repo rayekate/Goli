@@ -5,7 +5,6 @@ import {
   ShieldCheck, 
   Search, 
   Filter, 
-  RefreshCw,
   User,
   Activity,
   Calendar,
@@ -99,7 +98,7 @@ export default function AuditLogPage() {
             cursor: 'pointer'
           }}
         >
-          <RefreshCw size={18} className={refreshing ? 'animate-spin' : ''} />
+          {refreshing ? <GoldCoinLoader mini label={null} /> : <Activity size={18} />}
           Refresh
         </button>
       </div>

@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Shield, User as UserIcon, Lock, Loader2, CheckCircle2, AlertCircle, Bell, Wallet, Send, Eye, EyeOff, Settings, Save, KeyRound, XCircle } from 'lucide-react';
+import { Shield, User as UserIcon, Lock, CheckCircle2, AlertCircle, Bell, Wallet, Send, Eye, EyeOff, Settings, Save, KeyRound, XCircle, AtSign } from 'lucide-react';
+import GoldCoinLoader from '@/components/GoldCoinLoader';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 
@@ -13,6 +14,7 @@ export default function SettingsPage() {
   const router = useRouter();
 
   const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const [withdrawalOtpEnabled, setWithdrawalOtpEnabled] = useState(false);
   const [notifications, setNotifications] = useState({
@@ -40,6 +42,7 @@ export default function SettingsPage() {
   useEffect(() => {
     if (user && !initialized) {
       setName(user.name);
+      setUsername(user.username || '');
       setTwoFactorEnabled(user.twoFactorEnabled || false);
       setWithdrawalOtpEnabled(user.withdrawalOtpEnabled || false);
       if (user.notifications) setNotifications(user.notifications);
@@ -59,6 +62,7 @@ export default function SettingsPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name,
+          username,
           twoFactorEnabled,
           withdrawalOtpEnabled,
           notifications,
@@ -117,7 +121,7 @@ export default function SettingsPage() {
   if (authLoading || !user) {
     return (
       <div style={{ padding: '60px 20px', maxWidth: '900px', margin: '0 auto', textAlign: 'center' }}>
-        <Loader2 className="animate-spin" size={40} color="#d4af37" />
+        <GoldCoinLoader label="Loading your preferences..." />
       </div>
     );
   }
@@ -201,7 +205,7 @@ export default function SettingsPage() {
               </div>
               <div>
                 <h3 style={{ color: '#fff', fontSize: '1.1rem', marginBottom: '0.15rem' }}>{user.name}</h3>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>{user.email}</p>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>{user.username && <span style={{ color: 'var(--gold)' }}>@{user.username}</span>} · {user.email}</p>
               </div>
             </div>
 
@@ -214,6 +218,20 @@ export default function SettingsPage() {
             </div>
 
             <div className="input-group">
+              <label>Username</label>
+              <div style={{ position: 'relative' }}>
+                <AtSign size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', pointerEvents: 'none' }} />
+                <input
+                  type="text" value={username}
+                  onChange={(e) => setUsername(e.target.value.replace(/[^a-zA-Z0-9_]/g, ''))}
+                  required minLength={3} maxLength={20}
+                  style={{ paddingLeft: '2.5rem' }}
+                />
+              </div>
+              <small style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>3-20 characters. Letters, numbers, and underscores only.</small>
+            </div>
+
+            <div className="input-group">
               <label>Email Address</label>
               <input type="email" value={user.email} disabled style={{ opacity: 0.4, cursor: 'not-allowed' }} />
               <small style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>Email cannot be changed</small>
@@ -221,7 +239,7 @@ export default function SettingsPage() {
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
               <button type="submit" className="btn btn-primary" disabled={saving} style={{ gap: '0.5rem' }}>
-                {saving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
+                {saving ? <GoldCoinLoader mini label={null} /> : <Save size={18} />}
                 Save Changes
               </button>
             </div>
@@ -256,7 +274,7 @@ export default function SettingsPage() {
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
                 <button type="submit" className="btn btn-primary" disabled={saving} style={{ gap: '0.5rem' }}>
-                  {saving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
+                  {saving ? <GoldCoinLoader mini label={null} /> : <Save size={18} />}
                   Save Security Settings
                 </button>
               </div>
@@ -344,7 +362,7 @@ export default function SettingsPage() {
                   disabled={changingPw || !currentPassword || !newPassword || newPassword !== confirmNewPassword}
                   style={{ borderColor: 'var(--gold)', color: 'var(--gold)', gap: '0.5rem' }}
                 >
-                  {changingPw ? <Loader2 size={18} className="animate-spin" /> : <KeyRound size={18} />}
+                  {changingPw ? <GoldCoinLoader mini label={null} /> : <KeyRound size={18} />}
                   Change Password
                 </button>
               </div>
@@ -387,7 +405,7 @@ export default function SettingsPage() {
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
               <button type="submit" className="btn btn-primary" disabled={saving} style={{ gap: '0.5rem' }}>
-                {saving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
+                {saving ? <GoldCoinLoader mini label={null} /> : <Save size={18} />}
                 Save Notification Settings
               </button>
             </div>
@@ -445,7 +463,7 @@ export default function SettingsPage() {
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
               <button type="submit" className="btn btn-primary" disabled={saving} style={{ gap: '0.5rem' }}>
-                {saving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
+                {saving ? <GoldCoinLoader mini label={null} /> : <Save size={18} />}
                 Save Wallet Settings
               </button>
             </div>

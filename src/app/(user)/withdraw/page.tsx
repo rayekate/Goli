@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { ArrowDownCircle, ShieldCheck, Wallet, AlertTriangle, Loader2, Check, ChevronDown } from 'lucide-react';
+import { ArrowDownCircle, ShieldCheck, Wallet, AlertTriangle, Check, ChevronDown } from 'lucide-react';
+import GoldCoinLoader from '@/components/GoldCoinLoader';
 import CoinIcon from '@/components/CoinIcon';
 import { useRouter } from 'next/navigation';
 
@@ -227,7 +228,7 @@ export default function WithdrawPage() {
                   className="btn btn-outline"
                   style={{ whiteSpace: 'nowrap', padding: '0.6rem 1rem', fontSize: '0.8rem', borderColor: 'var(--gold)', color: 'var(--gold)', minWidth: '110px' }}
                 >
-                  {otpSending ? <Loader2 size={14} className="animate-spin" /> : otpCooldown > 0 ? `Resend (${otpCooldown}s)` : otpSent ? 'Resend OTP' : 'Send OTP'}
+                  {otpSending ? <GoldCoinLoader mini label={null} /> : otpCooldown > 0 ? `Resend (${otpCooldown}s)` : otpSent ? 'Resend OTP' : 'Send OTP'}
                 </button>
               </div>
               {otpSent && <p style={{ fontSize: '0.72rem', color: 'var(--success)', marginTop: '0.5rem' }}>OTP sent to your registered email. Valid for 5 minutes.</p>}

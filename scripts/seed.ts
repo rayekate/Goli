@@ -23,6 +23,7 @@ async function seed() {
       const hashedPassword = await bcrypt.hash('admin123', 12);
       await User.create({
         name: 'System Admin',
+        username: 'admin',
         email: adminEmail,
         password: hashedPassword,
         balance: 1000000,
@@ -40,6 +41,7 @@ async function seed() {
       const hashedPassword = await bcrypt.hash('user123', 12);
       await User.create({
         name: 'Test Trader',
+        username: 'testtrader',
         email: userEmail,
         password: hashedPassword,
         balance: 5000,

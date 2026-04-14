@@ -5,7 +5,6 @@ import {
   Clock,
   Calendar,
   Save,
-  Loader2,
   CheckCircle,
   AlertCircle,
   Info
@@ -272,7 +271,7 @@ export default function AdminSchedulePage() {
             transform: saving ? 'scale(0.98)' : 'scale(1)'
           }}
         >
-          {saving ? <Loader2 size={18} className="animate-spin" /> : <Save size={20} />}
+          {saving ? <GoldCoinLoader mini label={null} /> : <Save size={20} />}
           {saving ? 'Updating...' : 'Save Schedule'}
         </button>
       </div>

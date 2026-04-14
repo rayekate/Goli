@@ -4,6 +4,7 @@ import type { Document, Types } from 'mongoose';
 export interface IUser extends Document {
   _id: Types.ObjectId;
   name: string;
+  username: string;
   email: string;
   password: string;
   balance: number;
@@ -28,6 +29,7 @@ export interface IUser extends Document {
 export interface SafeUser {
   id: string;
   name: string;
+  username: string;
   email: string;
   balance: number;
   role: 'user' | 'admin';

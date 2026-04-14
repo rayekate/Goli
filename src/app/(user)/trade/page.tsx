@@ -5,9 +5,10 @@ import { useAuth } from '@/context/AuthContext';
 import PriceChart from '@/components/PriceChart';
 import LivePriceTicker from '@/components/LivePriceTicker';
 import {
-  TrendingUp, TrendingDown, Loader2, Clock, DollarSign,
+  TrendingUp, TrendingDown, Clock, DollarSign,
   Target, History, AlertTriangle, Lock, ShieldCheck
 } from 'lucide-react';
+import GoldCoinLoader from '@/components/GoldCoinLoader';
 import Link from 'next/link';
 import { getTradeTier } from '@/lib/trade-utils';
 import { ALLOWED_DURATIONS } from '@/lib/validations';
@@ -155,25 +156,29 @@ export default function TradePage() {
   return (
     <div className="animate-in trade-page-root" style={{ padding: '24px 16px', maxWidth: '1200px', margin: '0 auto' }}>
       <style>{`
+        /* Desktop: chart LEFT, trade RIGHT using named grid areas */
+        .trade-main-grid {
+          grid-template-areas: "chart trade";
+          grid-template-columns: minmax(0, 1fr) minmax(0, 400px);
+        }
+        .trade-chart-col { grid-area: chart; }
+        .trade-panel-col { grid-area: trade; }
+
+        /* Mobile: trade on TOP, chart on BOTTOM */
         @media (max-width: 860px) {
           .trade-main-grid {
+            grid-template-areas: "trade" "chart" !important;
             grid-template-columns: 1fr !important;
+          }
+          /* Hide the big header panel on mobile — price is already in the navbar */
+          .trade-header-panel {
+            display: none !important;
           }
         }
         @media (max-width: 480px) {
-          .trade-page-root {
-            padding: 12px 8px !important;
-          }
-          .trade-header-panel {
-            padding: 1rem !important;
-          }
-          .trade-price-box {
-            padding: 0.75rem 1rem !important;
-            gap: 1rem !important;
-          }
-          .trade-price-box .trade-divider {
-            display: none;
-          }
+          .trade-page-root { padding: 12px 8px !important; }
+          .trade-price-box { padding: 0.75rem 1rem !important; gap: 1rem !important; }
+          .trade-price-box .trade-divider { display: none; }
         }
       `}</style>
       {/* Header & Live Price Ticker (Unified Dashboard Panel) */}
@@ -203,15 +208,10 @@ export default function TradePage() {
       </div>
 
       
-      {/* Main grid: Chart + Trade Panel */}
-      <div className="trade-main-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 380px)', gap: '1.5rem', alignItems: 'stretch' }}>
-        {/* Chart */}
-        <div style={{ minWidth: 0, height: '100%', overflow: 'hidden' }}>
-          <PriceChart data={priceHistory} />
-        </div>
-
+      {/* Main grid: chart LEFT on desktop, trade RIGHT on desktop | trade TOP on mobile, chart BOTTOM */}
+      <div className="trade-main-grid" style={{ display: 'grid', gap: '1.5rem', alignItems: 'stretch' }}>
         {/* Trade Panel */}
-        <div className="neon-pulse animate-float" style={{
+        <div className="neon-pulse animate-float trade-panel-col" style={{
           background: 'var(--glass-bg)',
           backdropFilter: 'var(--glass-blur)',
           border: '1px solid var(--border)',
@@ -564,7 +564,7 @@ export default function TradePage() {
             }}
           >
             {placingTrade ? (
-              <><Loader2 size={20} style={{ animation: 'spin 1s linear infinite' }} /> Executing Contract...</>
+              <><GoldCoinLoader mini label={null} /> Executing Contract...</>
             ) : (
               <>Trade</>
             )}
@@ -573,6 +573,11 @@ export default function TradePage() {
           <p style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)' }}>
             Min: <strong style={{ color: '#fff' }}>${settings.minTrade.toLocaleString()}</strong> • Max: <strong style={{ color: '#fff' }}>${settings.maxTrade > 10000 ? settings.maxTrade.toLocaleString() : '1,000,000'}</strong>
           </p>
+        </div>
+
+        {/* Chart — second in DOM so it appears below trade on mobile; CSS order:1 puts it LEFT on desktop */}
+        <div className="trade-chart-col" style={{ minWidth: 0, height: '100%', overflow: 'hidden' }}>
+          <PriceChart data={priceHistory} />
         </div>
       </div>
 

@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import connectToDatabase from '@/lib/db';
 import User from '@/models/User';
-import { signToken, setAuthCookie } from '@/lib/auth';
 import { registerSchema } from '@/lib/validations';
 import { authLimiter } from '@/lib/rate-limit';
 import { getClientIP } from '@/lib/api-guard';
+import { generateOtp, sendOtpEmail } from '@/lib/mailer';
 
 export async function POST(req: NextRequest) {
   try {
@@ -29,44 +29,68 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: firstError }, { status: 400 });
     }
 
-    const { name, email, password } = parsed.data;
+    const { name, username, email, password } = parsed.data;
+    const emailLower = email.toLowerCase();
+    const usernameLower = username.toLowerCase();
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return NextResponse.json(
-        { error: 'Unable to create account with this email' },
-        { status: 400 }
-      );
+    // Check if a VERIFIED account already exists with this email or username
+    const [existingVerifiedEmail, existingVerifiedUsername] = await Promise.all([
+      User.findOne({ email: emailLower, isVerified: true }),
+      User.findOne({ username: { $regex: new RegExp(`^${username}$`, 'i') }, isVerified: true }),
+    ]);
+
+    if (existingVerifiedEmail) {
+      return NextResponse.json({ error: 'Unable to create account with this email' }, { status: 400 });
+    }
+    if (existingVerifiedUsername) {
+      return NextResponse.json({ error: 'Username is already taken' }, { status: 400 });
     }
 
     const hashedPassword = await bcrypt.hash(password, 13);
+    const otp = generateOtp();
+    const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 min
 
-    const user = await User.create({
-      name,
-      email,
-      password: hashedPassword,
-      balance: 0,
-      role: 'user',
-    });
+    // Check if there's an existing UNVERIFIED record for this email (re-registration)
+    const existingUnverified = await User.findOne({ email: emailLower, isVerified: false });
 
-    const token = signToken({
-      userId: user._id.toString(),
-      email: user.email,
-      role: user.role,
-    });
+    if (existingUnverified) {
+      // Update the existing unverified record with fresh OTP + new data
+      existingUnverified.name = name;
+      existingUnverified.username = usernameLower;
+      existingUnverified.password = hashedPassword;
+      existingUnverified.registrationOtp = otp;
+      existingUnverified.registrationOtpExpiry = otpExpiry;
+      await existingUnverified.save();
+    } else {
+      // Create a new unverified user record
+      await User.create({
+        name,
+        username: usernameLower,
+        email: emailLower,
+        password: hashedPassword,
+        isVerified: false,
+        registrationOtp: otp,
+        registrationOtpExpiry: otpExpiry,
+        balance: 0,
+        role: 'user',
+      });
+    }
 
-    await setAuthCookie(token);
+    // Send verification email
+    try {
+      await sendOtpEmail(emailLower, otp, 'registration', name);
+    } catch (mailErr) {
+      // Clean up the unverified record if email send fails
+      await User.deleteOne({ email: emailLower, isVerified: false });
+      console.error('Mail error:', mailErr);
+      return NextResponse.json({ error: 'Failed to send verification email. Please try again.' }, { status: 500 });
+    }
 
     return NextResponse.json({
-      message: 'Registration successful',
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        balance: user.balance,
-        role: user.role,
-      },
-    }, { status: 201 });
+      requiresOtp: true,
+      message: 'Verification link sent to your email',
+      email: emailLower.replace(/(.{2})(.*)(@.*)/, '$1***$3'),
+    });
   } catch (error) {
     console.error('Registration error:', error);
     return NextResponse.json(

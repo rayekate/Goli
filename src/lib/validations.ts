@@ -3,7 +3,31 @@ import { z } from 'zod';
 // ─── Auth ────────────────────────────────────────────────────────────────────
 export const registerSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters').max(50).trim(),
+  username: z.string()
+    .min(3, 'Username must be at least 3 characters')
+    .max(20, 'Username must be at most 20 characters')
+    .regex(/^[a-zA-Z0-9_]+$/, 'Username can only contain letters, numbers, and underscores')
+    .trim(),
   email: z.string().email('Invalid email address').toLowerCase().trim(),
+  password: z
+    .string()
+    .min(1, 'Password is required')
+    .max(128, 'Password too long'),
+});
+
+export const loginSchema = z.object({
+  email: z.string().email('Invalid email address').toLowerCase().trim(),
+  password: z.string().min(1, 'Password is required'),
+  rememberMe: z.boolean().optional(),
+});
+
+export const forgotPasswordSchema = z.object({
+  email: z.string().email('Invalid email address').toLowerCase().trim(),
+});
+
+export const resetPasswordSchema = z.object({
+  email: z.string().email('Invalid email address').toLowerCase().trim(),
+  otp: z.string().length(6, 'OTP must be 6 digits').regex(/^\d+$/, 'OTP must be numeric'),
   password: z
     .string()
     .min(8, 'Password must be at least 8 characters')
@@ -12,11 +36,6 @@ export const registerSchema = z.object({
     .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
     .regex(/[0-9]/, 'Password must contain at least one number')
     .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character'),
-});
-
-export const loginSchema = z.object({
-  email: z.string().email('Invalid email address').toLowerCase().trim(),
-  password: z.string().min(1, 'Password is required'),
 });
 
 // ─── Trade ───────────────────────────────────────────────────────────────────
@@ -105,6 +124,12 @@ export const ticketStatusSchema = z.object({
 // ─── User Settings ───────────────────────────────────────────────────────────
 export const updateSettingsSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters').max(50).trim().optional(),
+  username: z.string()
+    .min(3, 'Username must be at least 3 characters')
+    .max(20, 'Username must be at most 20 characters')
+    .regex(/^[a-zA-Z0-9_]+$/, 'Username can only contain letters, numbers, and underscores')
+    .trim()
+    .optional(),
   twoFactorEnabled: z.boolean().optional(),
   withdrawalOtpEnabled: z.boolean().optional(),
   verificationCode: z.string().length(6).regex(/^\d{6}$/).optional(),

@@ -9,6 +9,7 @@ import {
   Clock, ShieldCheck, AlertCircle, TrendingUp, Filter,
   Maximize2, Copy, Wallet
 } from 'lucide-react';
+import GoldCoinLoader from '@/components/GoldCoinLoader';
 
 type ManualTxModal = { type: 'deposit' | 'withdrawal' } | null;
 
@@ -76,7 +77,7 @@ export default function AdminTransactionsPage() {
   const filteredUsers = useMemo(() => {
     if (!userSearch.trim()) return users;
     const q = userSearch.toLowerCase();
-    return users.filter(u => u.name?.toLowerCase().includes(q) || u.email?.toLowerCase().includes(q));
+    return users.filter(u => u.name?.toLowerCase().includes(q) || u.email?.toLowerCase().includes(q) || u.username?.toLowerCase().includes(q));
   }, [users, userSearch]);
 
   const selectedUser = useMemo(() => users.find(u => u._id === selectedUserId), [users, selectedUserId]);
@@ -166,7 +167,7 @@ export default function AdminTransactionsPage() {
 
   if (loading || dataLoading) return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', color: 'var(--gold)' }}>
-      <Clock className="animate-spin" style={{ marginRight: '10px' }} /> Initializing Terminal...
+      <GoldCoinLoader label="Initializing Financial Terminal..." />
     </div>
   );
 
@@ -228,7 +229,7 @@ export default function AdminTransactionsPage() {
                 onClick={() => handleAction(fulfillmentModal.txId, 'approve', fulfillmentHash)}
                 disabled={saving || !fulfillmentHash}
               >
-                {saving ? 'Processing...' : 'Complete Payment'}
+                {saving ? <GoldCoinLoader mini label={null} /> : 'Complete Payment'}
               </button>
             </div>
           </div>
@@ -258,7 +259,7 @@ export default function AdminTransactionsPage() {
                   }}
                 >
                   <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    {selectedUser ? `${selectedUser.name} — $${selectedUser.balance.toLocaleString()}` : 'Choose User...'}
+                    {selectedUser ? `${selectedUser.name} (@${selectedUser.username || '—'})` : 'Choose User...'}
                   </span>
                   <span style={{ transform: userDropdownOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s', fontSize: '0.7rem', opacity: 0.5 }}>▼</span>
                 </div>
@@ -289,8 +290,8 @@ export default function AdminTransactionsPage() {
                           key={u._id}
                           onClick={() => { setSelectedUserId(u._id); setUserDropdownOpen(false); setUserSearch(''); }}
                           style={{
-                            padding: '0.6rem 1rem', cursor: 'pointer', display: 'flex', justifyContent: 'space-between',
-                            alignItems: 'center', fontSize: '0.88rem', transition: 'background 0.15s',
+                            padding: '0.6rem 1rem', cursor: 'pointer', display: 'flex', flexDirection: 'column',
+                            gap: '0.15rem', fontSize: '0.88rem', transition: 'background 0.15s',
                             background: selectedUserId === u._id ? 'rgba(212,175,55,0.12)' : 'transparent',
                             color: selectedUserId === u._id ? 'var(--gold)' : '#fff',
                             borderLeft: selectedUserId === u._id ? '2px solid var(--gold)' : '2px solid transparent',
@@ -298,8 +299,11 @@ export default function AdminTransactionsPage() {
                           onMouseEnter={e => { if (selectedUserId !== u._id) (e.currentTarget.style.background = 'rgba(255,255,255,0.05)'); }}
                           onMouseLeave={e => { if (selectedUserId !== u._id) (e.currentTarget.style.background = 'transparent'); }}
                         >
-                          <span>{u.name}</span>
-                          <span style={{ fontSize: '0.78rem', color: 'var(--gold)', opacity: 0.8 }}>${u.balance.toLocaleString()}</span>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span>{u.name} {u.username && <span style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>@{u.username}</span>}</span>
+                            <span style={{ fontSize: '0.78rem', color: 'var(--gold)', opacity: 0.8 }}>${u.balance.toLocaleString()}</span>
+                          </div>
+                          <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{u.email}</span>
                         </div>
                       ))}
                     </div>
@@ -316,7 +320,7 @@ export default function AdminTransactionsPage() {
               <input type="text" placeholder="Internal reference..." value={txNote} onChange={e => setTxNote(e.target.value)} />
             </div>
             <button className="btn btn-gold" style={{ width: '100%', marginTop: '1rem' }} onClick={submitManualTx} disabled={saving || !selectedUserId || !txAmount}>
-              {saving ? 'Applying...' : `Execute ${manualModal.type}`}
+              {saving ? <GoldCoinLoader mini label={null} /> : `Execute ${manualModal.type}`}
             </button>
           </div>
         </div>,

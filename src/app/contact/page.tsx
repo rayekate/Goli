@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, CheckCircle, Loader2 } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react';
+import GoldCoinLoader from '@/components/GoldCoinLoader';
 import Link from 'next/link';
 
 export default function ContactPage() {
@@ -146,7 +147,7 @@ export default function ContactPage() {
                 </div>
 
                 <button type="submit" className="btn btn-primary" disabled={submitting} style={{ width: '100%', padding: '1rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}>
-                  {submitting ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
+                  {submitting ? <GoldCoinLoader mini label={null} /> : <Send size={18} />}
                   {submitting ? 'Sending...' : 'Send Message'}
                 </button>
               </form>

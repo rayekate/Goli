@@ -6,11 +6,11 @@ import {
   Shield,
   DollarSign,
   Save,
-  Loader2,
   CheckCircle,
   AlertCircle,
   Clock
 } from 'lucide-react';
+import GoldCoinLoader from '@/components/GoldCoinLoader';
 
 interface WalletEntry {
   coinName: string;
@@ -119,7 +119,9 @@ export default function AdminSettingsPage() {
 
   if (loading)
     return (
-      <div style={{ padding: '2rem', color: 'var(--text-muted)' }}>Loading settings...</div>
+      <div style={{ padding: '60px 20px', textAlign: 'center' }}>
+        <GoldCoinLoader label="Loading platform settings..." />
+      </div>
     );
 
   const sectionStyle: React.CSSProperties = {
@@ -389,7 +391,7 @@ export default function AdminSettingsPage() {
             opacity: saving ? 0.7 : 1,
           }}
         >
-          {saving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
+          {saving ? <GoldCoinLoader mini label={null} /> : <Save size={18} />}
           {saving ? 'Saving...' : 'Save Settings'}
         </button>
       </div>

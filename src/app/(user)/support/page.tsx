@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { MessageSquare, Plus, Loader2, Send, XCircle } from 'lucide-react';
+import { MessageSquare, Plus, Send, XCircle } from 'lucide-react';
+import GoldCoinLoader from '@/components/GoldCoinLoader';
 import { useRouter } from 'next/navigation';
 
 export default function SupportPage() {
@@ -112,7 +113,7 @@ export default function SupportPage() {
   if (loading) {
     return (
       <div style={{ padding: '60px 20px', textAlign: 'center' }}>
-        <Loader2 className="animate-spin glow-icon" size={40} color="#d4af37" />
+        <GoldCoinLoader label="Loading support tickets..." />
       </div>
     );
   }
@@ -207,7 +208,7 @@ export default function SupportPage() {
             />
           </div>
           <button type="submit" className="btn btn-primary" style={{ marginTop: '2rem', width: '100%' }} disabled={submitting}>
-            {submitting ? 'Submitting...' : 'Submit Ticket'}
+            {submitting ? <GoldCoinLoader mini label={null} /> : 'Submit Ticket'}
           </button>
         </form>
       )}
@@ -258,7 +259,7 @@ export default function SupportPage() {
                   style={{ flex: 1, margin: 0 }}
                 />
                 <button type="submit" className="btn btn-primary" disabled={submitting} style={{ margin: 0, padding: '0 1.5rem' }}>
-                  <Send size={18} />
+                  {submitting ? <GoldCoinLoader mini label={null} /> : <Send size={18} />}
                 </button>
               </form>
               <button

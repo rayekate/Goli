@@ -24,7 +24,7 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: parsed.error.issues[0]?.message || 'Invalid input' }, { status: 400 });
     }
 
-    const { name, twoFactorEnabled, withdrawalOtpEnabled, verificationCode, notifications, payoutWallet } = parsed.data;
+    const { name, username, twoFactorEnabled, withdrawalOtpEnabled, verificationCode, notifications, payoutWallet } = parsed.data;
 
     const user = await User.findById(payload.userId);
     if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
@@ -33,6 +33,17 @@ export async function PATCH(req: NextRequest) {
     const platformSettings = await getSettings();
 
     if (name !== undefined) user.name = name;
+
+    if (username !== undefined) {
+      const normalizedUsername = username.toLowerCase();
+      if (normalizedUsername !== user.username) {
+        const taken = await User.findOne({ username: { $regex: new RegExp(`^${normalizedUsername}$`, 'i') }, _id: { $ne: user._id } });
+        if (taken) {
+          return NextResponse.json({ error: 'Username is already taken' }, { status: 400 });
+        }
+        user.username = normalizedUsername;
+      }
+    }
 
     if (twoFactorEnabled !== undefined) {
       if (!platformSettings.allowUser2FA && twoFactorEnabled) {
@@ -64,6 +75,7 @@ export async function PATCH(req: NextRequest) {
       message: 'Settings updated successfully',
       user: {
         name: user.name,
+        username: user.username,
         twoFactorEnabled: user.twoFactorEnabled,
         withdrawalOtpEnabled: user.withdrawalOtpEnabled,
         notifications: user.notifications,

@@ -13,8 +13,8 @@ function getJwtSecret(): string {
   return secret;
 }
 
-export const signToken = (payload: TokenPayload): string => {
-  return jwt.sign(payload, getJwtSecret(), { expiresIn: '7d' });
+export const signToken = (payload: TokenPayload, expiresIn: string = '7d'): string => {
+  return jwt.sign(payload, getJwtSecret(), { expiresIn });
 };
 
 export const verifyToken = (token: string): (TokenPayload & { iat?: number }) | null => {
@@ -25,13 +25,13 @@ export const verifyToken = (token: string): (TokenPayload & { iat?: number }) | 
   }
 };
 
-export const setAuthCookie = async (token: string) => {
+export const setAuthCookie = async (token: string, maxAge: number = 7 * 24 * 60 * 60) => {
   const cookieStore = await cookies();
   cookieStore.set('auth_token', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    maxAge: 7 * 24 * 60 * 60, // 7 days
+    maxAge: maxAge,
     path: '/',
   });
 };

@@ -1,13 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
-import { useRouter } from 'next/navigation';
-import { Mail, Lock, Eye, EyeOff, Loader2, ArrowRight, ShieldCheck } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, ShieldCheck, CheckCircle } from 'lucide-react';
+import GoldCoinLoader from '@/components/GoldCoinLoader';
 
-export default function LoginPage() {
-  const [formData, setFormData] = useState({ email: '', password: '' });
+function LoginContent() {
+  const searchParams = useSearchParams();
+  const isVerified = searchParams.get('verified') === 'true';
+
+  const [formData, setFormData] = useState({ email: '', password: '', rememberMe: false });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -21,6 +25,21 @@ export default function LoginPage() {
   const [otpLoading, setOtpLoading] = useState(false);
   const [resendCooldown, setResendCooldown] = useState(0);
 
+  // Captcha state
+  const [captcha, setCaptcha] = useState({ num1: 0, num2: 0, sum: 0 });
+  const [captchaInput, setCaptchaInput] = useState('');
+
+  const generateCaptcha = () => {
+    const n1 = Math.floor(Math.random() * 9) + 1;
+    const n2 = Math.floor(Math.random() * 9) + 1;
+    setCaptcha({ num1: n1, num2: n2, sum: n1 + n2 });
+    setCaptchaInput('');
+  };
+
+  useEffect(() => {
+    generateCaptcha();
+  }, []);
+
   // Resend cooldown timer
   useEffect(() => {
     if (resendCooldown <= 0) return;
@@ -31,13 +50,20 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+
+    if (parseInt(captchaInput) !== captcha.sum) {
+      setError('Incorrect captcha result');
+      generateCaptcha();
+      return;
+    }
+
     setLoading(true);
 
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ email: formData.email, password: formData.password }),
       });
 
       const data = await res.json();
@@ -73,7 +99,7 @@ export default function LoginPage() {
       const res = await fetch('/api/auth/verify-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: otpEmail, otp: otpCode }),
+        body: JSON.stringify({ email: otpEmail, otp: otpCode, rememberMe: formData.rememberMe }),
       });
 
       const data = await res.json();
@@ -117,7 +143,7 @@ export default function LoginPage() {
   return (
     <div style={{ position: 'relative', minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div className="ambient-orb orb-gold" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '500px', height: '500px' }} />
-      
+
       <div className="container animate-in" style={{ maxWidth: '440px', width: '100%', padding: '40px 20px', zIndex: 1 }}>
         <div style={{
           background: 'rgba(8, 14, 26, 0.9)',
@@ -133,6 +159,26 @@ export default function LoginPage() {
 
           {!otpStep ? (
             <>
+              {/* Email verified success banner */}
+              {isVerified && (
+                <div style={{
+                  background: 'rgba(16, 185, 129, 0.08)',
+                  border: '1px solid rgba(16, 185, 129, 0.25)',
+                  borderRadius: '12px',
+                  padding: '0.85rem 1.1rem',
+                  marginBottom: '1.5rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.6rem',
+                  color: '#10B981',
+                  fontSize: '0.88rem',
+                  fontWeight: '600',
+                }}>
+                  <CheckCircle size={18} style={{ flexShrink: 0 }} />
+                  Email verified! You can now sign in to your account.
+                </div>
+              )}
+
               <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
                 <div style={{ width: '56px', height: '56px', margin: '0 auto 1rem', background: 'rgba(212, 175, 55, 0.08)', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(212,175,55,0.15)' }}>
                   <Lock size={24} color="var(--gold)" />
@@ -154,10 +200,10 @@ export default function LoginPage() {
                   <label>Email Address</label>
                   <div style={{ position: 'relative' }}>
                     <Mail size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', pointerEvents: 'none' }} />
-                    <input 
-                      type="email" 
-                      placeholder="name@example.com" 
-                      required 
+                    <input
+                      type="email"
+                      placeholder="name@example.com"
+                      required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       style={{ paddingLeft: '2.5rem' }}
@@ -169,10 +215,10 @@ export default function LoginPage() {
                   <label>Password</label>
                   <div style={{ position: 'relative' }}>
                     <Lock size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', pointerEvents: 'none' }} />
-                    <input 
-                      type={showPassword ? 'text' : 'password'} 
-                      placeholder="••••••••" 
-                      required 
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="••••••••"
+                      required
                       value={formData.password}
                       onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                       style={{ paddingLeft: '2.5rem', paddingRight: '2.5rem' }}
@@ -187,9 +233,65 @@ export default function LoginPage() {
                   </div>
                 </div>
 
+                {/* Captcha */}
+                <div className="input-group" style={{ marginBottom: '1.5rem' }}>
+                  <label style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem' }}>Captcha</label>
+                  <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.4rem' }}>
+                    <div style={{
+                      flex: '0 0 140px',
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      borderRadius: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '1.25rem',
+                      fontWeight: '700',
+                      color: 'var(--gold)',
+                      letterSpacing: '2px',
+                      userSelect: 'none'
+                    }}>
+                      {captcha.num1} + {captcha.num2} = ?
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Your answer"
+                      required
+                      value={captchaInput}
+                      onChange={(e) => setCaptchaInput(e.target.value.replace(/\D/g, ''))}
+                      style={{ flex: 1 }}
+                    />
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', cursor: 'pointer', userSelect: 'none' }}>
+                    <div style={{ position: 'relative', width: '20px', height: '20px' }}>
+                      <input
+                        type="checkbox"
+                        checked={formData.rememberMe}
+                        onChange={(e) => setFormData({ ...formData, rememberMe: e.target.checked })}
+                        style={{ opacity: 0, position: 'absolute', inset: 0, cursor: 'pointer', zIndex: 2 }}
+                      />
+                      <div style={{
+                        position: 'absolute', inset: 0,
+                        background: formData.rememberMe ? 'var(--gold)' : 'rgba(255,255,255,0.05)',
+                        border: `1px solid ${formData.rememberMe ? 'var(--gold)' : 'rgba(212,175,55,0.2)'}`,
+                        borderRadius: '6px',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        transition: 'all 0.2s'
+                      }}>
+                        {formData.rememberMe && <ShieldCheck size={12} color="#000" />}
+                      </div>
+                    </div>
+                    <span style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)' }}>Remember me</span>
+                  </label>
+                  <Link href="/forgot-password" style={{ fontSize: '0.85rem', color: 'var(--gold)', opacity: 0.8 }}>Forgot password?</Link>
+                </div>
+
                 <button type="submit" className="btn btn-gold" style={{ width: '100%', marginTop: '0.5rem', fontSize: '1rem', padding: '0.85rem', borderRadius: '10px' }} disabled={loading}>
                   {loading ? (
-                    <><Loader2 size={18} style={{ animation: 'spin 1s linear infinite' }} /> Authenticating...</>
+                    <><GoldCoinLoader mini label={null} /> Authenticating...</>
                   ) : (
                     <>Sign In <ArrowRight size={16} /></>
                   )}
@@ -239,7 +341,7 @@ export default function LoginPage() {
 
                 <button type="submit" className="btn btn-gold" style={{ width: '100%', fontSize: '1rem', padding: '0.85rem', borderRadius: '10px' }} disabled={otpLoading || otpCode.length !== 6}>
                   {otpLoading ? (
-                    <><Loader2 size={18} style={{ animation: 'spin 1s linear infinite' }} /> Verifying...</>
+                    <><GoldCoinLoader mini label={null} /> Verifying...</>
                   ) : (
                     <>Verify & Sign In <ArrowRight size={16} /></>
                   )}
@@ -268,5 +370,17 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '80vh' }}>
+        <GoldCoinLoader label="Loading security module..." />
+      </div>
+    }>
+      <LoginContent />
+    </Suspense>
   );
 }

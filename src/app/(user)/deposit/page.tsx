@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { Copy, Check, ArrowUpCircle, Info, Image as ImageIcon, Loader2, AlertTriangle } from 'lucide-react';
+import { Copy, Check, ArrowUpCircle, Info, Image as ImageIcon, AlertTriangle } from 'lucide-react';
+import GoldCoinLoader from '@/components/GoldCoinLoader';
 import { useRouter } from 'next/navigation';
 import CoinIcon from '@/components/CoinIcon';
 
@@ -277,7 +278,7 @@ export default function DepositPage() {
                 {proofImage ? (<div><img src={proofImage} alt="proof" style={{ maxWidth: '100%', maxHeight: '120px', borderRadius: '8px', objectFit: 'contain' }} /><button type="button" onClick={() => setProofImage('')} style={{ marginTop: '0.5rem', background: 'none', border: 'none', color: 'var(--danger)', cursor: 'pointer', fontSize: '0.75rem', display: 'block', margin: '0.5rem auto 0' }}>Remove</button></div>) : (<div><ImageIcon size={24} style={{ color: 'rgba(212,175,55,0.4)', marginBottom: '0.4rem' }} /><p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Click to upload</p><p style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: '0.15rem' }}>PNG, JPG - max 2MB</p><input type="file" accept="image/*" onChange={handleImageChange} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0, cursor: 'pointer' }} /></div>)}
               </div>
             </div>
-            <button type="submit" className="btn btn-gold" style={{ width: '100%', marginTop: '0.5rem', fontSize: '0.95rem', padding: '0.85rem', borderRadius: '10px' }} disabled={submitting}>{submitting ? 'Submitting...' : 'Submit Deposit Request'}</button>
+            <button type="submit" className="btn btn-gold" style={{ width: '100%', marginTop: '0.5rem', fontSize: '0.95rem', padding: '0.85rem', borderRadius: '10px' }} disabled={submitting}>{submitting ? <GoldCoinLoader mini label={null} /> : 'Submit Deposit Request'}</button>
           </form>
         </div>
       </div>
