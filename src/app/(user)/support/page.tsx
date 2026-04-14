@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { MessageSquare, Plus, Send, XCircle } from 'lucide-react';
+import { MessageSquare, Plus, Send, XCircle, ChevronDown, ChevronUp } from 'lucide-react';
 import GoldCoinLoader from '@/components/GoldCoinLoader';
 import { useRouter } from 'next/navigation';
 
@@ -13,6 +13,25 @@ export default function SupportPage() {
   const [view, setView] = useState<'list' | 'new' | 'detail'>('list');
   const [activeTicket, setActiveTicket] = useState<any>(null);
   const router = useRouter();
+
+  // FAQ States
+  const [faqOpen, setFaqOpen] = useState(false);
+  const [activeFaq, setActiveFaq] = useState<number | null>(null);
+
+  const faqs = [
+    {
+      question: "How to withdraw?",
+      answer: "In the withdraw section add amount and then Select network and destination wallet address and then after submitting the request will be submitted."
+    },
+    {
+      question: "How do I deposit funds?",
+      answer: "Navigate to the Deposit section from the sidebar, select your preferred payment network, generate a deposit address, and send the funds to credit your account balance."
+    },
+    {
+      question: "How does the Trade Terminal work?",
+      answer: "In the Trade Terminal, select your contract strategy tier, choose an execution duration, enter your investment amount, and forecast if the market will go UP (Call) or DOWN (Put)."
+    }
+  ];
 
   // Form states
   const [title, setTitle] = useState('');
@@ -121,6 +140,40 @@ export default function SupportPage() {
   return (
     <div className="container animate-in" style={{ padding: '0', maxWidth: '900px', margin: '0 auto' }}>
       
+      {/* FAQ Section */}
+      <div style={{ marginBottom: '3.5rem', background: 'rgba(255,255,255,0.02)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)', overflow: 'hidden' }}>
+        <button 
+          onClick={() => setFaqOpen(!faqOpen)}
+          style={{ width: '100%', padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'transparent', border: 'none', cursor: 'pointer', color: '#fff', outline: 'none' }}
+        >
+          <span style={{ fontSize: '1.1rem', fontWeight: 800, letterSpacing: '1px', color: 'var(--gold)' }}>FAQ</span>
+          {faqOpen ? <ChevronUp size={20} color="var(--text-muted)" /> : <ChevronDown size={20} color="var(--text-muted)" />}
+        </button>
+        
+        {faqOpen && (
+          <div style={{ padding: '0 1.5rem 1.5rem 1.5rem', marginTop: '0.5rem' }}>
+            <div style={{ borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '0.5rem' }}>
+              {faqs.map((faq, index) => (
+                <div key={index} style={{ borderBottom: index < faqs.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}>
+                  <button
+                    onClick={() => setActiveFaq(activeFaq === index ? null : index)}
+                    style={{ width: '100%', padding: '1.25rem 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'transparent', border: 'none', cursor: 'pointer', color: '#fff', textAlign: 'left', outline: 'none' }}
+                  >
+                    <span style={{ fontSize: '0.95rem', fontWeight: 700 }}>{faq.question}</span>
+                    {activeFaq === index ? <ChevronUp size={16} color="var(--gold)" /> : <ChevronDown size={16} color="var(--text-muted)" />}
+                  </button>
+                  {activeFaq === index && (
+                    <div style={{ paddingBottom: '1.25rem', paddingRight: '2rem', color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: 1.6 }}>
+                      {faq.answer}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
       {/* Institutional Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3.5rem' }}>
         <div>
