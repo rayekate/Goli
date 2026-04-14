@@ -140,7 +140,7 @@ export default function AdminSettingsPage() {
     gap: '0.6rem',
     fontSize: '1.2rem',
     fontWeight: 700,
-    color: '#fff',
+    color: 'var(--text)',
     marginBottom: '1.25rem',
     paddingBottom: '0.75rem',
     borderBottom: '1px solid var(--border)',
@@ -151,7 +151,7 @@ export default function AdminSettingsPage() {
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '1rem 1.25rem',
-    background: 'rgba(255,255,255,0.02)',
+    background: 'var(--surface-hover)',
     borderRadius: '10px',
     marginBottom: '0.5rem',
     border: '1px solid var(--border)',
@@ -167,7 +167,7 @@ export default function AdminSettingsPage() {
 
   const labelTitle: React.CSSProperties = {
     fontWeight: 600,
-    color: '#fff',
+    color: 'var(--text)',
     fontSize: '0.95rem',
   };
 
@@ -177,11 +177,11 @@ export default function AdminSettingsPage() {
   };
 
   const inputStyle: React.CSSProperties = {
-    background: 'rgba(255,255,255,0.05)',
+    background: 'var(--border)',
     border: '1px solid var(--border)',
     borderRadius: '8px',
     padding: '0.6rem 0.9rem',
-    color: '#fff',
+    color: 'var(--text)',
     fontSize: '0.9rem',
     width: '260px',
     maxWidth: '100%',
@@ -193,10 +193,10 @@ export default function AdminSettingsPage() {
       {/* Header */}
       <div style={{ marginBottom: '2.5rem', borderBottom: '1px solid var(--border)', paddingBottom: '1.5rem' }}>
         <h1
-          style={{ fontSize: 'clamp(1.5rem, 4vw, 2.2rem)', display: 'flex', alignItems: 'center', gap: '0.75rem', color: '#fff', marginBottom: '0.5rem', flexWrap: 'wrap' }}
+          style={{ fontSize: 'clamp(1.5rem, 4vw, 2.2rem)', display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--text)', marginBottom: '0.5rem', flexWrap: 'wrap' }}
           className="text-gradient-gold"
         >
-          <Settings size={30} color="var(--gold)" style={{ filter: 'drop-shadow(0 0 10px var(--gold-glow))' }} />
+          <Settings size={30} color="var(--accent)" style={{ filter: 'drop-shadow(0 0 10px var(--gold-glow))' }} />
           Platform Settings
         </h1>
         <p style={{ color: 'var(--text-muted)', fontSize: '1rem' }}>
@@ -226,7 +226,7 @@ export default function AdminSettingsPage() {
       {/* ─── General ─────────────────────────────────────────────── */}
       <div style={sectionStyle}>
         <div style={sectionHeaderStyle}>
-          <Settings size={20} color="var(--gold)" /> General
+          <Settings size={20} color="var(--accent)" /> General
         </div>
 
         <div style={{ ...rowStyle, flexDirection: 'column', alignItems: 'stretch', gap: '0.5rem' }}>
@@ -463,7 +463,7 @@ function ToggleSwitch({ checked, onChange, danger }: { checked: boolean; onChang
         borderRadius: '13px',
         border: 'none',
         cursor: 'pointer',
-        background: checked ? activeColor : 'rgba(255,255,255,0.1)',
+        background: checked ? activeColor : 'var(--border-highlight)',
         transition: 'background 0.2s',
         flexShrink: 0,
       }}
@@ -476,9 +476,9 @@ function ToggleSwitch({ checked, onChange, danger }: { checked: boolean; onChang
           width: '20px',
           height: '20px',
           borderRadius: '50%',
-          background: '#fff',
+          background: 'var(--text)',
           transition: 'left 0.2s',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
+          boxShadow: '0 1px 3px var(--border)',
         }}
       />
     </button>

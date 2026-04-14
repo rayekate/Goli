@@ -161,10 +161,10 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
   const candleWidth = chartW / (visibleData.length || 1);
   const bodyWidth = Math.max(1, Math.floor(candleWidth * 0.75));
 
-  const colorUp = '#10B981';
-  const colorDown = '#EF4444';
-  const gridColor = '#1F2937';
-  const textColor = '#9CA3AF';
+  const colorUp = 'var(--success)';
+  const colorDown = 'var(--danger)';
+  const gridColor = 'var(--border)';
+  const textColor = 'var(--text-muted)';
 
   const timeframes = [
     { label: '1M', val: 60 },
@@ -203,10 +203,10 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
 
   return (
     <div style={{
-      background: 'rgba(5, 5, 8, 0.75)',
+      background: 'var(--glass-bg)',
       backdropFilter: 'blur(16px)',
       WebkitBackdropFilter: 'blur(16px)',
-      border: '1px solid rgba(212, 175, 55, 0.08)',
+      border: '1px solid var(--border)',
       borderRadius: '24px',
       padding: isMobile ? '1.25rem' : '1.75rem',
       height: '100%',
@@ -215,24 +215,24 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
       overflow: 'hidden',
       display: 'flex',
       flexDirection: 'column',
-      boxShadow: '0 40px 100px rgba(0, 0, 0, 0.8)',
+      boxShadow: 'var(--glass-shadow)',
     }}>
       {/* Premium Accent Sweep */}
-      <div style={{ position: 'absolute', top: 0, left: '10%', right: '10%', height: '1.5px', background: 'linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent)', zIndex: 5 }} />
+      <div style={{ position: 'absolute', top: 0, left: '10%', right: '10%', height: '1.5px', background: 'linear-gradient(90deg, transparent, var(--border-highlight), transparent)', zIndex: 5 }} />
 
       {/* Chart Controls Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.25rem', position: 'relative', zIndex: 10, flexWrap: 'wrap', gap: '0.5rem' }}>
         <div style={{ minWidth: 0 }}>
-          <h3 style={{ fontSize: isMobile ? '0.85rem' : '1rem', color: '#fff', fontWeight: 700, letterSpacing: '0.05em' }}>LIVE PRICE: <span style={{ color: 'var(--gold)' }}>{symbol}</span></h3>
+          <h3 style={{ fontSize: isMobile ? '0.85rem' : '1rem', color: 'var(--text)', fontWeight: 700, letterSpacing: '0.05em' }}>LIVE PRICE: <span style={{ color: 'var(--accent)' }}>{symbol}</span></h3>
           <div style={{ display: 'flex', gap: '6px', marginTop: '10px', flexWrap: 'wrap' }}>
             {timeframes.map(tf => (
               <button
                 key={tf.val}
                 onClick={() => setTimeframe(tf.val)}
                 style={{
-                  background: timeframe === tf.val ? 'rgba(250, 204, 21, 0.1)' : 'transparent',
-                  border: `1px solid ${timeframe === tf.val ? 'var(--gold)' : 'var(--border)'}`,
-                  color: timeframe === tf.val ? 'var(--gold)' : 'var(--text-muted)',
+                  background: timeframe === tf.val ? 'var(--surface-hover)' : 'transparent',
+                  border: `1px solid ${timeframe === tf.val ? 'var(--border-highlight)' : 'var(--border)'}`,
+                  color: timeframe === tf.val ? 'var(--accent)' : 'var(--text-muted)',
                   padding: isMobile ? '2px 8px' : '4px 12px',
                   borderRadius: '4px',
                   fontSize: isMobile ? '0.65rem' : '0.75rem',
@@ -253,10 +253,10 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
       <div style={{ minHeight: '20px', display: 'flex', gap: isMobile ? '8px' : '12px', alignItems: 'center', fontSize: isMobile ? '0.65rem' : '0.75rem', color: 'var(--text-muted)', zIndex: 10, flexWrap: 'wrap', overflow: 'hidden', marginTop: '5px' }}>
         {currentHoverCandle && (
           <>
-            <span>O <span style={{ color: '#fff', fontWeight: 600 }}>{currentHoverCandle.open.toFixed(2)}</span></span>
-            <span>H <span style={{ color: '#fff', fontWeight: 600 }}>{currentHoverCandle.high.toFixed(2)}</span></span>
-            <span>L <span style={{ color: '#fff', fontWeight: 600 }}>{currentHoverCandle.low.toFixed(2)}</span></span>
-            <span>C <span style={{ color: '#fff', fontWeight: 600 }}>{currentHoverCandle.close.toFixed(2)}</span></span>
+            <span>O <span style={{ color: 'var(--text)', fontWeight: 600 }}>{currentHoverCandle.open.toFixed(2)}</span></span>
+            <span>H <span style={{ color: 'var(--text)', fontWeight: 600 }}>{currentHoverCandle.high.toFixed(2)}</span></span>
+            <span>L <span style={{ color: 'var(--text)', fontWeight: 600 }}>{currentHoverCandle.low.toFixed(2)}</span></span>
+            <span>C <span style={{ color: 'var(--text)', fontWeight: 600 }}>{currentHoverCandle.close.toFixed(2)}</span></span>
             <span style={{ color: currentHoverCandle.isUp ? colorUp : colorDown, fontWeight: 700 }}>
               {currentHoverCandle.isUp ? '▲' : '▼'} {Math.abs(currentHoverCandle.close - currentHoverCandle.open).toFixed(2)}
             </span>
@@ -276,8 +276,8 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
             {/* SVG Background Gradient & Effects */}
             <defs>
               <linearGradient id="chartBg" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#080a0f" stopOpacity={0.8} />
-                <stop offset="100%" stopColor="#020408" stopOpacity={1} />
+                <stop offset="0%" stopColor="var(--surface-hover)" stopOpacity={1} />
+                <stop offset="100%" stopColor="var(--surface)" stopOpacity={1} />
               </linearGradient>
 
               <filter id="glow">
@@ -356,10 +356,10 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
             {/* Current Price Ticker with Pulse Glow */}
             {currentPrice && (
               <g>
-                <line x1={padding.left} y1={getY(currentPrice)} x2={chartW} y2={getY(currentPrice)} stroke="var(--gold)" strokeWidth="1" strokeDasharray="4 2" opacity={0.4} />
+                <line x1={padding.left} y1={getY(currentPrice)} x2={chartW} y2={getY(currentPrice)} stroke="var(--accent)" strokeWidth="1" strokeDasharray="4 2" opacity={0.4} />
 
                 {/* Pulse Glow Effect */}
-                <circle cx={chartW} cy={getY(currentPrice)} r="6" fill="var(--gold)">
+                <circle cx={chartW} cy={getY(currentPrice)} r="6" fill="var(--accent)">
                   <animate attributeName="r" values="6;12;6" dur="2s" repeatCount="indefinite" />
                   <animate attributeName="opacity" values="0.6;0;0.6" dur="2s" repeatCount="indefinite" />
                 </circle>
@@ -370,10 +370,10 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
                        L ${chartW + 65} ${getY(currentPrice) - 10} 
                        L ${chartW + 65} ${getY(currentPrice) + 10} 
                        L ${chartW + 8} ${getY(currentPrice) + 10} Z`}
-                  fill="var(--gold)"
+                  fill="var(--accent)"
                   filter="url(#glow)"
                 />
-                <text x={chartW + 36} y={getY(currentPrice) + 4} fill="#0F172A" fontSize="11" fontWeight="900" fontFamily="monospace" textAnchor="middle">
+                <text x={chartW + 36} y={getY(currentPrice) + 4} fill="var(--primary-text)" fontSize="11" fontWeight="900" fontFamily="monospace" textAnchor="middle">
                   {currentPrice.toFixed(2)}
                 </text>
               </g>
@@ -392,15 +392,15 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
                       L ${chartW + 65} ${hoverData.y - 10} 
                       L ${chartW + 65} ${hoverData.y + 10} 
                       L ${chartW + 8} ${hoverData.y + 10} Z`}
-                  fill="#1F2937"
+                  fill="var(--surface-hover)"
                 />
-                <text x={chartW + 36} y={hoverData.y + 4} fill="#fff" fontSize="11" fontFamily="monospace" textAnchor="middle">
+                <text x={chartW + 36} y={hoverData.y + 4} fill="var(--text)" fontSize="11" fontFamily="monospace" textAnchor="middle">
                   {getPriceFromY(hoverData.y).toFixed(2)}
                 </text>
 
                 {/* Crosshair Time Tag */}
-                <rect x={hoverData.x - 30} y={padding.top + chartH + 5} width={60} height={18} fill="#1F2937" rx={2} />
-                <text x={hoverData.x} y={padding.top + chartH + 18} fill="#fff" fontSize="10" fontFamily="monospace" textAnchor="middle">
+                <rect x={hoverData.x - 30} y={padding.top + chartH + 5} width={60} height={18} fill="var(--surface-hover)" rx={2} />
+                <text x={hoverData.x} y={padding.top + chartH + 18} fill="var(--text)" fontSize="10" fontFamily="monospace" textAnchor="middle">
                   {renderDateStr(hoverData.candle!.time)}
                 </text>
               </g>

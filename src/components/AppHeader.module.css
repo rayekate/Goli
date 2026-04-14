@@ -13,19 +13,19 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 1.75rem;
-  background: rgba(8, 10, 15, 0.65);
+  background: var(--glass-bg);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(212, 175, 55, 0.15);
+  border: 1px solid var(--border);
   border-radius: 100px;
-  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8), 0 0 40px rgba(212, 175, 55, 0.03);
+  box-shadow: var(--glass-shadow);
   gap: 1.5rem;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .header:hover {
-  border-color: rgba(212, 175, 55, 0.3);
-  box-shadow: 0 50px 120px rgba(0, 0, 0, 0.9), 0 0 60px rgba(212, 175, 55, 0.05);
+  border-color: var(--border-highlight);
+  box-shadow: var(--glass-shadow);
 }
 
 /* ── Logo ─────────────────────────────────────────────────────────────── */
@@ -33,7 +33,7 @@
   font-size: 1.2rem;
   font-weight: 900;
   letter-spacing: 2px;
-  color: #fff;
+  color: var(--text);
   display: flex;
   align-items: center;
   gap: 0.1rem;
@@ -47,7 +47,7 @@
 }
 
 .logo span {
-  color: var(--gold, #d4af37);
+  color: var(--accent);
   text-shadow: 0 0 16px rgba(212, 175, 55, 0.3);
 }
 
@@ -55,8 +55,8 @@
 .priceArea {
   display: flex;
   align-items: center;
-  background: rgba(212, 175, 55, 0.03);
-  border: 1px solid rgba(212, 175, 55, 0.12);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 100px;
   padding: 6px 16px;
   gap: 10px;
@@ -65,8 +65,8 @@
 }
 
 .priceArea:hover {
-  background: rgba(212, 175, 55, 0.06);
-  border-color: rgba(212, 175, 55, 0.3);
+  background: var(--surface-hover);
+  border-color: var(--border-highlight);
 }
 
 /* ── User area ────────────────────────────────────────────────────────── */
@@ -81,28 +81,28 @@
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 100px;
   padding: 0.35rem 1rem 0.35rem 0.45rem;
   transition: all 0.3s ease;
 }
 
 .userChip:hover {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.15);
+  background: var(--surface-hover);
+  border-color: var(--border-highlight);
 }
 
 .avatar {
   width: 26px;
   height: 26px;
   border-radius: 8px;
-  background: rgba(212, 175, 55, 0.1);
-  border: 1px solid rgba(212, 175, 55, 0.2);
+  background: var(--surface-hover);
+  border: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--gold, #d4af37);
+  color: var(--accent);
   flex-shrink: 0;
 }
 
@@ -116,7 +116,7 @@
 .userName {
   font-size: 0.78rem;
   font-weight: 600;
-  color: #fff;
+  color: var(--text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -126,7 +126,7 @@
 .userBalance {
   font-size: 0.7rem;
   font-weight: 700;
-  color: var(--gold, #d4af37);
+  color: var(--accent);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -231,12 +231,12 @@
 /* ── Mobile Toggle ────────────────────────────────────────────────────── */
 .mobileToggle {
   display: none;
-  background: var(--gold, #d4af37);
+  background: var(--accent);
   border: none;
   border-radius: 8px;
   width: 36px;
   height: 36px;
-  color: #000;
+  color: var(--primary-text);
   align-items: center;
   justify-content: center;
   cursor: pointer;

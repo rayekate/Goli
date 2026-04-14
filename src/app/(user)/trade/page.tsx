@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import PriceChart from '@/components/PriceChart';
+import ProfitChart from '@/components/ProfitChart';
 import LivePriceTicker from '@/components/LivePriceTicker';
 import {
   TrendingUp, TrendingDown, Clock, DollarSign,
@@ -156,22 +156,24 @@ export default function TradePage() {
   return (
     <div className="animate-in trade-page-root" style={{ padding: '24px 16px', maxWidth: '1200px', margin: '0 auto' }}>
       <style>{`
-        /* Center the trade panel and remove chart references */
         .trade-main-grid {
-          display: flex;
-          justify-content: center;
-          align-items: flex-start;
+          display: grid;
+          grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr);
+          gap: 1.5rem;
           width: 100%;
+          align-items: stretch;
+        }
+        .trade-chart-col {
+          min-width: 0;
         }
         .trade-panel-col {
           width: 100%;
-          max-width: 900px; /* Flattened down, more horizontal space */
-          padding: 1.5rem 2rem !important; /* Slightly more compact vertically */
+          padding: 1.5rem 2rem !important;
         }
 
         @media (max-width: 1000px) {
-          .trade-panel-col {
-            max-width: 95%;
+          .trade-main-grid {
+            grid-template-columns: 1fr;
           }
         }
         @media (max-width: 860px) {
@@ -196,19 +198,19 @@ export default function TradePage() {
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <h1 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', color: '#fff', marginBottom: '0.4rem', display: 'flex', alignItems: 'center' }}>
-              <Target size={28} style={{ marginRight: '10px', color: 'var(--gold)', filter: 'drop-shadow(0 0 8px rgba(212,175,55,0.4))' }} />
+            <h1 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', color: 'var(--text)', marginBottom: '0.4rem', display: 'flex', alignItems: 'center' }}>
+              <Target size={28} style={{ marginRight: '10px', color: 'var(--accent)', filter: 'drop-shadow(0 0 8px rgba(212,175,55,0.4))' }} />
               Trade Gold
             </h1>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>Predict market direction and earn up to <strong className="text-gold text-gradient-gold">80% profit</strong> per winning cycle.</p>
           </div>
 
-          <div className="trade-price-box" style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', alignItems: 'center', background: 'rgba(0,0,0,0.25)', padding: '1rem 1.5rem', borderRadius: '14px', border: '1px solid var(--border-subtle)', width: '100%', maxWidth: '500px' }}>
+          <div className="trade-price-box" style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', alignItems: 'center', background: 'var(--surface-hover)', padding: '1rem 1.5rem', borderRadius: '14px', border: '1px solid var(--border-subtle)', width: '100%', maxWidth: '500px' }}>
             <LivePriceTicker onPriceUpdate={handlePriceUpdate} />
             <div className="trade-divider" style={{ width: '1px', height: '40px', background: 'var(--border)' }}></div>
             <div style={{ textAlign: 'right', marginLeft: 'auto' }}>
               <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '0.2rem' }}>Balance</p>
-              <p className="text-gradient-gold" style={{ fontSize: '1.6rem', fontWeight: 800, fontFamily: 'var(--font-mono, monospace)', textShadow: '0 0 20px rgba(212,175,55,0.2)' }}>
+              <p className="text-gradient-gold" style={{ fontSize: '1.6rem', fontWeight: 800, fontFamily: 'var(--font-mono, monospace)' }}>
                 ${user.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </p>
             </div>
@@ -216,10 +218,14 @@ export default function TradePage() {
         </div>
       </div>
 
-      
       {/* Main grid: chart LEFT on desktop, trade RIGHT on desktop | trade TOP on mobile, chart BOTTOM */}
-      <div className="trade-main-grid" style={{ gap: '1.5rem' }}>
-        {/* Trade Panel */}
+      <div className="trade-main-grid">
+        {/* Left Chart Panel */}
+        <div className="trade-chart-col">
+          <ProfitChart symbol="XAU/USD" />
+        </div>
+
+        {/* Right Trade Panel */}
         <div className="neon-pulse animate-float trade-panel-col" style={{
           background: 'var(--glass-bg)',
           backdropFilter: 'var(--glass-blur)',
@@ -228,7 +234,7 @@ export default function TradePage() {
           padding: '2rem',
           position: 'relative',
           overflow: 'hidden',
-          boxShadow: '0 12px 40px rgba(0,0,0,0.5)',
+          boxShadow: '0 12px 40px var(--border)',
           animationDuration: '6s',
           display: 'flex',
           flexDirection: 'column',
@@ -240,7 +246,7 @@ export default function TradePage() {
               position: 'absolute',
               inset: 0,
               zIndex: 100,
-              background: 'rgba(8, 14, 26, 0.92)',
+              background: 'var(--surface)',
               backdropFilter: 'blur(8px)',
               display: 'flex',
               flexDirection: 'column',
@@ -257,12 +263,12 @@ export default function TradePage() {
                 marginBottom: '1.25rem',
                 border: '1px solid rgba(212,175,55,0.2)'
               }}>
-                <Lock size={32} color="var(--gold)" />
+                <Lock size={32} color="var(--accent)" />
               </div>
-              <h3 style={{ color: '#fff', fontSize: '1.3rem', marginBottom: '0.75rem' }}>Market Closed</h3>
+              <h3 style={{ color: 'var(--text)', fontSize: '1.3rem', marginBottom: '0.75rem' }}>Market Closed</h3>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', lineHeight: 1.6, marginBottom: '1.5rem' }}>
                 Trading is currently disabled. <br />
-                Hours: <strong style={{ color: 'var(--gold)' }}>{settings.tradingStartTime} - {settings.tradingEndTime}</strong> <br />
+                Hours: <strong style={{ color: 'var(--accent)' }}>{settings.tradingStartTime} - {settings.tradingEndTime}</strong> <br />
                 {settings.tradingDays.length < 7 && (
                   <span style={{ fontSize: '0.75rem' }}>Allowed Days: {settings.tradingDays.join(', ')}</span>
                 )}
@@ -273,8 +279,8 @@ export default function TradePage() {
             </div>
           )}
 
-          <h3 style={{ color: '#fff', marginBottom: '1.25rem', fontSize: '1.05rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <DollarSign size={18} color="var(--gold)" /> Place Trade
+          <h3 style={{ color: 'var(--text)', marginBottom: '1.25rem', fontSize: '1.05rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <DollarSign size={18} color="var(--accent)" /> Place Trade
           </h3>
 
           {error && <div style={{ background: 'rgba(255,71,87,0.08)', color: 'var(--danger)', padding: '0.65rem 0.85rem', borderRadius: '10px', fontSize: '0.82rem', border: '1px solid rgba(255,71,87,0.15)', marginBottom: '1rem' }}>{error}</div>}
@@ -287,7 +293,7 @@ export default function TradePage() {
                   <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>Strategy Tier</span>
                   <span style={{
                     fontSize: '0.7rem',
-                    background: 'var(--gold)',
+                    background: 'var(--accent)',
                     color: '#000',
                     padding: '0.2rem 0.6rem',
                     borderRadius: '20px',
@@ -302,7 +308,7 @@ export default function TradePage() {
                   </div>
                   <div>
                     <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Time Window</p>
-                    <p style={{ color: '#fff', fontWeight: 800, fontSize: '1.1rem' }}>{selectedDuration}s</p>
+                    <p style={{ color: 'var(--text)', fontWeight: 800, fontSize: '1.1rem' }}>{selectedDuration}s</p>
                   </div>
                 </div>
               </div>
@@ -317,9 +323,9 @@ export default function TradePage() {
                       style={{
                         padding: '0.6rem',
                         borderRadius: '8px',
-                        border: `1px solid ${selectedDuration === d ? 'var(--gold)' : 'rgba(255,255,255,0.05)'}`,
-                        background: selectedDuration === d ? 'rgba(212,175,55,0.1)' : 'rgba(255,255,255,0.03)',
-                        color: selectedDuration === d ? 'var(--gold)' : 'var(--text-muted)',
+                        border: `1px solid ${selectedDuration === d ? 'var(--accent)' : 'var(--border)'}`,
+                        background: selectedDuration === d ? 'rgba(212,175,55,0.1)' : 'var(--surface-hover)',
+                        color: selectedDuration === d ? 'var(--accent)' : 'var(--text-muted)',
                         fontSize: '0.85rem',
                         fontWeight: 700,
                         cursor: 'pointer',
@@ -335,10 +341,10 @@ export default function TradePage() {
 
             {/* Right Column: Amount & Direction */}
             <div>
-              <div style={{ marginBottom: '1.5rem', background: 'rgba(0,0,0,0.2)', padding: '1.25rem', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.03)' }}>
+              <div style={{ marginBottom: '1.5rem', background: 'var(--surface-hover)', padding: '1.25rem', borderRadius: '12px', border: '1px solid var(--border)' }}>
                 <label style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-muted)', display: 'block', marginBottom: '0.75rem' }}>Investment Amount</label>
                 <div style={{ position: 'relative', marginBottom: '1rem' }}>
-                  <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--gold)', fontSize: '1.4rem', fontWeight: 800 }}>$</span>
+                  <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--accent)', fontSize: '1.4rem', fontWeight: 800 }}>$</span>
                   <input
                     type="number"
                     min={activeTier.minAmount}
@@ -349,13 +355,13 @@ export default function TradePage() {
                     onChange={(e) => setAmount(e.target.value)}
                     style={{
                       width: '100%',
-                      background: 'rgba(0,0,0,0.4)',
-                      border: '1px solid rgba(212,175,55,0.2)',
+                      background: 'var(--surface)',
+                      border: '1px solid var(--border)',
                       borderRadius: '10px',
                       padding: '1.1rem 1rem 1.1rem 2.5rem',
                       fontSize: '1.5rem',
                       fontWeight: 800,
-                      color: '#fff',
+                      color: 'var(--text)',
                       fontFamily: 'var(--font-mono, monospace)',
                       outline: 'none',
                     }}
@@ -369,9 +375,9 @@ export default function TradePage() {
                       style={{
                         padding: '0.5rem 0',
                         borderRadius: '6px',
-                        background: amount === String(p) ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.03)',
-                        color: amount === String(p) ? 'var(--gold)' : 'var(--text-muted)',
-                        border: `1px solid ${amount === String(p) ? 'var(--gold)' : 'transparent'}`,
+                        background: amount === String(p) ? 'rgba(212,175,55,0.15)' : 'var(--surface)',
+                        color: amount === String(p) ? 'var(--accent)' : 'var(--text-muted)',
+                        border: `1px solid ${amount === String(p) ? 'var(--accent)' : 'var(--border)'}`,
                         fontSize: '0.8rem',
                         fontWeight: 700,
                         cursor: 'pointer',
@@ -389,8 +395,8 @@ export default function TradePage() {
                   style={{
                     padding: '1.25rem',
                     borderRadius: '12px',
-                    border: `2px solid ${direction === 'up' ? 'var(--success)' : 'rgba(0,230,138,0.1)'}`,
-                    background: direction === 'up' ? 'rgba(0,230,138,0.1)' : 'rgba(0,0,0,0.2)',
+                    border: `2px solid ${direction === 'up' ? 'var(--success)' : 'var(--border)'}`,
+                    background: direction === 'up' ? 'rgba(0,230,138,0.1)' : 'var(--surface)',
                     cursor: 'pointer',
                     transition: 'all 0.2s',
                   }}
@@ -403,8 +409,8 @@ export default function TradePage() {
                   style={{
                     padding: '1.25rem',
                     borderRadius: '12px',
-                    border: `2px solid ${direction === 'down' ? 'var(--danger)' : 'rgba(255,71,87,0.1)'}`,
-                    background: direction === 'down' ? 'rgba(255,71,87,0.1)' : 'rgba(0,0,0,0.2)',
+                    border: `2px solid ${direction === 'down' ? 'var(--danger)' : 'var(--border)'}`,
+                    background: direction === 'down' ? 'rgba(255,71,87,0.1)' : 'var(--surface)',
                     cursor: 'pointer',
                     transition: 'all 0.2s',
                   }}
@@ -421,18 +427,18 @@ export default function TradePage() {
             <div style={{ background: 'rgba(212,175,55,0.03)', border: '1px solid rgba(212,175,55,0.08)', borderRadius: '10px', padding: '0.85rem', marginBottom: '1rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', marginBottom: '0.4rem' }}>
                 <span style={{ color: 'var(--text-muted)' }}>Stake</span>
-                <span style={{ color: '#fff', fontWeight: 600 }}>${parseFloat(amount || '0').toFixed(2)}</span>
+                <span style={{ color: 'var(--text)', fontWeight: 600 }}>${parseFloat(amount || '0').toFixed(2)}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', marginBottom: '0.4rem' }}>
                 <span style={{ color: 'var(--text-muted)' }}>Direction</span>
                 <span style={{ color: direction === 'up' ? 'var(--success)' : 'var(--danger)', fontWeight: 600 }}>{direction.toUpperCase()}</span>
               </div>
-              <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem', borderTop: '1px solid rgba(255,255,255,0.04)', paddingTop: '0.6rem' }}>
+              <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem', borderTop: '1px solid var(--border)', paddingTop: '0.6rem' }}>
                 <div style={{ flex: 1 }}>
                   <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.2rem' }}>Potential Profit</p>
                   <p style={{ color: 'var(--success)', fontWeight: 800, fontSize: '1rem' }}>+${(parseFloat(amount || '0') * activeTier.profitPercent / 100).toFixed(2)}</p>
                 </div>
-                <div style={{ width: '1px', background: 'rgba(255,255,255,0.05)' }} />
+                <div style={{ width: '1px', background: 'var(--border)' }} />
                 <div style={{ flex: 1, textAlign: 'right' }}>
                   <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.2rem' }}>Maximum Risk</p>
                   <p style={{ color: '#ff6b6b', fontWeight: 800, fontSize: '1rem' }}>-${(parseFloat(amount || '0') * activeTier.profitPercent / 100).toFixed(2)}</p>
@@ -470,7 +476,7 @@ export default function TradePage() {
                 </div>
                 <div style={{ flex: 1 }}>
                   <p style={{ fontSize: '0.7rem', color: 'var(--success)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '0.1rem' }}>Symmetric Protection Active</p>
-                  <p style={{ fontSize: '0.85rem', color: '#fff', fontWeight: 600 }}>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text)', fontWeight: 600 }}>
                     <strong style={{ color: 'var(--success)' }}>{100 - activeTier.profitPercent}%</strong> of your stake is <span style={{ opacity: 0.8 }}>shielded</span>
                   </p>
                 </div>
@@ -507,8 +513,8 @@ export default function TradePage() {
             )}
           </button>
 
-          <p style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)' }}>
-            Min: <strong style={{ color: '#fff' }}>${settings.minTrade.toLocaleString()}</strong> • Max: <strong style={{ color: '#fff' }}>${settings.maxTrade > 10000 ? settings.maxTrade.toLocaleString() : '1,000,000'}</strong>
+          <p style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+            Min: <strong style={{ color: 'var(--text)' }}>${settings.minTrade.toLocaleString()}</strong> • Max: <strong style={{ color: 'var(--text)' }}>${settings.maxTrade > 10000 ? settings.maxTrade.toLocaleString() : '1,000,000'}</strong>
           </p>
         </div>
 
@@ -518,7 +524,7 @@ export default function TradePage() {
       {activeTrades.length > 0 && (
         <div style={{
           marginTop: '1.5rem',
-          background: 'rgba(8, 14, 26, 0.9)',
+          background: 'var(--surface)',
           backdropFilter: 'blur(20px)',
           border: '1px solid rgba(212,175,55,0.15)',
           borderRadius: '16px',
@@ -526,9 +532,9 @@ export default function TradePage() {
           position: 'relative',
           overflow: 'hidden',
         }}>
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, var(--gold), transparent)', animation: 'pulse 2s ease-in-out infinite' }} />
-          <h3 style={{ color: '#fff', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
-            <Clock size={16} color="var(--gold)" /> Active Trades
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)', animation: 'pulse 2s ease-in-out infinite' }} />
+          <h3 style={{ color: 'var(--text)', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
+            <Clock size={16} color="var(--accent)" /> Active Trades
           </h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             {activeTrades.map((trade: any) => {
@@ -537,8 +543,8 @@ export default function TradePage() {
               const progress = trade.duration ? Math.max(0, Math.min(100, ((trade.duration - remaining) / trade.duration) * 100)) : 0;
               return (
                 <div key={trade._id} style={{
-                  background: 'rgba(255,255,255,0.02)',
-                  border: '1px solid rgba(255,255,255,0.04)',
+                  background: 'var(--surface-hover)',
+                  border: '1px solid var(--border)',
                   borderRadius: '12px',
                   padding: '1rem 1.25rem',
                 }}>
@@ -548,7 +554,7 @@ export default function TradePage() {
                         {trade.direction === 'up' ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
                         {trade.direction.toUpperCase()}
                       </span>
-                      <span style={{ color: '#fff', fontSize: '1.05rem', fontWeight: 700 }}>${trade.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                      <span style={{ color: 'var(--text)', fontSize: '1.05rem', fontWeight: 700 }}>${trade.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
                       <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>@ ${trade.entryPrice?.toFixed(2)}</span>
                     </div>
                     <div style={{ textAlign: 'right' }}>
@@ -556,14 +562,14 @@ export default function TradePage() {
                         fontFamily: 'var(--font-mono, monospace)',
                         fontSize: '1.2rem',
                         fontWeight: 800,
-                        color: remaining <= 10 ? 'var(--danger)' : 'var(--gold)',
+                        color: remaining <= 10 ? 'var(--danger)' : 'var(--accent)',
                         textShadow: remaining <= 10 ? '0 0 10px rgba(255,71,87,0.4)' : '0 0 10px rgba(212,175,55,0.3)',
                       }}>
                         {remaining > 0 ? `${remaining}s` : 'Settling...'}
                       </span>
                     </div>
                   </div>
-                  <div style={{ height: '6px', background: 'rgba(0,0,0,0.3)', borderRadius: '3px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.02)' }}>
+                  <div style={{ height: '6px', background: 'var(--border)', borderRadius: '3px', overflow: 'hidden', border: '1px solid var(--surface-hover)' }}>
                     <div style={{
                       height: '100%',
                       width: `${progress}%`,
@@ -586,7 +592,7 @@ export default function TradePage() {
       {recentTrades.length > 0 && (
         <div style={{
           marginTop: '1.5rem',
-          background: 'rgba(8, 14, 26, 0.85)',
+          background: 'var(--surface)',
           backdropFilter: 'blur(20px)',
           border: '1px solid rgba(212,175,55,0.08)',
           borderRadius: '16px',
@@ -596,16 +602,16 @@ export default function TradePage() {
         }}>
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, rgba(212,175,55,0.15), transparent)' }} />
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
-            <h3 style={{ color: '#fff', fontSize: '1.05rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <History size={18} color="var(--gold)" /> Recent Trades
+            <h3 style={{ color: 'var(--text)', fontSize: '1.05rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <History size={18} color="var(--accent)" /> Recent Trades
             </h3>
-            <Link href="/history" style={{ fontSize: '0.82rem', color: 'var(--gold)' }}>View All →</Link>
+            <Link href="/history" style={{ fontSize: '0.82rem', color: 'var(--accent)' }}>View All →</Link>
           </div>
 
           <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem', minWidth: '550px' }}>
               <thead>
-                <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                <tr style={{ borderBottom: '1px solid var(--border)' }}>
                   {['Direction', 'Amount', 'Open Price', 'Close Price', 'P/L', 'Result'].map((h) => (
                     <th key={h} style={{ padding: '0.6rem 0.75rem', textAlign: 'left', color: 'var(--text-muted)', fontWeight: 500, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px' }}>{h}</th>
                   ))}
@@ -613,14 +619,14 @@ export default function TradePage() {
               </thead>
               <tbody>
                 {recentTrades.map((trade: any) => (
-                  <tr key={trade._id} style={{ borderBottom: '1px solid rgba(255,255,255,0.02)' }}>
+                  <tr key={trade._id} style={{ borderBottom: '1px solid var(--surface-hover)' }}>
                     <td style={{ padding: '0.65rem 0.75rem' }}>
                       <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: trade.direction === 'up' ? 'var(--success)' : 'var(--danger)', fontWeight: 600 }}>
                         {trade.direction === 'up' ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
                         {trade.direction.toUpperCase()}
                       </span>
                     </td>
-                    <td style={{ padding: '0.8rem 0.75rem', color: '#fff', fontWeight: 600 }}>${trade.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
+                    <td style={{ padding: '0.8rem 0.75rem', color: 'var(--text)', fontWeight: 600 }}>${trade.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
                     <td style={{ padding: '0.8rem 0.75rem', color: 'var(--text-secondary)' }}>${trade.entryPrice?.toFixed(2) ?? '—'}</td>
                     <td style={{ padding: '0.8rem 0.75rem', color: 'var(--text-secondary)' }}>${trade.exitPrice?.toFixed(2) ?? '—'}</td>
                     <td style={{ padding: '0.8rem 0.75rem', fontWeight: 800, color: trade.profitOrLoss >= 0 ? 'var(--success)' : 'var(--danger)' }}>
@@ -641,7 +647,7 @@ export default function TradePage() {
       <div className="mb-8 mt-4 animate-in stagger-2">
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
           <div style={{ height: '1px', flex: 1, background: 'linear-gradient(90deg, transparent, var(--border))' }} />
-          <h2 style={{ fontSize: 'clamp(1rem, 3vw, 1.25rem)', color: '#fff', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 800, whiteSpace: 'nowrap' }}>Yield Tiers Guide</h2>
+          <h2 style={{ fontSize: 'clamp(1rem, 3vw, 1.25rem)', color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 800, whiteSpace: 'nowrap' }}>Yield Tiers Guide</h2>
           <div style={{ height: '1px', flex: 1, background: 'linear-gradient(90deg, var(--border), transparent)' }} />
         </div>
 
@@ -652,13 +658,13 @@ export default function TradePage() {
             { name: 'Advanced', range: '$20,001 - $50,000', profit: 50, color: '#818cf8' },
             { name: 'Professional', range: '$50,001 - $100,000', profit: 60, color: '#fb923c' },
             { name: 'Grandmaster', range: '$100,001 - $200,000', profit: 70, color: '#f472b6' },
-            { name: 'Apex', range: 'Over $200,000', profit: 80, color: 'var(--gold)' },
+            { name: 'Apex', range: 'Over $200,000', profit: 80, color: 'var(--accent)' },
           ].map((tier, idx) => (
             <div key={tier.name} className="glass-card" style={{
               padding: '1.5rem',
-              border: '1px solid rgba(255,255,255,0.05)',
+              border: '1px solid var(--border)',
               borderTop: `2px solid ${tier.color}`,
-              background: 'rgba(255,255,255,0.01)',
+              background: 'var(--surface-hover)',
               transition: 'all 0.3s ease',
               cursor: 'default',
               display: 'flex',
@@ -666,27 +672,27 @@ export default function TradePage() {
               gap: '1rem'
             }} onMouseOver={(e) => {
               e.currentTarget.style.transform = 'translateY(-5px)';
-              e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
+              e.currentTarget.style.background = 'var(--surface-hover)';
               e.currentTarget.style.boxShadow = `0 10px 30px -10px ${tier.color}33`;
             }} onMouseOut={(e) => {
               e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.background = 'rgba(255,255,255,0.01)';
+              e.currentTarget.style.background = 'var(--surface-hover)';
               e.currentTarget.style.boxShadow = 'none';
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div>
                   <h4 style={{ color: tier.color, fontWeight: 900, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.25rem' }}>Tier {idx + 1}</h4>
-                  <h3 style={{ color: '#fff', fontSize: '1.2rem', fontWeight: 800 }}>{tier.name}</h3>
+                  <h3 style={{ color: 'var(--text)', fontSize: '1.2rem', fontWeight: 800 }}>{tier.name}</h3>
                 </div>
-                <div style={{ fontSize: '0.75rem', padding: '0.3rem 0.6rem', borderRadius: '6px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-muted)', fontWeight: 600 }}>
+                <div style={{ fontSize: '0.75rem', padding: '0.3rem 0.6rem', borderRadius: '6px', background: 'var(--border)', border: '1px solid var(--border-highlight)', color: 'var(--text-muted)', fontWeight: 600 }}>
                   {tier.range}
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '1rem' }}>
+              <div style={{ display: 'flex', gap: '1.5rem', borderTop: '1px solid var(--border)', paddingTop: '1rem' }}>
                 <div>
                   <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.2rem' }}>Investment Range</p>
-                  <p style={{ color: '#fff', fontWeight: 800, fontSize: '1.1rem' }}>{tier.range}</p>
+                  <p style={{ color: 'var(--text)', fontWeight: 800, fontSize: '1.1rem' }}>{tier.range}</p>
                 </div>
                 <div>
                   <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.2rem' }}>Profit / Loss</p>

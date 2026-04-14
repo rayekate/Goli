@@ -58,34 +58,34 @@ function VerifyEmailContent() {
       
       <div className="container animate-in" style={{ maxWidth: '440px', width: '100%', padding: '0 20px', zIndex: 1 }}>
         <div style={{
-          background: 'rgba(8, 14, 26, 0.9)',
+          background: 'var(--surface)',
           backdropFilter: 'blur(20px)',
           border: '1px solid rgba(212, 175, 55, 0.1)',
           borderRadius: '24px',
           padding: '3rem 2rem',
           position: 'relative',
           overflow: 'hidden',
-          boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
+          boxShadow: '0 20px 40px var(--border)',
           textAlign: 'center'
         }}>
           {/* Top accent */}
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, var(--gold), transparent)' }} />
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
 
           {status === 'success' ? (
             <div className="animate-in" style={{ 
               textAlign: 'center', 
-              background: 'rgba(8, 14, 26, 0.95)', 
+              background: 'var(--surface)', 
               backdropFilter: 'blur(20px)',
               borderRadius: '32px', 
               padding: '4rem 2rem', 
-              color: '#ffffff', 
-              boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
+              color: 'var(--text)', 
+              boxShadow: '0 20px 40px var(--border)',
               border: '1px solid rgba(212, 175, 55, 0.15)',
               position: 'relative',
               overflow: 'hidden'
             }}>
               {/* Top accent */}
-              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, var(--gold), transparent)' }} />
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
 
               <div style={{ width: '64px', height: '64px', margin: '0 auto 1.75rem', background: 'rgba(247, 147, 26, 0.1)', border: '1px solid rgba(247, 147, 26, 0.3)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f7931a', fontSize: '2rem', fontWeight: 'bold' }}>
                 B
@@ -98,7 +98,7 @@ function VerifyEmailContent() {
                 <CheckCircle size={32} color="#10B981" />
               </div>
 
-              <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.95rem', lineHeight: 1.6, marginBottom: '3rem', padding: '0 2.5rem' }}>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: 1.6, marginBottom: '3rem', padding: '0 2.5rem' }}>
                 Your email has been successfully verified! Click the button below to login and start trading.
               </p>
 
@@ -111,7 +111,7 @@ function VerifyEmailContent() {
                   borderRadius: '16px', 
                   fontSize: '1.1rem', 
                   fontWeight: '800', 
-                  background: 'var(--gold)', 
+                  background: 'var(--accent)', 
                   color: '#000',
                   display: 'flex',
                   alignItems: 'center',
@@ -132,7 +132,7 @@ function VerifyEmailContent() {
                 {status === 'verifying' ? (
                   <GoldCoinLoader size={48} label={null} />
                 ) : (
-                  <Mail size={36} color="var(--gold)" />
+                  <Mail size={36} color="var(--accent)" />
                 )}
               </div>
               
@@ -176,7 +176,7 @@ function VerifyEmailContent() {
                   >
                     Try Registering Again
                   </Link>
-                  <Link href="/login" style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.4)', fontWeight: '500', textDecoration: 'none' }}>
+                  <Link href="/login" style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: '500', textDecoration: 'none' }}>
                     Return to Login
                   </Link>
                 </div>
@@ -189,7 +189,7 @@ function VerifyEmailContent() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#10B981', fontSize: '0.75rem', fontWeight: 'bold' }}>
               <ShieldCheck size={14} /> SSL SECURE
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--gold)', fontSize: '0.75rem', fontWeight: 'bold' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--accent)', fontSize: '0.75rem', fontWeight: 'bold' }}>
               <ShieldCheck size={14} /> IDENTITY VERIFIED
             </div>
           </div>

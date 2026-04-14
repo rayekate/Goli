@@ -127,13 +127,14 @@ export default function AdminUsersPage() {
 
   const modalOverlay: React.CSSProperties = {
     position: 'fixed', inset: 0, zIndex: 9999,
-    background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)',
+    background: 'var(--glass-bg)', backdropFilter: 'blur(10px)',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     padding: '1rem',
   };
 
   const modalCard: React.CSSProperties = {
-    width: '100%', maxWidth: '440px', padding: 'clamp(1.25rem, 4vw, 2rem)', border: '1px solid rgba(212,175,55,0.4)',
+    width: '100%', maxWidth: '440px', padding: 'clamp(1.25rem, 4vw, 2rem)', 
+    border: '1px solid var(--border)', background: 'var(--surface)', borderRadius: '24px', boxShadow: 'var(--glass-shadow)',
   };
 
   return (
@@ -187,50 +188,50 @@ export default function AdminUsersPage() {
           display: block;
         }
         .admin-users-page .action-btn {
-          padding: 0.35rem 0.65rem;
-          height: 42px;
-          border-radius: 8px;
+          padding: 0.5rem 1rem;
+          border-radius: 100px;
           cursor: pointer;
           display: inline-flex;
-          flex-direction: column;
           align-items: center;
           justify-content: center;
+          gap: 0.25rem;
           transition: all 0.2s ease;
-          background: rgba(255,255,255,0.05);
+          background: transparent;
           color: var(--text-muted);
-          border: 1px solid rgba(255,255,255,0.1);
+          border: 1px solid var(--border-highlight);
           font-family: inherit;
-          font-size: 0.65rem;
-          font-weight: 700;
-          text-transform: uppercase;
+          font-size: 0.72rem;
+          font-weight: 800;
           letter-spacing: 0.4px;
-          line-height: 1.2;
-          text-align: center;
         }
         .admin-users-page .action-btn:hover {
-          background: rgba(255,255,255,0.1);
-          color: #fff;
+          background: var(--surface-hover);
+          color: var(--text);
           transform: translateY(-1px);
         }
         .admin-users-page .select-field {
-          padding: 0.4rem 0.5rem;
-          border-radius: 6px;
+          padding: 0.5rem 1rem;
+          border-radius: 100px;
           font-size: 0.75rem;
+          font-weight: 800;
           outline: none;
           cursor: pointer;
           width: 100%;
+          background: var(--surface-hover);
+          color: var(--text);
+          border: 1px solid var(--border);
         }
         .admin-users-page .user-count-badge {
           display: inline-flex;
           align-items: center;
           gap: 0.4rem;
-          padding: 0.35rem 0.85rem;
-          border-radius: 20px;
+          padding: 0.4rem 1rem;
+          border-radius: 100px;
           font-size: 0.75rem;
-          font-weight: 600;
-          background: rgba(212,175,55,0.08);
-          color: #d4af37;
-          border: 1px solid rgba(212,175,55,0.2);
+          font-weight: 800;
+          background: var(--surface);
+          color: var(--accent);
+          border: 1px solid var(--border-highlight);
         }
 
         /* ─── Tablet ─── */
@@ -284,17 +285,17 @@ export default function AdminUsersPage() {
         <div style={modalOverlay} onClick={(e) => { if (e.target === e.currentTarget) setBalanceModal(null); }}>
           <div className="card animate-in" style={modalCard}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-              <h3 style={{ color: '#d4af37', margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: 'clamp(1rem, 3vw, 1.2rem)' }}>
-                <DollarSign size={20} /> Adjust Balance
+              <h3 style={{ color: 'var(--text)', margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: 'clamp(1rem, 3vw, 1.2rem)' }}>
+                <DollarSign size={20} color="var(--accent)" /> Adjust Balance
               </h3>
               <button onClick={() => setBalanceModal(null)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}><X size={20} /></button>
             </div>
 
-            <div style={{ background: 'rgba(212,175,55,0.06)', padding: '1rem', borderRadius: '10px', marginBottom: '1.5rem', border: '1px solid rgba(212,175,55,0.15)' }}>
+            <div style={{ background: 'var(--surface-hover)', padding: '1rem', borderRadius: '12px', marginBottom: '1.5rem', border: '1px solid var(--border)' }}>
               <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>User</p>
-              <p style={{ fontWeight: 700, color: '#fff' }}>{balanceModal.name}</p>
+              <p style={{ fontWeight: 700, color: 'var(--text)' }}>{balanceModal.name}</p>
               <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
-                Current: <strong style={{ color: '#d4af37' }}>${balanceModal.balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong>
+                Current: <strong style={{ color: 'var(--accent)' }}>${balanceModal.balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong>
               </p>
             </div>
 
@@ -306,8 +307,8 @@ export default function AdminUsersPage() {
               ]).map(({ mode, label, icon }) => (
                 <button key={mode} onClick={() => setAdjustMode(mode)} style={{
                   flex: 1, padding: '0.5rem', borderRadius: '8px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: 600,
-                  background: adjustMode === mode ? 'rgba(212,175,55,0.2)' : 'rgba(255,255,255,0.04)',
-                  border: `1px solid ${adjustMode === mode ? 'rgba(212,175,55,0.5)' : 'rgba(255,255,255,0.1)'}`,
+                  background: adjustMode === mode ? 'rgba(212,175,55,0.2)' : 'var(--border)',
+                  border: `1px solid ${adjustMode === mode ? 'rgba(212,175,55,0.5)' : 'var(--border-highlight)'}`,
                   color: adjustMode === mode ? '#d4af37' : 'var(--text-muted)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px',
                 }}>{icon} {label}</button>
@@ -341,18 +342,18 @@ export default function AdminUsersPage() {
         <div style={modalOverlay} onClick={(e) => { if (e.target === e.currentTarget) setManualTxModal(null); }}>
           <div className="card animate-in" style={modalCard}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-              <h3 style={{ color: manualTxModal.type === 'deposit' ? '#00ff66' : '#ff0055', margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: 'clamp(1rem, 3vw, 1.2rem)' }}>
-                {manualTxModal.type === 'deposit' ? <ArrowDownCircle size={20} /> : <ArrowUpCircle size={20} />}
+              <h3 style={{ color: 'var(--text)', margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: 'clamp(1rem, 3vw, 1.2rem)' }}>
+                {manualTxModal.type === 'deposit' ? <ArrowDownCircle size={20} color="var(--success)" /> : <ArrowUpCircle size={20} color="var(--danger)" />}
                 Manual {manualTxModal.type === 'deposit' ? 'Deposit' : 'Withdrawal'}
               </h3>
               <button onClick={() => setManualTxModal(null)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}><X size={20} /></button>
             </div>
 
-            <div style={{ background: 'rgba(212,175,55,0.06)', padding: '1rem', borderRadius: '10px', marginBottom: '1.5rem', border: '1px solid rgba(212,175,55,0.15)' }}>
+            <div style={{ background: 'var(--surface-hover)', padding: '1rem', borderRadius: '12px', marginBottom: '1.5rem', border: '1px solid var(--border)' }}>
               <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>User</p>
-              <p style={{ fontWeight: 700, color: '#fff' }}>{manualTxModal.name}</p>
+              <p style={{ fontWeight: 700, color: 'var(--text)' }}>{manualTxModal.name}</p>
               <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
-                Balance: <strong style={{ color: '#d4af37' }}>${manualTxModal.balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong>
+                Balance: <strong style={{ color: 'var(--accent)' }}>${manualTxModal.balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong>
               </p>
             </div>
 
@@ -369,7 +370,7 @@ export default function AdminUsersPage() {
             {txAmount && Number(txAmount) > 0 && (
               <div style={{
                 background: manualTxModal.type === 'deposit' ? 'rgba(0,255,102,0.06)' : 'rgba(255,0,85,0.06)',
-                padding: '0.75rem', borderRadius: '8px', marginBottom: '1rem',
+                padding: '0.75rem', borderRadius: '12px', marginBottom: '1rem',
                 border: `1px solid ${manualTxModal.type === 'deposit' ? 'rgba(0,255,102,0.2)' : 'rgba(255,0,85,0.2)'}`,
                 textAlign: 'center'
               }}>
@@ -386,7 +387,7 @@ export default function AdminUsersPage() {
             <div style={{ display: 'flex', gap: '0.75rem' }}>
               <button className="btn btn-outline" style={{ flex: 1 }} onClick={() => setManualTxModal(null)}>Cancel</button>
               <button className="btn" style={{
-                flex: 1, color: '#fff', border: 'none',
+                flex: 1, color: 'var(--text)', border: 'none',
                 background: manualTxModal.type === 'deposit' ? '#00ff66' : '#ff0055',
               }} onClick={submitManualTx} disabled={saving || !txAmount || Number(txAmount) <= 0}>
                 {saving ? 'Processing…' : `Confirm ${manualTxModal.type === 'deposit' ? 'Deposit' : 'Withdrawal'}`}
@@ -400,7 +401,7 @@ export default function AdminUsersPage() {
       <div className="header-row" style={{ marginBottom: '2rem', borderBottom: '1px solid var(--border)', paddingBottom: '1.5rem' }}>
         <div>
           <h1 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.2rem)', display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.5rem' }} className="text-gradient-gold">
-            <Users size={28} color="var(--gold)" style={{ filter: 'drop-shadow(0 0 10px var(--gold-glow))', flexShrink: 0 }} /> User Management
+            <Users size={28} color="var(--accent)" style={{ filter: 'drop-shadow(0 0 10px var(--gold-glow))', flexShrink: 0 }} /> User Management
           </h1>
           <p style={{ color: 'var(--text-muted)', fontSize: 'clamp(0.82rem, 2vw, 0.95rem)' }}>Balance, deposits, withdrawals, roles, trading control — complete platform authority.</p>
         </div>
@@ -409,8 +410,8 @@ export default function AdminUsersPage() {
             <Users size={14} /> {filteredUsers.length} user{filteredUsers.length !== 1 ? 's' : ''}
           </span>
           <div className="search-box">
-            <Search size={16} style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', zIndex: 1 }} />
-            <input type="text" placeholder="Search by name or email..." className="input" style={{ paddingLeft: '2.5rem', fontSize: '0.85rem', width: '100%', background: 'rgba(255,255,255,0.05)' }} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+            <Search size={16} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', zIndex: 1 }} />
+            <input type="text" placeholder="Search by name or email..." className="input" style={{ paddingLeft: '2.5rem', fontSize: '0.85rem', width: '100%', background: 'var(--surface-hover)', borderRadius: '100px', border: '1px solid var(--border)' }} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
           </div>
         </div>
       </div>
@@ -461,54 +462,43 @@ export default function AdminUsersPage() {
                 onClick={() => openBalanceModal(u)} 
                 className="action-btn"
               >
-                <span>Adjust</span><span>Balance</span>
+                Adjust Bal
               </button>
               <button 
                 onClick={() => openManualTx(u, 'deposit')} 
                 className="action-btn"
               >
-                <span>Manual</span><span>Deposit</span>
+                Deposit
               </button>
               <button 
                 onClick={() => openManualTx(u, 'withdrawal')} 
                 className="action-btn"
               >
-                <span>Manual</span><span>Withdraw</span>
+                Withdraw
               </button>
 
               <button 
                 onClick={() => updateField(u._id, 'isBlocked', !u.isBlocked)} 
                 className="action-btn" 
                 style={{ 
-                  background: u.isBlocked ? 'rgba(255,0,85,0.15)' : 'rgba(255,255,255,0.05)', 
+                  background: u.isBlocked ? 'rgba(255,0,85,0.15)' : 'transparent', 
                   color: u.isBlocked ? '#ff0055' : 'var(--text-muted)',
                 }}
               >
-                <span>{u.isBlocked ? 'Unblock' : 'Block'}</span><span>User</span>
-              </button>
-
-              <button 
-                onClick={() => updateField(u._id, 'twoFactorEnabled', !u.twoFactorEnabled)} 
-                className="action-btn" 
-                style={{ 
-                  background: u.twoFactorEnabled ? 'rgba(212,175,55,0.1)' : 'rgba(255,255,255,0.05)', 
-                  color: u.twoFactorEnabled ? '#d4af37' : 'var(--text-muted)',
-                }}
-              >
-                <span>2FA</span><span>{u.twoFactorEnabled ? 'Enabled' : 'Disabled'}</span>
+                {u.isBlocked ? 'Unblock' : 'Block'}
               </button>
 
               <button 
                 onClick={() => setExpandedUser(isExpanded ? null : u._id)} 
                 className="action-btn"
               >
-                <span>{isExpanded ? 'Hide' : 'View'}</span><span>Stats</span>
+                {isExpanded ? 'Hide' : 'Stats'}
               </button>
             </div>
           );
 
           const expandedStats = isExpanded && (
-            <div style={{ padding: 'clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 1.5rem)', borderTop: '1px solid var(--border)', background: 'rgba(255,255,255,0.01)' }}>
+            <div style={{ padding: 'clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 1.5rem)', borderTop: '1px solid var(--border)', background: 'var(--surface-hover)' }}>
               <div className="stats-grid">
                 <div style={{ textAlign: 'center', padding: '0.5rem' }}>
                   <p style={{ fontSize: 'clamp(1rem, 2.5vw, 1.2rem)', fontWeight: 700, color: '#00f0ff' }}>{stats.totalTrades}</p>
@@ -545,7 +535,7 @@ export default function AdminUsersPage() {
             <div key={u._id} className={`glass-card animate-in stagger-${Math.min((i % 5) + 1, 5)}`} style={{
               padding: 0, overflow: 'hidden',
               opacity: u.isBlocked ? 0.7 : 1,
-              borderColor: u.isBlocked ? 'rgba(255,0,85,0.3)' : 'rgba(255,255,255,0.05)',
+              borderColor: u.isBlocked ? 'rgba(255,0,85,0.3)' : 'var(--border)',
             }}>
               {/* Desktop Grid Layout */}
               <div className="desktop-user-grid">
@@ -553,11 +543,11 @@ export default function AdminUsersPage() {
                   {/* Identity */}
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
-                      <p style={{ fontWeight: 'bold', fontSize: '1rem', color: u.role === 'admin' ? '#d4af37' : '#fff' }}>{u.name}</p>
+                      <p style={{ fontWeight: 'bold', fontSize: '1rem', color: u.role === 'admin' ? '#d4af37' : 'var(--text)' }}>{u.name}</p>
                       {adminBadge}
                     </div>
                     <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', wordBreak: 'break-all' }}>{u.email}</p>
-                    <p style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.3)', marginTop: '0.25rem' }}>
+                    <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
                       Joined {new Date(u.createdAt).toLocaleDateString()}
                     </p>
                   </div>
@@ -576,9 +566,9 @@ export default function AdminUsersPage() {
                       onChange={(e) => updateField(u._id, 'role', e.target.value)}
                       className="select-field"
                       style={{
-                        background: u.role === 'admin' ? 'rgba(212,175,55,0.05)' : 'rgba(0,0,0,0.2)',
-                        color: u.role === 'admin' ? '#d4af37' : '#fff',
-                        border: `1px solid ${u.role === 'admin' ? 'rgba(212,175,55,0.3)' : 'rgba(255,255,255,0.1)'}`,
+                        background: u.role === 'admin' ? 'var(--surface-hover)' : 'var(--surface-hover)',
+                        color: u.role === 'admin' ? 'var(--accent)' : 'var(--text)',
+                        border: `1px solid ${u.role === 'admin' ? 'var(--accent)' : 'var(--border)'}`,
                       }}
                     >
                       <option value="user">User</option>
@@ -589,7 +579,7 @@ export default function AdminUsersPage() {
                   {/* Balance */}
                   <div style={{ textAlign: 'center' }}>
                     <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', marginBottom: '0.3rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Balance</p>
-                    <p style={{ fontSize: '1.15rem', fontWeight: 800, color: '#d4af37', fontFamily: 'monospace' }}>
+                    <p style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--accent)', fontFamily: 'monospace' }}>
                       ${u.balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                     </p>
                   </div>
@@ -606,19 +596,19 @@ export default function AdminUsersPage() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, minWidth: 0 }}>
                     <div style={{
                       width: '42px', height: '42px', borderRadius: '50%', flexShrink: 0,
-                      background: u.role === 'admin' ? 'linear-gradient(135deg, rgba(212,175,55,0.2), rgba(212,175,55,0.05))' : 'linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))',
-                      border: `1px solid ${u.role === 'admin' ? 'rgba(212,175,55,0.3)' : 'rgba(255,255,255,0.1)'}`,
+                      background: u.role === 'admin' ? 'linear-gradient(135deg, rgba(212,175,55,0.2), rgba(212,175,55,0.05))' : 'linear-gradient(135deg, rgba(255,255,255,0.08), var(--surface-hover))',
+                      border: `1px solid ${u.role === 'admin' ? 'rgba(212,175,55,0.3)' : 'var(--border-highlight)'}`,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}>
                       <UserCircle size={22} color={u.role === 'admin' ? '#d4af37' : 'var(--text-muted)'} />
                     </div>
                     <div style={{ minWidth: 0 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
-                        <p style={{ fontWeight: 'bold', fontSize: '0.95rem', color: u.role === 'admin' ? '#d4af37' : '#fff' }}>{u.name}</p>
+                        <p style={{ fontWeight: 'bold', fontSize: '0.95rem', color: u.role === 'admin' ? '#d4af37' : 'var(--text)' }}>{u.name}</p>
                         {adminBadge}
                       </div>
                       <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u.email}</p>
-                      <p style={{ fontSize: '0.62rem', color: 'rgba(255,255,255,0.3)', marginTop: '0.15rem' }}>
+                      <p style={{ fontSize: '0.62rem', color: 'var(--text-muted)', marginTop: '0.15rem' }}>
                         Joined {new Date(u.createdAt).toLocaleDateString()}
                       </p>
                     </div>
@@ -631,12 +621,12 @@ export default function AdminUsersPage() {
 
                 {/* Balance bar */}
                 <div style={{
-                  background: 'rgba(212,175,55,0.04)', borderRadius: '12px', padding: '0.75rem 1rem',
-                  border: '1px solid rgba(212,175,55,0.1)', marginBottom: '0.75rem',
+                  background: 'var(--surface-hover)', borderRadius: '12px', padding: '0.75rem 1rem',
+                  border: '1px solid var(--border)', marginBottom: '0.75rem',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem'
                 }}>
-                  <DollarSign size={16} color="#d4af37" />
-                  <p style={{ fontSize: '1.3rem', fontWeight: 800, color: '#d4af37', fontFamily: 'monospace' }}>
+                  <DollarSign size={16} color="var(--accent)" />
+                  <p style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--accent)', fontFamily: 'monospace' }}>
                     ${u.balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                   </p>
                 </div>
@@ -650,9 +640,9 @@ export default function AdminUsersPage() {
                       onChange={(e) => updateField(u._id, 'role', e.target.value)}
                       className="select-field"
                       style={{
-                        background: u.role === 'admin' ? 'rgba(212,175,55,0.05)' : 'rgba(0,0,0,0.2)',
-                        color: u.role === 'admin' ? '#d4af37' : '#fff',
-                        border: `1px solid ${u.role === 'admin' ? 'rgba(212,175,55,0.3)' : 'rgba(255,255,255,0.1)'}`,
+                        background: u.role === 'admin' ? 'rgba(212,175,55,0.05)' : 'var(--border)',
+                        color: u.role === 'admin' ? '#d4af37' : 'var(--text)',
+                        border: `1px solid ${u.role === 'admin' ? 'rgba(212,175,55,0.3)' : 'var(--border-highlight)'}`,
                       }}
                     >
                       <option value="user">User</option>

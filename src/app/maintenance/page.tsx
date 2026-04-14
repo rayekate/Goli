@@ -33,7 +33,7 @@ export default function MaintenancePage() {
           border: '1px solid rgba(212,175,55,0.2)',
           animation: 'pulseGold 3s infinite'
         }}>
-          <Settings size={40} color="var(--gold)" style={{ animation: 'spin 10s linear infinite' }} />
+          <Settings size={40} color="var(--accent)" style={{ animation: 'spin 10s linear infinite' }} />
         </div>
 
         <h1 className="text-gradient-gold" style={{ fontSize: '2rem', marginBottom: '1rem', fontWeight: 800 }}>
@@ -49,16 +49,16 @@ export default function MaintenancePage() {
           display: 'flex',
           flexDirection: 'column',
           gap: '12px',
-          background: 'rgba(255,255,255,0.03)',
+          background: 'var(--surface-hover)',
           padding: '1.5rem',
           borderRadius: '16px',
-          border: '1px solid rgba(255,255,255,0.05)'
+          border: '1px solid var(--border)'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--gold)', fontSize: '0.9rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--accent)', fontSize: '0.9rem' }}>
             <Clock size={16} />
             <span>Estimated Uptime: Under 30 minutes</span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
             <ShieldAlert size={16} />
             <span>Client Assets are Secure</span>
           </div>

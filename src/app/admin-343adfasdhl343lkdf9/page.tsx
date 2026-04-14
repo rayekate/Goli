@@ -79,7 +79,7 @@ export default function AdminLoginPage() {
               marginBottom: '0.6rem', 
               fontWeight: 900,
               letterSpacing: '-0.03em',
-              background: 'linear-gradient(135deg, #fff 30%, var(--gold) 100%)',
+              background: 'linear-gradient(135deg, var(--text) 30%, var(--accent) 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             }}>
@@ -117,7 +117,7 @@ export default function AdminLoginPage() {
                   required 
                   value={formData.identifier}
                   onChange={(e) => setFormData({ ...formData, identifier: e.target.value })}
-                  style={{ paddingLeft: '2.8rem', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)' }}
+                  style={{ paddingLeft: '2.8rem', background: 'var(--surface-hover)', border: '1px solid var(--border-highlight)' }}
                 />
               </div>
             </div>
@@ -132,7 +132,7 @@ export default function AdminLoginPage() {
                   required 
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  style={{ paddingLeft: '2.8rem', paddingRight: '3rem', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)' }}
+                  style={{ paddingLeft: '2.8rem', paddingRight: '3rem', background: 'var(--surface-hover)', border: '1px solid var(--border-highlight)' }}
                 />
                 <button
                   type="button"

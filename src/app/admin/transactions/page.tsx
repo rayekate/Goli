@@ -166,22 +166,22 @@ export default function AdminTransactionsPage() {
   const past = filtered.filter(t => t.status !== 'pending');
 
   if (loading || dataLoading) return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', color: 'var(--gold)' }}>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', color: 'var(--accent)' }}>
       <GoldCoinLoader label="Initializing Financial Terminal..." />
     </div>
   );
 
   const modalOverlay: React.CSSProperties = {
     position: 'fixed', inset: 0, zIndex: 99999,
-    background: 'rgba(5, 8, 15, 0.92)',
+    background: 'var(--glass-bg)', backdropFilter: 'blur(10px)',
     display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px'
   };
 
   const modalCard: React.CSSProperties = {
-    background: 'rgba(12, 20, 38, 0.98)',
-    border: '1px solid rgba(212, 175, 55, 0.15)',
-    borderRadius: '16px',
-    boxShadow: '0 25px 60px rgba(0,0,0,0.7)',
+    background: 'var(--surface)',
+    border: '1px solid var(--border)',
+    borderRadius: '24px',
+    boxShadow: 'var(--glass-shadow)',
   };
 
   return (
@@ -191,7 +191,7 @@ export default function AdminTransactionsPage() {
       {proofModal && portalRef.current && createPortal(
         <div style={modalOverlay} onClick={() => setProofModal(null)}>
           <div style={{ ...modalCard, maxWidth: '900px', width: '100%', padding: '10px', position: 'relative' }} onClick={e => e.stopPropagation()}>
-            <button onClick={() => setProofModal(null)} style={{ position: 'absolute', top: '-15px', right: '-15px', background: 'var(--danger)', color: '#fff', border: 'none', borderRadius: '50%', width: '30px', height: '30px', cursor: 'pointer', zIndex: 10 }}><X size={16} /></button>
+            <button onClick={() => setProofModal(null)} style={{ position: 'absolute', top: '-15px', right: '-15px', background: 'var(--danger)', color: 'var(--text)', border: 'none', borderRadius: '50%', width: '30px', height: '30px', cursor: 'pointer', zIndex: 10 }}><X size={16} /></button>
             <img src={proofModal.image} alt="Payment Receipt" style={{ width: '100%', borderRadius: '12px', display: 'block' }} />
             <div style={{ padding: '1rem', textAlign: 'center' }}>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>Transaction ID: {proofModal.txId}</p>
@@ -205,7 +205,7 @@ export default function AdminTransactionsPage() {
       {fulfillmentModal && portalRef.current && createPortal(
         <div style={modalOverlay} onClick={() => setFulfillmentModal(null)}>
           <div style={{ ...modalCard, maxWidth: '480px', width: '100%', padding: '2rem' }} onClick={e => e.stopPropagation()}>
-            <h3 style={{ color: '#fff', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <h3 style={{ color: 'var(--text)', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <ShieldCheck color="var(--success)" /> Fulfill Withdrawal
             </h3>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginBottom: '1.5rem' }}>
@@ -218,7 +218,7 @@ export default function AdminTransactionsPage() {
                 placeholder="0x... or TxID" 
                 value={fulfillmentHash} 
                 onChange={e => setFulfillmentHash(e.target.value)} 
-                style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(212,175,55,0.2)' }}
+                style={{ background: 'var(--surface-hover)', border: '1px solid var(--border)', borderRadius: '12px' }}
               />
             </div>
             <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
@@ -241,7 +241,7 @@ export default function AdminTransactionsPage() {
       {manualModal && portalRef.current && createPortal(
         <div style={modalOverlay} onClick={() => setManualModal(null)}>
           <div style={{ ...modalCard, maxWidth: '440px', width: '100%', padding: '2rem' }} onClick={e => e.stopPropagation()}>
-            <h3 style={{ color: '#fff', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <h3 style={{ color: 'var(--text)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               {manualModal.type === 'deposit' ? <ArrowDownCircle color="var(--success)" /> : <ArrowUpCircle color="var(--danger)" />}
               Manual {manualModal.type}
             </h3>
@@ -251,11 +251,11 @@ export default function AdminTransactionsPage() {
                 <div
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
                   style={{
-                    padding: '0.75rem 1rem', background: 'rgba(0,0,0,0.35)', color: selectedUser ? '#fff' : 'rgba(255,255,255,0.4)',
-                    border: '1px solid rgba(212,175,55,0.15)', borderRadius: '10px', width: '100%', cursor: 'pointer',
+                    padding: '0.75rem 1rem', background: 'var(--surface-hover)', color: selectedUser ? 'var(--text)' : 'var(--text-muted)',
+                    border: '1px solid var(--border)', borderRadius: '12px', width: '100%', cursor: 'pointer',
                     display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.9rem',
                     transition: 'border-color 0.2s',
-                    ...(userDropdownOpen ? { borderColor: 'rgba(212,175,55,0.4)' } : {})
+                    ...(userDropdownOpen ? { borderColor: 'var(--border-highlight)' } : {})
                   }}
                 >
                   <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -266,8 +266,8 @@ export default function AdminTransactionsPage() {
                 {userDropdownOpen && (
                   <div style={{
                     position: 'absolute', top: 'calc(100% + 4px)', left: 0, right: 0, zIndex: 10,
-                    background: 'rgba(10, 15, 30, 0.98)', border: '1px solid rgba(212,175,55,0.2)',
-                    borderRadius: '10px', overflow: 'hidden', boxShadow: '0 12px 40px rgba(0,0,0,0.6)'
+                    background: 'var(--surface)', border: '1px solid var(--border)',
+                    borderRadius: '12px', overflow: 'hidden', boxShadow: 'var(--glass-shadow)'
                   }}>
                     <div style={{ padding: '8px' }}>
                       <input
@@ -275,15 +275,15 @@ export default function AdminTransactionsPage() {
                         onChange={e => setUserSearch(e.target.value)}
                         autoFocus
                         style={{
-                          width: '100%', padding: '0.6rem 0.75rem', background: 'rgba(255,255,255,0.05)',
-                          border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', color: '#fff',
+                          width: '100%', padding: '0.6rem 0.75rem', background: 'var(--surface-hover)',
+                          border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--text)',
                           fontSize: '0.85rem', outline: 'none'
                         }}
                       />
                     </div>
                     <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
                       {filteredUsers.length === 0 && (
-                        <div style={{ padding: '1rem', textAlign: 'center', color: 'rgba(255,255,255,0.3)', fontSize: '0.85rem' }}>No users found</div>
+                        <div style={{ padding: '1rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem' }}>No users found</div>
                       )}
                       {filteredUsers.map(u => (
                         <div
@@ -292,16 +292,16 @@ export default function AdminTransactionsPage() {
                           style={{
                             padding: '0.6rem 1rem', cursor: 'pointer', display: 'flex', flexDirection: 'column',
                             gap: '0.15rem', fontSize: '0.88rem', transition: 'background 0.15s',
-                            background: selectedUserId === u._id ? 'rgba(212,175,55,0.12)' : 'transparent',
-                            color: selectedUserId === u._id ? 'var(--gold)' : '#fff',
-                            borderLeft: selectedUserId === u._id ? '2px solid var(--gold)' : '2px solid transparent',
+                            background: selectedUserId === u._id ? 'var(--surface-hover)' : 'transparent',
+                            color: selectedUserId === u._id ? 'var(--accent)' : 'var(--text)',
+                            borderLeft: selectedUserId === u._id ? '2px solid var(--accent)' : '2px solid transparent',
                           }}
-                          onMouseEnter={e => { if (selectedUserId !== u._id) (e.currentTarget.style.background = 'rgba(255,255,255,0.05)'); }}
+                          onMouseEnter={e => { if (selectedUserId !== u._id) (e.currentTarget.style.background = 'var(--surface-hover)'); }}
                           onMouseLeave={e => { if (selectedUserId !== u._id) (e.currentTarget.style.background = 'transparent'); }}
                         >
                           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <span>{u.name} {u.username && <span style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>@{u.username}</span>}</span>
-                            <span style={{ fontSize: '0.78rem', color: 'var(--gold)', opacity: 0.8 }}>${u.balance.toLocaleString()}</span>
+                            <span style={{ fontSize: '0.78rem', color: 'var(--accent)', opacity: 0.8 }}>${u.balance.toLocaleString()}</span>
                           </div>
                           <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{u.email}</span>
                         </div>
@@ -335,15 +335,15 @@ export default function AdminTransactionsPage() {
         </div>
         
         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-          <div className="glass-card" style={{ padding: '0.75rem 1.5rem', textAlign: 'center', border: '1px solid rgba(212,175,55,0.2)', background: 'rgba(212,175,55,0.03)', flex: '1 1 120px', minWidth: 0 }}>
+          <div className="glass-card" style={{ padding: '0.75rem 1.5rem', textAlign: 'center', border: '1px solid var(--border-highlight)', background: 'var(--surface-hover)', flex: '1 1 120px', minWidth: 0, borderRadius: '24px' }}>
             <p style={{ fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.2rem', color: 'var(--text-muted)' }}>Pending</p>
-            <p style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--gold)' }}>{stats.pendingCount}</p>
+            <p style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--accent)' }}>{stats.pendingCount}</p>
           </div>
-          <div className="glass-card" style={{ padding: '0.75rem 1.5rem', textAlign: 'center', flex: '1 1 120px', minWidth: 0 }}>
+          <div className="glass-card" style={{ padding: '0.75rem 1.5rem', textAlign: 'center', flex: '1 1 120px', minWidth: 0, borderRadius: '24px' }}>
             <p style={{ fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.2rem', color: 'var(--text-muted)' }}>Today's Vol</p>
-            <p style={{ fontSize: '1.25rem', fontWeight: 800, color: '#fff' }}>${stats.todayVol.toLocaleString()}</p>
+            <p style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text)' }}>${stats.todayVol.toLocaleString()}</p>
           </div>
-          <div className="glass-card" style={{ padding: '0.75rem 1.5rem', textAlign: 'center', border: '1px solid rgba(255,71,87,0.1)', flex: '1 1 120px', minWidth: 0 }}>
+          <div className="glass-card" style={{ padding: '0.75rem 1.5rem', textAlign: 'center', border: '1px solid rgba(255,71,87,0.1)', flex: '1 1 120px', minWidth: 0, borderRadius: '24px' }}>
             <p style={{ fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.2rem', color: 'var(--text-muted)' }}>Withdrawal Req</p>
             <p style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--danger)' }}>${stats.withdrawalPressure.toLocaleString()}</p>
           </div>
@@ -363,15 +363,15 @@ export default function AdminTransactionsPage() {
               placeholder="Search user or email..." 
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
-              style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '100px', padding: '0.5rem 1rem 0.5rem 2.2rem', color: '#fff', fontSize: '0.85rem', width: '100%' }}
+              style={{ background: 'var(--surface-hover)', border: '1px solid var(--border-highlight)', borderRadius: '100px', padding: '0.5rem 1rem 0.5rem 2.2rem', color: 'var(--text)', fontSize: '0.85rem', width: '100%' }}
             />
           </div>
-          <select value={filterType} onChange={e => setFilterType(e.target.value as any)} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '100px', padding: '0.5rem 1rem', color: '#fff', fontSize: '0.85rem' }}>
+          <select value={filterType} onChange={e => setFilterType(e.target.value as any)} style={{ background: 'var(--surface-hover)', border: '1px solid var(--border-highlight)', borderRadius: '100px', padding: '0.5rem 1rem', color: 'var(--text)', fontSize: '0.85rem' }}>
             <option value="all">All Types</option>
             <option value="deposit">Deposits</option>
             <option value="withdrawal">Withdrawals</option>
           </select>
-          <select value={filterStatus} onChange={e => setFilterStatus(e.target.value as any)} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '100px', padding: '0.5rem 1rem', color: '#fff', fontSize: '0.85rem' }}>
+          <select value={filterStatus} onChange={e => setFilterStatus(e.target.value as any)} style={{ background: 'var(--surface-hover)', border: '1px solid var(--border-highlight)', borderRadius: '100px', padding: '0.5rem 1rem', color: 'var(--text)', fontSize: '0.85rem' }}>
             <option value="all">All Stats</option>
             <option value="pending">Pending</option>
             <option value="approved">Approved</option>
@@ -383,7 +383,7 @@ export default function AdminTransactionsPage() {
       {/* Main Queue */}
       {pending.length > 0 && (
         <div style={{ marginBottom: '3rem' }}>
-          <h3 style={{ color: 'var(--gold)', marginBottom: '1.25rem', fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <h3 style={{ color: 'var(--accent)', marginBottom: '1.25rem', fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Clock size={18} /> Active Approvals Queue
           </h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -397,7 +397,7 @@ export default function AdminTransactionsPage() {
                 alignItems: 'center'
               }}>
                 <div>
-                  <p style={{ fontWeight: 800, color: '#fff', fontSize: '1.05rem', marginBottom: '0.2rem' }}>{t.userId?.name}</p>
+                  <p style={{ fontWeight: 800, color: 'var(--text)', fontSize: '1.05rem', marginBottom: '0.2rem' }}>{t.userId?.name}</p>
                   <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.4rem' }}>{t.userId?.email}</p>
                   <div style={{ display: 'flex', gap: '0.4rem' }}>
                     <span className={`badge ${t.type === 'deposit' ? 'badge-approved' : 'badge-primary'}`} style={{ fontSize: '0.6rem' }}>{t.type.toUpperCase()}</span>
@@ -407,7 +407,7 @@ export default function AdminTransactionsPage() {
 
                 <div>
                   <p style={{ fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>Amount</p>
-                  <p style={{ fontSize: '1.4rem', fontWeight: 900, color: '#fff' }}>${t.amount.toLocaleString()}</p>
+                  <p style={{ fontSize: '1.4rem', fontWeight: 900, color: 'var(--text)' }}>${t.amount.toLocaleString()}</p>
                   <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>User Bal: ${t.userId?.balance.toLocaleString()}</p>
                 </div>
 
@@ -415,13 +415,13 @@ export default function AdminTransactionsPage() {
                   <p style={{ fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-muted)', marginBottom: '0.4rem' }}>Reference / Proof</p>
                   {t.transactionHash || t.walletAddress ? (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <code style={{ fontSize: '0.7rem', color: 'var(--gold)', background: 'rgba(0,0,0,0.3)', padding: '0.25rem 0.5rem', borderRadius: '4px', maxWidth: '140px', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t.transactionHash || t.walletAddress}</code>
+                      <code style={{ fontSize: '0.7rem', color: 'var(--accent)', background: 'var(--border)', padding: '0.25rem 0.5rem', borderRadius: '4px', maxWidth: '140px', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t.transactionHash || t.walletAddress}</code>
                       <Copy size={12} className="cursor-pointer opacity-50 hover:opacity-100" />
                     </div>
                   ) : <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>No External Ref</span>}
                   
                   {t.type === 'deposit' && (
-                    <button onClick={() => viewProofImage(t._id)} style={{ marginTop: '0.5rem', background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: 'var(--gold)', fontSize: '0.65rem', padding: '0.35rem 0.75rem', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <button onClick={() => viewProofImage(t._id)} style={{ marginTop: '0.5rem', background: 'var(--surface-hover)', border: '1px solid var(--border-highlight)', color: 'var(--accent)', fontSize: '0.65rem', padding: '0.35rem 0.75rem', borderRadius: '100px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                       <Eye size={12} /> View Payment Receipt
                     </button>
                   )}
@@ -449,13 +449,13 @@ export default function AdminTransactionsPage() {
       {/* Past Transactions Table */}
       <section>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
-          <h3 style={{ color: '#fff', fontSize: '1.1rem' }}>Transaction Audit Log</h3>
+          <h3 style={{ color: 'var(--text)', fontSize: '1.1rem' }}>Transaction Audit Log</h3>
         </div>
-        <div className="glass-card" style={{ padding: 0, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.05)' }}>
+        <div className="glass-card" style={{ padding: 0, overflow: 'hidden', border: '1px solid var(--border)' }}>
           <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '900px' }}>
             <thead>
-              <tr style={{ background: 'rgba(255,255,255,0.02)', borderBottom: '1px solid var(--border)' }}>
+              <tr style={{ background: 'var(--surface-hover)', borderBottom: '1px solid var(--border)' }}>
                 <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Timestamp / User</th>
                 <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Descriptor</th>
                 <th style={{ padding: '1rem', textAlign: 'right', fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Amount</th>
@@ -466,15 +466,15 @@ export default function AdminTransactionsPage() {
             </thead>
             <tbody>
               {past.map(t => (
-                <tr key={t._id} style={{ borderBottom: '1px solid rgba(255,255,255,0.03)', transition: 'background 0.2s' }} onMouseOver={e => e.currentTarget.style.background = 'rgba(255,255,255,0.01)'} onMouseOut={e => e.currentTarget.style.background = 'transparent'}>
+                <tr key={t._id} style={{ borderBottom: '1px solid var(--surface-hover)', transition: 'background 0.2s' }} onMouseOver={e => e.currentTarget.style.background = 'var(--surface-hover)'} onMouseOut={e => e.currentTarget.style.background = 'transparent'}>
                   <td style={{ padding: '1rem' }}>
-                    <p style={{ color: '#fff', fontSize: '0.85rem', fontWeight: 600 }}>{t.userId?.name}</p>
+                    <p style={{ color: 'var(--text)', fontSize: '0.85rem', fontWeight: 600 }}>{t.userId?.name}</p>
                     <p style={{ color: 'var(--text-muted)', fontSize: '0.65rem' }}>{new Date(t.createdAt).toLocaleString()}</p>
                   </td>
                   <td style={{ padding: '1rem' }}>
                     <span className={`badge ${t.type === 'deposit' ? 'badge-approved' : 'badge-primary'}`} style={{ fontSize: '0.6rem' }}>{t.type}</span>
                   </td>
-                  <td style={{ padding: '1rem', textAlign: 'right', color: '#fff', fontWeight: 800 }}>${t.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
+                  <td style={{ padding: '1rem', textAlign: 'right', color: 'var(--text)', fontWeight: 800 }}>${t.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
                   <td style={{ padding: '1rem', textAlign: 'center' }}>
                     <span className={`badge badge-${t.status}`} style={{ fontSize: '0.6rem' }}>{t.status}</span>
                   </td>
@@ -489,7 +489,7 @@ export default function AdminTransactionsPage() {
                         style={{ 
                           background: 'rgba(212,175,55,0.1)', 
                           border: '1px solid rgba(212,175,55,0.2)', 
-                          color: 'var(--gold)',
+                          color: 'var(--accent)',
                           padding: '0.4rem',
                           borderRadius: '8px',
                           cursor: 'pointer',

@@ -13,7 +13,7 @@ export async function GET() {
   try {
     await connectToDatabase();
 
-    let doc = await mongoose.connection.db!.collection(COLLECTION).findOne({});
+    let doc: any = await mongoose.connection.db!.collection(COLLECTION).findOne({});
     if (!doc) {
       const s = await getSettings();
       doc = s.toObject();

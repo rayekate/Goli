@@ -88,7 +88,7 @@ export default function DashboardPage() {
       }}>
         <div style={{ flex: 1, minWidth: '300px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
-            <div className="badge" style={{ background: 'rgba(255,255,255,0.03)', color: 'var(--text-muted)', border: '1px solid rgba(255,255,255,0.05)' }}>INSTITUTIONAL TERMINAL</div>
+            <div className="badge" style={{ background: 'var(--surface-hover)', color: 'var(--text-muted)', border: '1px solid var(--border)' }}>INSTITUTIONAL TERMINAL</div>
             <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--success)', boxShadow: '0 0 10px var(--success)' }} />
             <span style={{ fontSize: '0.65rem', fontWeight: 900, color: 'var(--success)', letterSpacing: '0.2em' }}>SYSTEM LIVE</span>
           </div>
@@ -98,9 +98,9 @@ export default function DashboardPage() {
             fontWeight: 950,
             letterSpacing: '-0.04em',
             lineHeight: 0.9,
-            color: '#fff' 
+            color: 'var(--text)' 
           }}>
-            Welcome, <span className="text-gradient-gold" style={{ filter: 'drop-shadow(0 0 30px rgba(212,175,55,0.2))' }}>{user.name}</span>
+            Welcome, <span className="text-gold" style={{ filter: 'drop-shadow(0 0 10px var(--border))' }}>{user.name}</span>
           </h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '1rem', fontWeight: 500, maxWidth: '600px', opacity: 0.8 }}>
             Accessing encrypted markets. Your terminal is synchronized with global bullion reserves.
@@ -110,11 +110,11 @@ export default function DashboardPage() {
           <Link href="/deposit" className="btn btn-gold" style={{ flex: '1 1 200px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem 2rem', borderRadius: '100px', fontWeight: 900, fontSize: '0.9rem' }}>
             <ArrowUpRight size={18} /> Initialize Deposit
           </Link>
-          <Link href="/withdraw" className="btn btn-outline" style={{ flex: '1 1 200px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem 2rem', borderRadius: '100px', fontWeight: 900, fontSize: '0.9rem', border: '1px solid rgba(255,255,255,0.1)' }}>
+          <Link href="/withdraw" className="btn btn-outline" style={{ flex: '1 1 200px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem 2rem', borderRadius: '100px', fontWeight: 900, fontSize: '0.9rem' }}>
             <ArrowDownLeft size={18} /> Asset Withdrawal
           </Link>
-          <Link href="/trade" className="btn btn-gold mobile-only" style={{ flex: '1 1 200px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem 2rem', borderRadius: '100px', fontWeight: 900, fontSize: '0.9rem', background: 'linear-gradient(135deg, #FFD700 0%, #D4AF37 100%)' }}>
-            <TrendingUp size={18} /> Trade Terminal
+          <Link href="/trade" className="btn btn-primary" style={{ flex: '1 1 200px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem 2rem', borderRadius: '100px', fontWeight: 900, fontSize: '0.9rem' }}>
+            <TrendingUp size={18} /> Open Trading Terminal
           </Link>
         </div>
       </div>
@@ -123,20 +123,20 @@ export default function DashboardPage() {
       {(pendingDeposits.length > 0 || pendingWithdrawals.length > 0 || recentRejections.length > 0) && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '2rem' }}>
           {pendingDeposits.length > 0 && (
-            <div className="glass-card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem 1.5rem', borderLeft: '4px solid var(--gold)', borderRadius: '12px' }}>
-              <AlertCircle size={20} color="var(--gold)" />
+            <div className="glass-card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem 1.5rem', borderLeft: '4px solid var(--accent)', borderRadius: '12px' }}>
+              <AlertCircle size={20} color="var(--accent)" />
               <div style={{ flex: 1 }}>
-                <p style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 700 }}>Deposit Pending</p>
+                <p style={{ fontSize: '0.9rem', color: 'var(--text)', fontWeight: 700 }}>Deposit Pending</p>
                 <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{pendingDeposits.length} transaction awaiting terminal verification.</p>
               </div>
               <Link href="/history" className="btn-outline" style={{ padding: '0.5rem 1rem', borderRadius: '100px', fontSize: '0.75rem' }}>Track Status</Link>
             </div>
           )}
           {pendingWithdrawals.length > 0 && (
-            <div className="glass-card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem 1.5rem', borderLeft: '4px solid #ffb347', borderRadius: '12px' }}>
-              <Clock size={20} color="#ffb347" />
+            <div className="glass-card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem 1.5rem', borderLeft: '4px solid var(--accent)', borderRadius: '12px' }}>
+              <Clock size={20} color="var(--accent)" />
               <div style={{ flex: 1 }}>
-                <p style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 700 }}>Withdrawal Processing</p>
+                <p style={{ fontSize: '0.9rem', color: 'var(--text)', fontWeight: 700 }}>Withdrawal Processing</p>
                 <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Security review in progress for {pendingWithdrawals.length} assets.</p>
               </div>
               <Link href="/history" className="btn-outline" style={{ padding: '0.5rem 1rem', borderRadius: '100px', fontSize: '0.75rem' }}>View Detail</Link>
@@ -162,7 +162,7 @@ export default function DashboardPage() {
           justifyContent: 'center',
           minHeight: '120px'
         }}>
-          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '1px', background: 'linear-gradient(90deg, transparent, var(--gold), transparent)' }} />
+          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '1px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
           <LivePriceTicker />
         </div>
       </div>
@@ -178,15 +178,15 @@ export default function DashboardPage() {
           minWidth: 0,
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-            <h3 style={{ color: '#fff', fontSize: '1.1rem', fontWeight: 900, letterSpacing: '0.02em' }}>MISSION ACTIVITY</h3>
-            <div className="badge" style={{ padding: '0.25rem 0.6rem', background: 'rgba(255,255,255,0.05)', color: 'var(--text-muted)', border: '1px solid rgba(255,255,255,0.1)' }}>RECENT</div>
+            <h3 style={{ color: 'var(--text)', fontSize: '1.1rem', fontWeight: 900, letterSpacing: '0.02em' }}>MISSION ACTIVITY</h3>
+            <div className="badge" style={{ padding: '0.25rem 0.6rem', background: 'var(--surface-hover)', color: 'var(--text-muted)', border: '1px solid var(--border)' }}>RECENT</div>
           </div>
           
           {trades.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '3rem 0', color: 'var(--text-muted)' }}>
               <Clock size={48} style={{ marginBottom: '1rem', opacity: 0.2 }} />
               <p style={{ fontSize: '0.9rem', fontWeight: 600 }}>No tactical data found.</p>
-              <Link href="/trade" style={{ color: 'var(--gold)', display: 'block', marginTop: '1rem', fontWeight: 800, fontSize: '0.85rem' }}>INITIALIZE TRADE →</Link>
+              <Link href="/trade" style={{ color: 'var(--accent)', display: 'block', marginTop: '1rem', fontWeight: 800, fontSize: '0.85rem' }}>INITIALIZE TRADE →</Link>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -195,9 +195,9 @@ export default function DashboardPage() {
                   display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                   padding: '1rem',
                   gap: '0.5rem',
-                  background: 'rgba(255,255,255,0.02)',
+                  background: 'var(--surface)',
                   borderRadius: '16px',
-                  border: `1px solid ${trade.result === 'win' ? 'rgba(0,230,138,0.1)' : 'rgba(255,71,87,0.1)'}`,
+                  border: `1px solid ${trade.result === 'win' ? 'var(--success)' : 'var(--danger)'}`,
                   transition: 'all 0.3s ease'
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -209,7 +209,7 @@ export default function DashboardPage() {
                       {trade.direction === 'up' ? <TrendingUp size={16} color="var(--success)" /> : <TrendingDown size={16} color="var(--danger)" />}
                     </div>
                     <div>
-                      <p style={{ fontSize: '0.85rem', fontWeight: 800, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '140px' }}>BU-GOLD {trade.direction.toUpperCase()}</p>
+                      <p style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '140px' }}>BU-GOLD {trade.direction.toUpperCase()}</p>
                       <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600 }}>VALUE: ${trade.amount.toFixed(2)}</p>
                     </div>
                   </div>
@@ -231,7 +231,7 @@ export default function DashboardPage() {
               <Link href="/history" style={{ 
                 textAlign: 'center', 
                 fontSize: '0.8rem', 
-                color: 'var(--gold)', 
+                color: 'var(--accent)', 
                 marginTop: '1rem', 
                 fontWeight: 900,
                 letterSpacing: '0.1em' 

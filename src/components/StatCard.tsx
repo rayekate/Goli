@@ -38,12 +38,9 @@ export default function StatCard({ title, value, icon: Icon, trend }: StatCardPr
           <h2 style={{ 
             fontSize: '1.75rem', 
             margin: 0, 
-            color: '#fff', 
+            color: 'var(--text)', 
             fontWeight: 950,
             letterSpacing: '-0.02em',
-            background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent'
           }}>{value}</h2>
           
           {trend && (
@@ -81,7 +78,7 @@ export default function StatCard({ title, value, icon: Icon, trend }: StatCardPr
         right: '-10%', 
         width: '100px', 
         height: '100px', 
-        background: 'var(--gold)', 
+        background: 'var(--accent)', 
         filter: 'blur(50px)', 
         opacity: 0.04, 
         pointerEvents: 'none',

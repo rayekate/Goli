@@ -111,10 +111,10 @@ export default function AdminSchedulePage() {
       {/* Header */}
       <div style={{ marginBottom: '2.5rem', borderBottom: '1px solid var(--border)', paddingBottom: '1.5rem' }}>
         <h1
-          style={{ fontSize: 'clamp(1.5rem, 4vw, 2.2rem)', display: 'flex', alignItems: 'center', gap: '0.75rem', color: '#fff', marginBottom: '0.5rem', flexWrap: 'wrap' }}
+          style={{ fontSize: 'clamp(1.5rem, 4vw, 2.2rem)', display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--text)', marginBottom: '0.5rem', flexWrap: 'wrap' }}
           className="text-gradient-gold"
         >
-          <Clock size={32} color="var(--gold)" style={{ filter: 'drop-shadow(0 0 10px var(--gold-glow))' }} />
+          <Clock size={32} color="var(--accent)" style={{ filter: 'drop-shadow(0 0 10px var(--gold-glow))' }} />
           Trading Schedule
         </h1>
         <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>
@@ -127,18 +127,18 @@ export default function AdminSchedulePage() {
         display: 'flex', 
         gap: '1rem', 
         padding: '1.25rem', 
-        background: 'rgba(212,175,55,0.05)', 
-        border: '1px solid rgba(212,175,55,0.15)', 
-        borderRadius: '12px',
+        background: 'var(--surface)', 
+        border: '1px solid var(--border-highlight)', 
+        borderRadius: '24px',
         marginBottom: '2rem',
         alignItems: 'flex-start'
       }}>
-        <Info size={20} color="var(--gold)" style={{ marginTop: '3px', flexShrink: 0 }} />
+        <Info size={20} color="var(--accent)" style={{ marginTop: '3px', flexShrink: 0 }} />
         <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
           Trading restrictions are enforced both in the UI and on the server. If the market is closed, 
           users will see an overlay and all trade requests will be rejected with a 403 error.
           <br />
-          <strong style={{ color: 'var(--gold)' }}>Current Server Time:</strong> {serverTime ? serverTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : 'Syncing...'}
+          <strong style={{ color: 'var(--accent)' }}>Current Server Time:</strong> {serverTime ? serverTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : 'Syncing...'}
         </p>
       </div>
 
@@ -166,10 +166,10 @@ export default function AdminSchedulePage() {
       <div style={{ display: 'grid', gap: '1.5rem' }}>
         
         {/* Hours Card */}
-        <div className="audit-glass-card" style={{ padding: '2rem' }}>
+        <div className="glass-card" style={{ padding: '2rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
-            <Clock size={20} color="var(--gold)" />
-            <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: '#fff' }}>Daily Trading Hours</h3>
+            <Clock size={20} color="var(--accent)" />
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text)' }}>Daily Trading Hours</h3>
           </div>
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
@@ -181,11 +181,11 @@ export default function AdminSchedulePage() {
                 onChange={(e) => setSchedule(prev => ({ ...prev, tradingStartTime: e.target.value }))}
                 style={{
                   width: '100%',
-                  background: 'rgba(255,255,255,0.05)',
+                  background: 'var(--surface-hover)',
                   border: '1px solid var(--border)',
-                  borderRadius: '10px',
-                  padding: '0.85rem 1rem',
-                  color: '#fff',
+                  borderRadius: '100px',
+                  padding: '0.85rem 1.25rem',
+                  color: 'var(--text)',
                   fontSize: '1rem',
                   outline: 'none'
                 }}
@@ -202,11 +202,11 @@ export default function AdminSchedulePage() {
                 onChange={(e) => setSchedule(prev => ({ ...prev, tradingEndTime: e.target.value }))}
                 style={{
                   width: '100%',
-                  background: 'rgba(255,255,255,0.05)',
+                  background: 'var(--surface-hover)',
                   border: '1px solid var(--border)',
-                  borderRadius: '10px',
-                  padding: '0.85rem 1rem',
-                  color: '#fff',
+                  borderRadius: '100px',
+                  padding: '0.85rem 1.25rem',
+                  color: 'var(--text)',
                   fontSize: '1rem',
                   outline: 'none'
                 }}
@@ -216,10 +216,10 @@ export default function AdminSchedulePage() {
         </div>
 
         {/* Days Card */}
-        <div className="audit-glass-card" style={{ padding: '2rem' }}>
+        <div className="glass-card" style={{ padding: '2rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
-            <Calendar size={20} color="var(--gold)" />
-            <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: '#fff' }}>Trading Days</h3>
+            <Calendar size={20} color="var(--accent)" />
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text)' }}>Trading Days</h3>
           </div>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: '0.75rem' }}>
@@ -231,15 +231,16 @@ export default function AdminSchedulePage() {
                   onClick={() => toggleDay(day)}
                   style={{
                     padding: '0.85rem',
-                    borderRadius: '12px',
-                    border: `1px solid ${isSelected ? 'var(--gold)' : 'rgba(255,255,255,0.05)'}`,
-                    background: isSelected ? 'rgba(212,175,55,0.1)' : 'rgba(255,255,255,0.02)',
-                    color: isSelected ? 'var(--gold)' : 'var(--text-muted)',
+                    borderRadius: '100px',
+                    border: `1px solid ${isSelected ? 'var(--accent)' : 'var(--border)'}`,
+                    background: isSelected ? 'var(--surface)' : 'var(--surface-hover)',
+                    color: isSelected ? 'var(--accent)' : 'var(--text-muted)',
                     fontSize: '0.9rem',
-                    fontWeight: isSelected ? 700 : 400,
+                    fontWeight: isSelected ? 800 : 600,
                     cursor: 'pointer',
                     transition: 'all 0.25s ease',
-                    textAlign: 'center'
+                    textAlign: 'center',
+                    boxShadow: isSelected ? '0 4px 12px rgba(0,0,0,0.1)' : 'none'
                   }}
                 >
                   {day}
@@ -256,7 +257,7 @@ export default function AdminSchedulePage() {
         <button
           onClick={handleSave}
           disabled={saving}
-          className="btn btn-gold"
+          className="btn btn-primary"
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -264,8 +265,7 @@ export default function AdminSchedulePage() {
             padding: '1rem 3rem',
             fontSize: '1.1rem',
             fontWeight: 800,
-            borderRadius: '14px',
-            boxShadow: '0 10px 20px rgba(212,175,55,0.2)',
+            borderRadius: '100px',
             transition: 'all 0.3s ease',
             opacity: saving ? 0.7 : 1,
             transform: saving ? 'scale(0.98)' : 'scale(1)'

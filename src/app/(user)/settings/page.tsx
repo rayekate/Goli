@@ -15,8 +15,7 @@ export default function SettingsPage() {
 
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
-  const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
-  const [withdrawalOtpEnabled, setWithdrawalOtpEnabled] = useState(false);
+
   const [notifications, setNotifications] = useState({
     platformBroadcasts: true,
     financialConfirmations: true,
@@ -43,8 +42,7 @@ export default function SettingsPage() {
     if (user && !initialized) {
       setName(user.name);
       setUsername(user.username || '');
-      setTwoFactorEnabled(user.twoFactorEnabled || false);
-      setWithdrawalOtpEnabled(user.withdrawalOtpEnabled || false);
+
       if (user.notifications) setNotifications(user.notifications);
       if (user.payoutWallet) setPayoutWallet(user.payoutWallet);
       setInitialized(true);
@@ -63,8 +61,6 @@ export default function SettingsPage() {
         body: JSON.stringify({
           name,
           username,
-          twoFactorEnabled,
-          withdrawalOtpEnabled,
           notifications,
           payoutWallet,
         }),
@@ -143,10 +139,10 @@ export default function SettingsPage() {
             background: 'linear-gradient(135deg, rgba(234,179,8,0.15), rgba(234,179,8,0.05))',
             border: '1px solid rgba(234,179,8,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
-            <Settings size={22} color="var(--gold)" />
+            <Settings size={22} color="var(--accent)" />
           </div>
           <div>
-            <h1 style={{ fontSize: '1.75rem', color: '#fff', lineHeight: 1.2 }} className="text-gradient-gold">Account Settings</h1>
+            <h1 style={{ fontSize: '1.75rem', color: 'var(--text)', lineHeight: 1.2 }} className="text-gradient-gold">Account Settings</h1>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem' }}>Manage your profile, security, and preferences</p>
           </div>
         </div>
@@ -168,8 +164,8 @@ export default function SettingsPage() {
               padding: '0.65rem 0.75rem', borderRadius: '10px', border: 'none', cursor: 'pointer',
               fontSize: '0.82rem', fontWeight: 600, whiteSpace: 'nowrap', transition: 'all 0.2s',
               background: activeTab === tab.key ? 'rgba(234,179,8,0.12)' : 'transparent',
-              color: activeTab === tab.key ? 'var(--gold)' : 'var(--text-muted)',
-              borderBottom: activeTab === tab.key ? '2px solid var(--gold)' : '2px solid transparent',
+              color: activeTab === tab.key ? 'var(--accent)' : 'var(--text-muted)',
+              borderBottom: activeTab === tab.key ? '2px solid var(--accent)' : '2px solid transparent',
             }}
           >
             {tab.icon} {tab.label}
@@ -197,15 +193,15 @@ export default function SettingsPage() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.75rem' }}>
               <div style={{
                 width: '48px', height: '48px', borderRadius: '50%',
-                background: 'linear-gradient(135deg, var(--gold), #B8860B)',
+                background: 'linear-gradient(135deg, var(--accent), #B8860B)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: '1.25rem', fontWeight: 700, color: '#000',
               }}>
                 {user.name?.charAt(0)?.toUpperCase() || 'U'}
               </div>
               <div>
-                <h3 style={{ color: '#fff', fontSize: '1.1rem', marginBottom: '0.15rem' }}>{user.name}</h3>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>{user.username && <span style={{ color: 'var(--gold)' }}>@{user.username}</span>} · {user.email}</p>
+                <h3 style={{ color: 'var(--text)', fontSize: '1.1rem', marginBottom: '0.15rem' }}>{user.name}</h3>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>{user.username && <span style={{ color: 'var(--accent)' }}>@{user.username}</span>} · {user.email}</p>
               </div>
             </div>
 
@@ -249,41 +245,11 @@ export default function SettingsPage() {
         {/* ── Security Tab ── */}
         {activeTab === 'security' && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            <div className="glass-card animate-in" style={{ padding: '2rem' }}>
-              <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#fff', marginBottom: '1.25rem', fontSize: '1.1rem' }}>
-                <Shield size={20} color="#10B981" /> Security Options
-              </h3>
-
-              <div style={toggleCardStyle}>
-                <div style={{ flex: 1 }}>
-                  <h4 style={{ color: '#fff', marginBottom: '0.2rem', fontSize: '0.95rem' }}>Two-Factor Authentication</h4>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>
-                    {twoFactorEnabled ? 'Enabled — OTP will be sent to your email on login' : 'Add an extra layer of security to your account'}
-                  </p>
-                </div>
-                <ToggleSwitch checked={twoFactorEnabled} onChange={() => setTwoFactorEnabled(!twoFactorEnabled)} />
-              </div>
-
-              <div style={toggleCardStyle}>
-                <div style={{ flex: 1 }}>
-                  <h4 style={{ color: '#fff', marginBottom: '0.2rem', fontSize: '0.95rem' }}>Withdrawal OTP</h4>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>Require a 6-digit OTP code before processing withdrawals</p>
-                </div>
-                <ToggleSwitch checked={withdrawalOtpEnabled} onChange={() => setWithdrawalOtpEnabled(!withdrawalOtpEnabled)} />
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
-                <button type="submit" className="btn btn-primary" disabled={saving} style={{ gap: '0.5rem' }}>
-                  {saving ? <GoldCoinLoader mini label={null} /> : <Save size={18} />}
-                  Save Security Settings
-                </button>
-              </div>
-            </div>
 
             {/* Password Change Card */}
             <div className="glass-card animate-in stagger-2" style={{ padding: '2rem' }}>
-              <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#fff', marginBottom: '1.25rem', fontSize: '1.1rem' }}>
-                <KeyRound size={20} color="var(--gold)" /> Change Password
+              <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text)', marginBottom: '1.25rem', fontSize: '1.1rem' }}>
+                <KeyRound size={20} color="var(--accent)" /> Change Password
               </h3>
 
               {pwMsg.text && (
@@ -360,7 +326,7 @@ export default function SettingsPage() {
                   onClick={handlePasswordChange}
                   className="btn btn-outline"
                   disabled={changingPw || !currentPassword || !newPassword || newPassword !== confirmNewPassword}
-                  style={{ borderColor: 'var(--gold)', color: 'var(--gold)', gap: '0.5rem' }}
+                  style={{ borderColor: 'var(--accent)', color: 'var(--accent)', gap: '0.5rem' }}
                 >
                   {changingPw ? <GoldCoinLoader mini label={null} /> : <KeyRound size={18} />}
                   Change Password
@@ -373,7 +339,7 @@ export default function SettingsPage() {
         {/* ── Notifications Tab ── */}
         {activeTab === 'notifications' && (
           <div className="glass-card animate-in" style={{ padding: '2rem' }}>
-            <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#fff', marginBottom: '0.5rem', fontSize: '1.1rem' }}>
+            <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text)', marginBottom: '0.5rem', fontSize: '1.1rem' }}>
               <Send size={20} color="var(--primary)" /> Notifications
             </h3>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.82rem', marginBottom: '1.5rem' }}>
@@ -391,7 +357,7 @@ export default function SettingsPage() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1 }}>
                     <span style={{ fontSize: '1.25rem' }}>{item.icon}</span>
                     <div>
-                      <h4 style={{ color: '#fff', marginBottom: '0.15rem', fontSize: '0.95rem' }}>{item.label}</h4>
+                      <h4 style={{ color: 'var(--text)', marginBottom: '0.15rem', fontSize: '0.95rem' }}>{item.label}</h4>
                       <p style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>{item.desc}</p>
                     </div>
                   </div>
@@ -415,8 +381,8 @@ export default function SettingsPage() {
         {/* ── Wallet Tab ── */}
         {activeTab === 'wallet' && (
           <div className="glass-card animate-in" style={{ padding: '2rem' }}>
-            <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#fff', marginBottom: '0.5rem', fontSize: '1.1rem' }}>
-              <Wallet size={20} color="var(--gold)" /> Payout Wallet
+            <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text)', marginBottom: '0.5rem', fontSize: '1.1rem' }}>
+              <Wallet size={20} color="var(--accent)" /> Payout Wallet
             </h3>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.82rem', marginBottom: '1.5rem' }}>
               Set your default wallet address for receiving withdrawal payouts
@@ -425,7 +391,7 @@ export default function SettingsPage() {
             <div style={{
               background: 'rgba(234,179,8,0.05)', border: '1px solid rgba(234,179,8,0.12)',
               borderRadius: '10px', padding: '0.85rem 1rem', marginBottom: '1.5rem',
-              display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.82rem', color: 'var(--gold)',
+              display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.82rem', color: 'var(--accent)',
             }}>
               <AlertCircle size={16} />
               Make sure the wallet address is correct. Incorrect addresses may result in permanent loss of funds.
@@ -480,7 +446,7 @@ const toggleCardStyle: React.CSSProperties = {
   justifyContent: 'space-between',
   alignItems: 'center',
   padding: '1rem 1.25rem',
-  background: 'rgba(255,255,255,0.02)',
+  background: 'var(--surface-hover)',
   border: '1px solid var(--border)',
   borderRadius: '10px',
   marginBottom: '0.5rem',
@@ -505,7 +471,7 @@ function ToggleSwitch({ checked, onChange }: { checked: boolean; onChange: () =>
         borderRadius: '13px',
         border: 'none',
         cursor: 'pointer',
-        background: checked ? 'var(--primary)' : 'rgba(255,255,255,0.1)',
+        background: checked ? 'var(--primary)' : 'var(--border-highlight)',
         transition: 'background 0.2s',
         flexShrink: 0,
       }}
@@ -518,9 +484,9 @@ function ToggleSwitch({ checked, onChange }: { checked: boolean; onChange: () =>
           width: '20px',
           height: '20px',
           borderRadius: '50%',
-          background: '#fff',
+          background: 'var(--text)',
           transition: 'left 0.2s',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
+          boxShadow: '0 1px 3px var(--border)',
         }}
       />
     </button>

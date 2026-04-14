@@ -134,7 +134,7 @@ export default function RegisterPage() {
             right: '-50px', 
             width: '200px', 
             height: '200px', 
-            background: 'var(--gold)', 
+            background: 'var(--accent)', 
             filter: 'blur(100px)', 
             opacity: 0.03,
             zIndex: 0 
@@ -148,7 +148,7 @@ export default function RegisterPage() {
               fontSize: '2rem', 
               marginBottom: '0.5rem', 
               fontWeight: 950,
-              background: 'linear-gradient(135deg, #fff 0%, var(--gold) 100%)',
+              background: 'linear-gradient(135deg, var(--text) 0%, var(--accent) 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             }}>
@@ -182,18 +182,18 @@ export default function RegisterPage() {
           {isRegistered ? (
             <div className="animate-in" style={{ 
               textAlign: 'center', 
-              background: 'rgba(8, 14, 26, 0.95)', 
+              background: 'var(--surface)', 
               backdropFilter: 'blur(20px)',
               borderRadius: '24px', 
               padding: '3.5rem 2rem', 
-              color: '#ffffff', 
-              boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
+              color: 'var(--text)', 
+              boxShadow: '0 20px 40px var(--border)',
               border: '1px solid rgba(212, 175, 55, 0.15)',
               position: 'relative',
               overflow: 'hidden'
             }}>
               {/* Top accent */}
-              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, var(--gold), transparent)' }} />
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
 
               {/* Brand Icon placeholder */}
               <div style={{ width: '64px', height: '64px', margin: '0 auto 1.75rem', background: 'rgba(247, 147, 26, 0.1)', border: '1px solid rgba(247, 147, 26, 0.3)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f7931a', fontSize: '2rem', fontWeight: 'bold' }}>
@@ -201,17 +201,17 @@ export default function RegisterPage() {
               </div>
 
               <div style={{ marginBottom: '2.5rem' }}>
-                <div style={{ width: '56px', height: '56px', margin: '0 auto 1.25rem', background: 'rgba(255, 255, 255, 0.05)', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
-                  <Mail size={32} color="#ffffff" style={{ opacity: 0.9 }} />
+                <div style={{ width: '56px', height: '56px', margin: '0 auto 1.25rem', background: 'var(--border)', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border-highlight)' }}>
+                  <Mail size={32} color="var(--text)" style={{ opacity: 0.9 }} />
                 </div>
                 <h2 className="text-gradient-gold" style={{ fontSize: '1.8rem', fontWeight: '800', marginBottom: '0.75rem' }}>Check Your Email</h2>
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', lineHeight: 1.6 }}>
                   We sent a verification link to<br />
-                  <strong style={{ color: '#fff' }}>{formData.email}</strong>
+                  <strong style={{ color: 'var(--text)' }}>{formData.email}</strong>
                 </p>
               </div>
 
-              <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem', marginBottom: '2rem', lineHeight: 1.6 }}>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '2rem', lineHeight: 1.6 }}>
                 Click the link in the email to verify your account. The link expires in 10 minutes.
               </p>
 
@@ -219,7 +219,7 @@ export default function RegisterPage() {
                 background: 'rgba(212, 175, 55, 0.05)', 
                 padding: '1rem', 
                 borderRadius: '16px', 
-                color: 'rgba(255,255,255,0.7)', 
+                color: 'var(--text-muted)', 
                 fontSize: '0.82rem', 
                 border: '1px solid rgba(212, 175, 55, 0.1)', 
                 marginBottom: '2.5rem',
@@ -238,7 +238,7 @@ export default function RegisterPage() {
                   fontSize: '1rem', 
                   fontWeight: 'bold', 
                   background: '#c09b2b', 
-                  color: '#fff',
+                  color: 'var(--text)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -368,19 +368,19 @@ export default function RegisterPage() {
 
             {/* Captcha */}
             <div className="input-group" style={{ marginBottom: '1.5rem' }}>
-              <label style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem' }}>Captcha</label>
+              <label style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Captcha</label>
               <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.4rem' }}>
                 <div style={{
                   flex: '0 0 140px',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  background: 'var(--border)',
+                  border: '1px solid var(--border-highlight)',
                   borderRadius: '12px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   fontSize: '1.25rem',
                   fontWeight: '700',
-                  color: 'var(--gold)',
+                  color: 'var(--accent)',
                   letterSpacing: '2px',
                   userSelect: 'none'
                 }}>

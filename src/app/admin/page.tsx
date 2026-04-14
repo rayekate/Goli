@@ -88,27 +88,27 @@ export default function AdminOverviewPage() {
   return (
     <div className="container animate-in stagger-1" style={{ padding: '20px 15px', maxWidth: '1200px' }}>
       <div style={{ marginBottom: '2.5rem', borderBottom: '1px solid var(--border)', paddingBottom: '1.5rem' }}>
-        <h1 style={{ fontSize: 'clamp(1.6rem, 4vw, 2.5rem)', display: 'flex', alignItems: 'center', gap: '0.75rem', color: '#fff', marginBottom: '0.5rem', flexWrap: 'wrap' }} className="text-gradient-gold">
-          <BarChart3 size={32} color="var(--gold)" style={{ filter: 'drop-shadow(0 0 10px var(--gold-glow))' }} /> Command Center
+        <h1 style={{ fontSize: 'clamp(1.6rem, 4vw, 2.5rem)', display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--text)', marginBottom: '0.5rem', flexWrap: 'wrap' }} className="text-gradient-gold">
+          <BarChart3 size={32} color="var(--accent)" style={{ filter: 'drop-shadow(0 0 10px var(--gold-glow))' }} /> Command Center
         </h1>
         <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>Full platform overview — users, finances, trades, and house profitability.</p>
       </div>
 
       {/* Alert */}
       {(stats.pendingDeposits + stats.pendingWithdrawals) > 0 && (
-        <div style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.3)', borderRadius: '12px', padding: '1rem 1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <AlertCircle size={20} color="#d4af37" />
+        <div className="glass-card" style={{ background: 'var(--surface)', border: '1px solid var(--border-highlight)', borderLeft: '4px solid var(--accent)', borderRadius: '24px', padding: '1.25rem 1.5rem', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <AlertCircle size={24} color="var(--accent)" />
           <div style={{ flex: 1 }}>
-            <p style={{ fontWeight: 600, color: '#d4af37', fontSize: '0.9rem' }}>Action Required</p>
-            <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+            <p style={{ fontWeight: 800, color: 'var(--accent)', fontSize: '1rem', marginBottom: '0.2rem' }}>ACTION REQUIRED</p>
+            <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
               {stats.pendingDeposits > 0 && `${stats.pendingDeposits} deposit(s) ($${stats.pendingDepositAmount.toLocaleString()}) `}
               {stats.pendingDeposits > 0 && stats.pendingWithdrawals > 0 && '· '}
               {stats.pendingWithdrawals > 0 && `${stats.pendingWithdrawals} withdrawal(s) ($${stats.pendingWithdrawalAmount.toLocaleString()}) `}
               awaiting review.
             </p>
           </div>
-          <Link href="/admin/transactions" className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.82rem', background: 'linear-gradient(135deg, #d4af37, #f5e06e)', color: '#000', flexShrink: 0 }}>
-            Review Now
+          <Link href="/admin/transactions" className="btn btn-primary" style={{ padding: '0.6rem 1.25rem', fontSize: '0.82rem', flexShrink: 0, borderRadius: '100px', fontWeight: 900 }}>
+            Review Queue
           </Link>
         </div>
       )}
@@ -125,13 +125,13 @@ export default function AdminOverviewPage() {
 
       {/* Quick Links */}
       <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem', marginBottom: '3rem', flexWrap: 'wrap' }}>
-        <Link href="/admin/users" className="btn btn-gold" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.8rem 1.5rem' }}>
+        <Link href="/admin/users" className="btn btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.8rem 1.5rem', borderRadius: '100px', fontWeight: 800 }}>
           <Users size={18} /> Manage Users
         </Link>
-        <Link href="/admin/transactions" className="btn btn-gold" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.8rem 1.5rem' }}>
+        <Link href="/admin/transactions" className="btn btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.8rem 1.5rem', borderRadius: '100px', fontWeight: 800 }}>
           <ArrowLeftRight size={18} /> Transactions
         </Link>
-        <Link href="/admin/trades" className="btn btn-gold" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.8rem 1.5rem' }}>
+        <Link href="/admin/trades" className="btn btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.8rem 1.5rem', borderRadius: '100px', fontWeight: 800 }}>
           <Activity size={18} /> Trade Surveillance
         </Link>
       </div>
@@ -140,20 +140,20 @@ export default function AdminOverviewPage() {
       {recentPending.length > 0 && (
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-            <h3 style={{ color: '#fff', fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }} className="text-gradient-gold">
-              <AlertCircle size={20} color="var(--gold)" /> Recent Pending Requests
+            <h3 style={{ color: 'var(--text)', fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }} className="text-gradient-gold">
+              <AlertCircle size={20} color="var(--accent)" /> Recent Pending Requests
             </h3>
-            <Link href="/admin/transactions" style={{ fontSize: '0.9rem', color: 'var(--gold)', fontWeight: 600 }}>View all →</Link>
+            <Link href="/admin/transactions" style={{ fontSize: '0.9rem', color: 'var(--accent)', fontWeight: 600 }}>View all →</Link>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {recentPending.map((t: any, i: number) => (
               <div key={t._id} className={`glass-card stagger-${Math.min((i % 4) + 1, 4)}`} style={{ padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', borderLeft: `4px solid ${t.type === 'deposit' ? 'var(--success)' : 'var(--warning)'}` }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', minWidth: 0, flex: '1 1 auto' }}>
-                  <div style={{ padding: '0.75rem', background: 'rgba(255,255,255,0.03)', borderRadius: '12px' }}>
+                  <div style={{ padding: '0.75rem', background: 'var(--surface-hover)', borderRadius: '12px' }}>
                     {t.type === 'deposit' ? <ArrowDownCircle size={24} color="var(--success)" style={{ filter: 'drop-shadow(0 0 5px var(--success-glow))' }} /> : <ArrowUpCircle size={24} color="var(--warning)" style={{ filter: 'drop-shadow(0 0 5px rgba(255,204,0,0.3))' }} />}
                   </div>
                   <div>
-                    <span style={{ fontSize: '1.1rem', fontWeight: 800, color: '#fff', display: 'block', marginBottom: '0.2rem' }}>
+                    <span style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text)', display: 'block', marginBottom: '0.2rem' }}>
                       {t.userId?.name}
                     </span>
                     <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
@@ -163,7 +163,7 @@ export default function AdminOverviewPage() {
                 </div>
                 
                 <div style={{ textAlign: 'right' }}>
-                  <p style={{ fontWeight: 900, fontSize: '1.2rem', color: t.type === 'deposit' ? 'var(--success)' : '#fff', textShadow: t.type === 'deposit' ? '0 0 10px var(--success-glow)' : 'none' }}>
+                  <p style={{ fontWeight: 900, fontSize: '1.2rem', color: t.type === 'deposit' ? 'var(--success)' : 'var(--text)', textShadow: t.type === 'deposit' ? '0 0 10px var(--success-glow)' : 'none' }}>
                     ${t.amount.toLocaleString()}
                   </p>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '0.25rem' }}>

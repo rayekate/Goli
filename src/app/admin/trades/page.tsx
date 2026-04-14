@@ -58,7 +58,7 @@ export default function AdminTradesPage() {
       <div style={{ marginBottom: '2.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem', borderBottom: '1px solid var(--border)', paddingBottom: '1.5rem' }}>
         <div>
           <h1 style={{ fontSize: 'clamp(1.6rem, 4vw, 2.5rem)', display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem', flexWrap: 'wrap' }} className="text-gradient-gold">
-            <Activity size={32} color="var(--gold)" style={{ filter: 'drop-shadow(0 0 10px var(--gold-glow))' }} /> Trade Surveillance
+            <Activity size={32} color="var(--accent)" style={{ filter: 'drop-shadow(0 0 10px var(--gold-glow))' }} /> Trade Surveillance
           </h1>
           <p style={{ color: 'var(--text-muted)' }}>Complete oversight of all platform trading activity and house profit/loss.</p>
         </div>
@@ -66,10 +66,10 @@ export default function AdminTradesPage() {
         <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
           <div style={{ 
             display: 'flex', 
-            background: 'rgba(0,0,0,0.2)', 
+            background: 'var(--border)', 
             padding: '3px', 
             borderRadius: '10px', 
-            border: '1px solid rgba(255,255,255,0.05)',
+            border: '1px solid var(--border)',
             gap: '2px'
           }}>
             {[
@@ -93,7 +93,7 @@ export default function AdminTradesPage() {
                   letterSpacing: '0.5px',
                   background: filterResult === f.id ? 'rgba(212,175,55,0.1)' : 'transparent',
                   color: filterResult === f.id ? '#d4af37' : 'var(--text-muted)',
-                  boxShadow: filterResult === f.id ? '0 2px 10px rgba(0,0,0,0.2)' : 'none',
+                  boxShadow: filterResult === f.id ? '0 2px 10px var(--border)' : 'none',
                 }}
               >
                 {f.label}
@@ -148,16 +148,16 @@ export default function AdminTradesPage() {
       </div>
 
       {/* Trades List */}
-      <h3 style={{ marginBottom: '1.5rem', color: '#fff', fontSize: '1.25rem' }}>Recent Activity Feed</h3>
+      <h3 style={{ marginBottom: '1.5rem', color: 'var(--text)', fontSize: '1.25rem' }}>Recent Activity Feed</h3>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         {filteredTrades.slice(0, 100).map((t: any, i: number) => (
           <div key={t._id} className={`glass-card stagger-${Math.min((i % 5) + 1, 5)}`} style={{ padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem', borderLeft: `4px solid ${t.result === 'win' ? 'var(--success)' : t.result === 'loss' ? 'var(--danger)' : 'var(--text-muted)'}` }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', minWidth: '200px' }}>
-              <div style={{ padding: '0.75rem', background: 'rgba(255,255,255,0.03)', borderRadius: '12px' }}>
-                <User size={24} color="#fff" />
+              <div style={{ padding: '0.75rem', background: 'var(--surface-hover)', borderRadius: '12px' }}>
+                <User size={24} color="var(--text)" />
               </div>
               <div>
-                <p style={{ fontSize: '1rem', fontWeight: 800, color: '#fff' }}>{t.userId?.name}</p>
+                <p style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text)' }}>{t.userId?.name}</p>
                 <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{t.userId?.email}</p>
               </div>
             </div>
@@ -177,11 +177,11 @@ export default function AdminTradesPage() {
 
             <div style={{ minWidth: '120px' }}>
               <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Entry / Exit</p>
-              <p style={{ fontSize: '0.85rem', color: '#fff' }}>${t.entryPrice?.toFixed(2)} → {t.exitPrice ? `$${t.exitPrice.toFixed(2)}` : '—'}</p>
+              <p style={{ fontSize: '0.85rem', color: 'var(--text)' }}>${t.entryPrice?.toFixed(2)} → {t.exitPrice ? `$${t.exitPrice.toFixed(2)}` : '—'}</p>
             </div>
 
             <div style={{ textAlign: 'right', minWidth: '120px' }}>
-              <p style={{ fontWeight: 900, fontSize: '1.2rem', color: t.result === 'win' ? 'var(--success)' : t.result === 'loss' ? 'var(--danger)' : '#fff', textShadow: t.result === 'win' ? '0 0 10px var(--success-glow)' : t.result === 'loss' ? '0 0 10px var(--danger-glow)' : 'none' }}>
+              <p style={{ fontWeight: 900, fontSize: '1.2rem', color: t.result === 'win' ? 'var(--success)' : t.result === 'loss' ? 'var(--danger)' : 'var(--text)', textShadow: t.result === 'win' ? '0 0 10px var(--success-glow)' : t.result === 'loss' ? '0 0 10px var(--danger-glow)' : 'none' }}>
                 {t.result === 'win' ? `+$${Math.abs(t.profitOrLoss).toFixed(2)}` : t.result === 'loss' ? `-$${Math.abs(t.profitOrLoss).toFixed(2)}` : 'PENDING'}
               </p>
               <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.4rem', marginTop: '0.2rem' }}>

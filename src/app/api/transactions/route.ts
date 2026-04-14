@@ -133,33 +133,8 @@ export async function POST(req: NextRequest) {
       if (pendingCount >= 3) {
         return NextResponse.json({ error: 'You have too many pending withdrawals. Please wait for existing ones to be processed.' }, { status: 400 });
       }
-
-      // Verify OTP if withdrawal OTP is enabled
-      if (user.withdrawalOtpEnabled) {
-        const otpCode = data.otpCode;
-        if (!otpCode) {
-          return NextResponse.json({ error: 'OTP code is required for withdrawals' }, { status: 400 });
-        }
-        if (!user.withdrawalOtp || user.withdrawalOtp.length !== 6 || !user.withdrawalOtpExpiry) {
-          return NextResponse.json({ error: 'Please request an OTP first' }, { status: 400 });
-        }
-        const expiryTime = user.withdrawalOtpExpiry instanceof Date 
-          ? user.withdrawalOtpExpiry.getTime() 
-          : new Date(user.withdrawalOtpExpiry).getTime();
-        if (expiryTime < Date.now()) {
-          return NextResponse.json({ error: 'OTP has expired. Please request a new one.' }, { status: 400 });
-        }
-        if (user.withdrawalOtp !== otpCode) {
-          return NextResponse.json({ error: 'Invalid OTP code. Please try again.' }, { status: 400 });
-        }
-        // Clear OTP after successful verification (use updateOne to avoid race conditions)
-        await User.updateOne(
-          { _id: payload.userId },
-          { $unset: { withdrawalOtp: '', withdrawalOtpExpiry: '' } }
-        );
-      }
     }
-    
+
     // Handle Cloudinary upload for deposit proof
     let finalProofUrl = data.type === 'deposit' ? data.proofImage : undefined;
     if (data.type === 'deposit' && data.proofImage) {

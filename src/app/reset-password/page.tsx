@@ -86,7 +86,7 @@ function ResetPasswordForm() {
     <>
       <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
         <div style={{ width: '56px', height: '56px', margin: '0 auto 1rem', background: 'rgba(212, 175, 55, 0.08)', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(212,175,55,0.15)' }}>
-          <KeyRound size={24} color="var(--gold)" />
+          <KeyRound size={24} color="var(--accent)" />
         </div>
         <h2 className="text-gradient-gold" style={{ fontSize: '1.8rem', marginBottom: '0.4rem' }}>Set New Password</h2>
         <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem' }}>
@@ -180,7 +180,7 @@ function ResetPasswordForm() {
 
       <p style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.88rem', color: 'var(--text-muted)' }}>
         Didn't receive a code?{' '}
-        <Link href="/forgot-password" style={{ color: 'var(--gold)', fontWeight: 600 }}>Try again</Link>
+        <Link href="/forgot-password" style={{ color: 'var(--accent)', fontWeight: 600 }}>Try again</Link>
       </p>
     </>
   );
@@ -193,7 +193,7 @@ export default function ResetPasswordPage() {
       
       <div className="container animate-in" style={{ maxWidth: '440px', width: '100%', padding: '40px 20px', zIndex: 1 }}>
         <div style={{
-          background: 'rgba(8, 14, 26, 0.9)',
+          background: 'var(--surface)',
           backdropFilter: 'blur(20px)',
           border: '1px solid rgba(212, 175, 55, 0.1)',
           borderRadius: '20px',
@@ -202,7 +202,7 @@ export default function ResetPasswordPage() {
           overflow: 'hidden',
         }}>
           {/* Top accent */}
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, var(--gold), transparent)' }} />
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
 
           <Suspense fallback={<div style={{ textAlign: 'center', padding: '2rem' }}><GoldCoinLoader /></div>}>
             <ResetPasswordForm />

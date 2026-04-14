@@ -12,10 +12,7 @@ export default function WithdrawPage() {
   const [amount, setAmount] = useState('');
   const [walletAddress, setWalletAddress] = useState('');
   const [network, setNetwork] = useState('USDT_TRC20');
-  const [otpCode, setOtpCode] = useState('');
-  const [otpSending, setOtpSending] = useState(false);
-  const [otpSent, setOtpSent] = useState(false);
-  const [otpCooldown, setOtpCooldown] = useState(0);
+
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
@@ -66,28 +63,7 @@ export default function WithdrawPage() {
     }
   }, [user]);
 
-  // OTP cooldown timer
-  useEffect(() => {
-    if (otpCooldown <= 0) return;
-    const t = setTimeout(() => setOtpCooldown(otpCooldown - 1), 1000);
-    return () => clearTimeout(t);
-  }, [otpCooldown]);
 
-  const sendOtp = async () => {
-    setOtpSending(true);
-    setError('');
-    try {
-      const res = await fetch('/api/user/send-otp', { method: 'POST' });
-      const data = await res.json();
-      if (res.ok) {
-        setOtpSent(true);
-        setOtpCooldown(60);
-      } else {
-        setError(data.error || 'Failed to send OTP');
-      }
-    } catch { setError('Network error sending OTP'); }
-    finally { setOtpSending(false); }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,13 +73,13 @@ export default function WithdrawPage() {
     if (numAmount > limits.maxWithdrawal) { setError(`Maximum withdrawal is $${limits.maxWithdrawal}.`); return; }
     if (numAmount > (user?.balance || 0)) { setError('Amount exceeds your available balance.'); return; }
     if (!walletAddress.trim() || walletAddress.trim().length < 10) { setError('Please enter a valid wallet address.'); return; }
-    if (user?.withdrawalOtpEnabled && otpCode.trim().length !== 6) { setError('Please enter a valid 6-digit OTP code.'); return; }
+
     setSubmitting(true);
     try {
       const res = await fetch('/api/transactions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'withdrawal', amount: numAmount, walletAddress: walletAddress.trim(), cryptoType: network, otpCode: user?.withdrawalOtpEnabled ? otpCode.trim() : undefined }),
+        body: JSON.stringify({ type: 'withdrawal', amount: numAmount, walletAddress: walletAddress.trim(), cryptoType: network }),
       });
       if (res.ok) { setSubmitted(true); }
       else { const data = await res.json(); setError(data.error || 'Failed to submit'); }
@@ -227,7 +203,7 @@ export default function WithdrawPage() {
                     position: 'absolute', top: 'calc(100% + 12px)', left: 0, right: 0, zIndex: 100,
                     background: 'var(--surface)',
                     border: '1px solid var(--border)', borderRadius: '15px',
-                    overflow: 'hidden', boxShadow: '0 20px 60px rgba(0,0,0,0.1)',
+                    overflow: 'hidden', boxShadow: '0 20px 60px var(--border)',
                     animation: 'scale-up-center 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
                   }}>
                     {networkOptions.map((opt) => (
@@ -267,39 +243,7 @@ export default function WithdrawPage() {
               />
             </div>
 
-            {user?.withdrawalOtpEnabled && (
-              <div className="card-asymmetric" style={{ padding: '3rem', background: 'rgba(var(--text), 0.02)', border: '1px solid var(--border-subtle)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
-                  <ShieldCheck size={20} color="var(--primary)" />
-                  <h4 className="meta-text" style={{ color: 'var(--primary)', fontSize: '9px' }}>PROTOCOL_AUTHORIZATION</h4>
-                </div>
-                <div style={{ display: 'flex', gap: '1.5rem' }}>
-                  <input
-                    type="text"
-                    placeholder="000000"
-                    required
-                    value={otpCode}
-                    onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                    maxLength={6}
-                    style={{ letterSpacing: '0.8em', fontFamily: 'monospace', fontSize: '1.5rem', textAlign: 'center', flex: 1, padding: '1.25rem', background: 'rgba(var(--text), 0.01)', border: '1px solid var(--border)', borderRadius: '10px' }}
-                  />
-                  <button
-                    type="button"
-                    onClick={sendOtp}
-                    disabled={otpSending || otpCooldown > 0}
-                    className="btn btn-asymmetric interactive-haptic"
-                    style={{ 
-                      whiteSpace: 'nowrap', padding: '0 2.5rem', fontSize: '10px', fontWeight: 900,
-                      border: '1px solid var(--primary)', color: 'var(--primary)', background: 'transparent',
-                      textTransform: 'uppercase', letterSpacing: '0.1em'
-                    }}
-                  >
-                    {otpSending ? <GoldCoinLoader mini label={null} /> : otpCooldown > 0 ? `RETRY (${otpCooldown}s)` : 'GENERATE OTP'}
-                  </button>
-                </div>
-                {otpSent && <p className="meta-text" style={{ fontSize: '9px', color: 'var(--primary)', marginTop: '1.5rem', textAlign: 'center' }}>[!] AUTHENTICATION TOKEN DISPATCHED TO REGISTERED TERMINAL</p>}
-              </div>
-            )}
+
 
             <div style={{ 
               background: 'rgba(52, 211, 153, 0.05)', 

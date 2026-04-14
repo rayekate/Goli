@@ -104,11 +104,11 @@ export default function AdminWalletsPage() {
   );
 
   const inputStyle: React.CSSProperties = {
-    background: 'rgba(255,255,255,0.05)',
+    background: 'var(--border)',
     border: '1px solid var(--border)',
     borderRadius: '8px',
     padding: '0.6rem 0.9rem',
-    color: '#fff',
+    color: 'var(--text)',
     fontSize: '0.9rem',
     width: '100%',
     outline: 'none',
@@ -119,10 +119,10 @@ export default function AdminWalletsPage() {
       {/* Header */}
       <div style={{ marginBottom: '2rem', borderBottom: '1px solid var(--border)', paddingBottom: '1.5rem' }}>
         <h1
-          style={{ fontSize: 'clamp(1.5rem, 4vw, 2.2rem)', display: 'flex', alignItems: 'center', gap: '0.75rem', color: '#fff', marginBottom: '0.5rem', flexWrap: 'wrap' }}
+          style={{ fontSize: 'clamp(1.5rem, 4vw, 2.2rem)', display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--text)', marginBottom: '0.5rem', flexWrap: 'wrap' }}
           className="text-gradient-gold"
         >
-          <Wallet size={30} color="var(--gold)" style={{ filter: 'drop-shadow(0 0 10px var(--gold-glow))' }} />
+          <Wallet size={30} color="var(--accent)" style={{ filter: 'drop-shadow(0 0 10px var(--gold-glow))' }} />
           Deposit Wallets
         </h1>
         <p style={{ color: 'var(--text-muted)', fontSize: '1rem' }}>
@@ -153,9 +153,9 @@ export default function AdminWalletsPage() {
           background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)', borderRadius: '12px',
           padding: '0.75rem 1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem',
         }}>
-          <Wallet size={16} color="var(--gold)" />
+          <Wallet size={16} color="var(--accent)" />
           <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Total Wallets:</span>
-          <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--gold)' }}>{wallets.length}</span>
+          <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--accent)' }}>{wallets.length}</span>
         </div>
       </div>
 
@@ -165,7 +165,7 @@ export default function AdminWalletsPage() {
           <div
             key={idx}
             style={{
-              background: 'rgba(8,14,26,0.85)',
+              background: 'var(--surface)',
               backdropFilter: 'blur(20px)',
               border: '1px solid var(--border)',
               borderRadius: '16px',
@@ -182,7 +182,7 @@ export default function AdminWalletsPage() {
                   <CoinIcon symbol={w.coinName || w.logo || '?'} size={22} />
                 </div>
                 <div>
-                  <span style={{ fontWeight: 700, color: '#fff', fontSize: '1rem' }}>
+                  <span style={{ fontWeight: 700, color: 'var(--text)', fontSize: '1rem' }}>
                     {w.coinName || 'New Wallet'}
                   </span>
                   {w.network && (
@@ -195,7 +195,7 @@ export default function AdminWalletsPage() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <span style={{
                   fontSize: '0.72rem', color: 'var(--text-muted)',
-                  background: 'rgba(255,255,255,0.04)', padding: '0.2rem 0.65rem', borderRadius: '6px',
+                  background: 'var(--border)', padding: '0.2rem 0.65rem', borderRadius: '6px',
                   fontWeight: 600,
                 }}>#{idx + 1}</span>
                 <button
@@ -251,7 +251,7 @@ export default function AdminWalletsPage() {
                     onClick={() => copyAddress(idx)}
                     style={{
                       background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)',
-                      borderRadius: '8px', padding: '0.5rem 0.65rem', cursor: 'pointer', color: 'var(--gold)',
+                      borderRadius: '8px', padding: '0.5rem 0.65rem', cursor: 'pointer', color: 'var(--accent)',
                       flexShrink: 0, transition: 'all 0.2s',
                     }}
                     title="Copy address"
@@ -269,7 +269,7 @@ export default function AdminWalletsPage() {
       {wallets.length === 0 && (
         <div style={{
           textAlign: 'center', padding: '3rem 2rem',
-          background: 'rgba(8,14,26,0.6)', borderRadius: '16px', border: '1px solid var(--border)',
+          background: 'var(--surface)', borderRadius: '16px', border: '1px solid var(--border)',
           marginBottom: '1rem',
         }}>
           <Wallet size={40} color="var(--text-muted)" style={{ opacity: 0.3, marginBottom: '1rem' }} />
@@ -284,7 +284,7 @@ export default function AdminWalletsPage() {
         style={{
           display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', justifyContent: 'center',
           padding: '0.95rem', borderRadius: '12px', cursor: 'pointer', fontSize: '0.95rem', fontWeight: 700,
-          background: 'rgba(212,175,55,0.06)', border: '1px dashed rgba(212,175,55,0.3)', color: 'var(--gold)',
+          background: 'rgba(212,175,55,0.06)', border: '1px dashed rgba(212,175,55,0.3)', color: 'var(--accent)',
           marginTop: '1rem', transition: 'all 0.2s',
         }}
       >

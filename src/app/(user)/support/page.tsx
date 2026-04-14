@@ -141,26 +141,26 @@ export default function SupportPage() {
     <div className="container animate-in" style={{ padding: '0', maxWidth: '900px', margin: '0 auto' }}>
       
       {/* FAQ Section */}
-      <div style={{ marginBottom: '3.5rem', background: 'rgba(255,255,255,0.02)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)', overflow: 'hidden' }}>
+      <div style={{ marginBottom: '3.5rem', background: 'var(--surface-hover)', borderRadius: '16px', border: '1px solid var(--border)', overflow: 'hidden' }}>
         <button 
           onClick={() => setFaqOpen(!faqOpen)}
-          style={{ width: '100%', padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'transparent', border: 'none', cursor: 'pointer', color: '#fff', outline: 'none' }}
+          style={{ width: '100%', padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text)', outline: 'none' }}
         >
-          <span style={{ fontSize: '1.1rem', fontWeight: 800, letterSpacing: '1px', color: 'var(--gold)' }}>FAQ</span>
+          <span style={{ fontSize: '1.1rem', fontWeight: 800, letterSpacing: '1px', color: 'var(--accent)' }}>FAQ</span>
           {faqOpen ? <ChevronUp size={20} color="var(--text-muted)" /> : <ChevronDown size={20} color="var(--text-muted)" />}
         </button>
         
         {faqOpen && (
           <div style={{ padding: '0 1.5rem 1.5rem 1.5rem', marginTop: '0.5rem' }}>
-            <div style={{ borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '0.5rem' }}>
+            <div style={{ borderTop: '1px solid var(--border)', paddingTop: '0.5rem' }}>
               {faqs.map((faq, index) => (
-                <div key={index} style={{ borderBottom: index < faqs.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}>
+                <div key={index} style={{ borderBottom: index < faqs.length - 1 ? '1px solid var(--border)' : 'none' }}>
                   <button
                     onClick={() => setActiveFaq(activeFaq === index ? null : index)}
-                    style={{ width: '100%', padding: '1.25rem 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'transparent', border: 'none', cursor: 'pointer', color: '#fff', textAlign: 'left', outline: 'none' }}
+                    style={{ width: '100%', padding: '1.25rem 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text)', textAlign: 'left', outline: 'none' }}
                   >
                     <span style={{ fontSize: '0.95rem', fontWeight: 700 }}>{faq.question}</span>
-                    {activeFaq === index ? <ChevronUp size={16} color="var(--gold)" /> : <ChevronDown size={16} color="var(--text-muted)" />}
+                    {activeFaq === index ? <ChevronUp size={16} color="var(--accent)" /> : <ChevronDown size={16} color="var(--text-muted)" />}
                   </button>
                   {activeFaq === index && (
                     <div style={{ paddingBottom: '1.25rem', paddingRight: '2rem', color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: 1.6 }}>
@@ -178,7 +178,7 @@ export default function SupportPage() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3.5rem' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
-            <div className="badge" style={{ background: 'rgba(255,255,255,0.03)', color: 'var(--text-muted)', border: '1px solid rgba(255,255,255,0.05)' }}>SUPPORT MATRIX</div>
+            <div className="badge" style={{ background: 'var(--surface-hover)', color: 'var(--text-muted)', border: '1px solid var(--border)' }}>SUPPORT MATRIX</div>
             <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--success)', boxShadow: '0 0 10px var(--success)' }} />
             <span style={{ fontSize: '0.65rem', fontWeight: 900, color: 'var(--success)', letterSpacing: '0.2em' }}>DIRECT LINK ESTABLISHED</span>
           </div>
@@ -188,7 +188,7 @@ export default function SupportPage() {
             fontWeight: 950,
             letterSpacing: '-0.04em',
             lineHeight: 1,
-            color: '#fff' 
+            color: 'var(--text)' 
           }}>
             Technical <span className="text-gradient-gold">Command Center</span>
           </h1>
@@ -213,7 +213,7 @@ export default function SupportPage() {
           {tickets.length === 0 ? (
             <div style={{ padding: '6rem 3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
               <MessageSquare size={48} style={{ opacity: 0.1, margin: '0 auto 2rem' }} />
-              <h3 style={{ color: '#fff', fontWeight: 900, fontSize: '1.5rem', marginBottom: '0.5rem' }}>NO ACTIVE TICKETS</h3>
+              <h3 style={{ color: 'var(--text)', fontWeight: 900, fontSize: '1.5rem', marginBottom: '0.5rem' }}>NO ACTIVE TICKETS</h3>
               <p>Your support communication history will be logged here.</p>
             </div>
           ) : (
@@ -226,8 +226,8 @@ export default function SupportPage() {
                   style={{ 
                     padding: '1.5rem 2rem', 
                     borderRadius: '20px',
-                    background: 'rgba(255,255,255,0.02)',
-                    border: '1px solid rgba(255,255,255,0.05)',
+                    background: 'var(--surface-hover)',
+                    border: '1px solid var(--border)',
                     cursor: 'pointer', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)', 
                     display: 'flex', justifyContent: 'space-between', alignItems: 'center'
                   }}
@@ -235,21 +235,21 @@ export default function SupportPage() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
                     <div style={{ 
                       width: '12px', height: '12px', borderRadius: '50%', 
-                      background: t.status === 'open' ? 'var(--success)' : t.status === 'pending' ? 'var(--gold)' : 'rgba(255,255,255,0.2)',
-                      boxShadow: t.status === 'open' ? '0 0 15px var(--success)' : t.status === 'pending' ? '0 0 15px var(--gold)' : 'none',
+                      background: t.status === 'open' ? 'var(--success)' : t.status === 'pending' ? 'var(--accent)' : 'var(--border-highlight)',
+                      boxShadow: t.status === 'open' ? '0 0 15px var(--success)' : t.status === 'pending' ? '0 0 15px var(--accent)' : 'none',
                       animation: (t.status === 'open' || t.status === 'pending') ? 'pulse 2s infinite' : 'none'
                     }} />
                     <div>
-                      <h3 style={{ color: '#fff', marginBottom: '0.4rem', fontWeight: 800, fontSize: '1.1rem', letterSpacing: '-0.02em' }}>{t.title}</h3>
+                      <h3 style={{ color: 'var(--text)', marginBottom: '0.4rem', fontWeight: 800, fontSize: '1.1rem', letterSpacing: '-0.02em' }}>{t.title}</h3>
                       <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>
                         LAST UPDATE: {new Date(t.updatedAt).toLocaleString().toUpperCase()}
                       </p>
                     </div>
                   </div>
                   <div className="badge" style={{ 
-                    background: t.status === 'open' ? 'rgba(16, 185, 129, 0.1)' : t.status === 'pending' ? 'rgba(212, 175, 55, 0.1)' : 'rgba(255,255,255,0.05)',
-                    color: t.status === 'open' ? 'var(--success)' : t.status === 'pending' ? 'var(--gold)' : 'var(--text-muted)',
-                    border: `1px solid ${t.status === 'open' ? 'rgba(16, 185, 129, 0.2)' : t.status === 'pending' ? 'rgba(212, 175, 55, 0.2)' : 'rgba(255,255,255,0.1)'}`,
+                    background: t.status === 'open' ? 'rgba(16, 185, 129, 0.1)' : t.status === 'pending' ? 'rgba(212, 175, 55, 0.1)' : 'var(--border)',
+                    color: t.status === 'open' ? 'var(--success)' : t.status === 'pending' ? 'var(--accent)' : 'var(--text-muted)',
+                    border: `1px solid ${t.status === 'open' ? 'rgba(16, 185, 129, 0.2)' : t.status === 'pending' ? 'rgba(212, 175, 55, 0.2)' : 'var(--border-highlight)'}`,
                     fontSize: '0.65rem', padding: '0.3rem 1rem'
                   }}>
                     {t.status?.toUpperCase()}
@@ -262,8 +262,8 @@ export default function SupportPage() {
       )}
 
       {view === 'new' && (
-        <form onSubmit={createTicket} className="glass-card" style={{ padding: '4rem', borderRadius: '32px', borderTop: '2px solid var(--gold)' }}>
-          <h2 style={{ fontSize: '2rem', fontWeight: 950, color: '#fff', letterSpacing: '-0.04em', marginBottom: '2.5rem' }}>Initialize New <span className="text-gradient-gold">Support Session</span></h2>
+        <form onSubmit={createTicket} className="glass-card" style={{ padding: '4rem', borderRadius: '32px', borderTop: '2px solid var(--accent)' }}>
+          <h2 style={{ fontSize: '2rem', fontWeight: 950, color: 'var(--text)', letterSpacing: '-0.04em', marginBottom: '2.5rem' }}>Initialize New <span className="text-gradient-gold">Support Session</span></h2>
           <div className="input-group">
             <label>SESSION SUBJECT</label>
             <input 
@@ -301,9 +301,9 @@ export default function SupportPage() {
             gap: '2rem', 
             maxHeight: '70vh', 
             overflowY: 'auto',
-            borderBottom: '1px solid rgba(255,255,255,0.05)'
+            borderBottom: '1px solid var(--border)'
           }}>
-            <div className="badge" style={{ alignSelf: 'center', marginBottom: '1rem', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)', color: 'var(--text-muted)', fontSize: '0.65rem' }}>
+            <div className="badge" style={{ alignSelf: 'center', marginBottom: '1rem', background: 'var(--surface-hover)', border: '1px solid var(--border)', color: 'var(--text-muted)', fontSize: '0.65rem' }}>
               TRANSCRIPT INITIALIZED: {new Date(activeTicket.createdAt).toLocaleString().toUpperCase()}
             </div>
             {activeTicket.messages.map((m: any, i: number) => {
@@ -320,8 +320,8 @@ export default function SupportPage() {
                   </div>
                   <div style={{
                     background: out ? 'rgba(212,175,55,0.08)' : 'rgba(8,10,15,0.8)',
-                    border: `1px solid ${out ? 'rgba(212,175,55,0.2)' : 'rgba(255,255,255,0.1)'}`,
-                    color: out ? 'var(--gold)' : '#fff',
+                    border: `1px solid ${out ? 'rgba(212,175,55,0.2)' : 'var(--border-highlight)'}`,
+                    color: out ? 'var(--accent)' : 'var(--text)',
                     padding: '1.25rem 1.75rem',
                     borderRadius: '24px',
                     borderBottomRightRadius: out ? '4px' : '24px',
@@ -349,7 +349,7 @@ export default function SupportPage() {
                   value={reply} 
                   onChange={e => setReply(e.target.value)} 
                   required 
-                  style={{ flex: 1, margin: 0, background: 'transparent', border: 'none', paddingLeft: '2rem', fontSize: '1rem', color: '#fff' }}
+                  style={{ flex: 1, margin: 0, background: 'transparent', border: 'none', paddingLeft: '2rem', fontSize: '1rem', color: 'var(--text)' }}
                 />
                 <button type="submit" className="btn btn-gold" disabled={submitting} style={{ 
                   margin: 0, padding: '0', 
@@ -366,7 +366,7 @@ export default function SupportPage() {
                 disabled={submitting}
                 style={{ 
                   alignSelf: 'center', background: 'transparent', border: 'none',
-                  color: 'rgba(255,255,255,0.3)', fontSize: '0.7rem', fontWeight: 900,
+                  color: 'var(--text-muted)', fontSize: '0.7rem', fontWeight: 900,
                   letterSpacing: '0.2em', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem',
                   padding: '1rem'
                 }}
@@ -375,8 +375,8 @@ export default function SupportPage() {
               </button>
             </div>
           ) : (
-            <div className="glass-card" style={{ padding: '2.5rem', textAlign: 'center', color: 'var(--text-muted)', borderRadius: '24px', background: 'rgba(255,255,255,0.02)' }}>
-              <div className="badge" style={{ margin: '0 auto', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)', color: 'var(--text-muted)' }}>SESSION ARCHIVED</div>
+            <div className="glass-card" style={{ padding: '2.5rem', textAlign: 'center', color: 'var(--text-muted)', borderRadius: '24px', background: 'var(--surface-hover)' }}>
+              <div className="badge" style={{ margin: '0 auto', background: 'var(--surface-hover)', border: '1px solid var(--border)', color: 'var(--text-muted)' }}>SESSION ARCHIVED</div>
               <p style={{ marginTop: '1rem', fontSize: '0.9rem' }}>This support transcript has been permanently finalized and archived.</p>
             </div>
           )}

@@ -42,7 +42,7 @@ export default function ContactPage() {
     <div className="container animate-in stagger-1" style={{ padding: '30px 15px', maxWidth: '1000px' }}>
       
       <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-        <h1 style={{ fontSize: 'clamp(1.8rem, 5vw, 3rem)', marginBottom: '1rem', color: '#fff' }}>
+        <h1 style={{ fontSize: 'clamp(1.8rem, 5vw, 3rem)', marginBottom: '1rem', color: 'var(--text)' }}>
           Contact <span className="text-gradient-gold">GoldXchange</span>
         </h1>
         <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', maxWidth: '600px', margin: '0 auto' }}>
@@ -57,7 +57,7 @@ export default function ContactPage() {
           <div className="card glass" style={{ padding: '2rem' }}>
             <h3 style={{ color: '#d4af37', marginBottom: '1.5rem' }}>Global Headquarters</h3>
             
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', color: '#fff' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', color: 'var(--text)' }}>
               <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(212,175,55,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(212,175,55,0.3)' }}>
                 <MapPin size={20} color="#d4af37" />
               </div>
@@ -67,7 +67,7 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', color: '#fff' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', color: 'var(--text)' }}>
               <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(212,175,55,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(212,175,55,0.3)' }}>
                 <Phone size={20} color="#d4af37" />
               </div>
@@ -77,7 +77,7 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', color: '#fff' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', color: 'var(--text)' }}>
               <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(212,175,55,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(212,175,55,0.3)' }}>
                 <Mail size={20} color="#d4af37" />
               </div>
@@ -105,12 +105,12 @@ export default function ContactPage() {
           {submitted ? (
             <div style={{ textAlign: 'center', padding: '2rem 0' }}>
               <CheckCircle size={48} color="var(--success)" style={{ marginBottom: '1rem' }} />
-              <h2 style={{ color: '#fff', marginBottom: '0.5rem' }}>Message Sent</h2>
+              <h2 style={{ color: 'var(--text)', marginBottom: '0.5rem' }}>Message Sent</h2>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Thank you for reaching out. Our team will respond to your inquiry within 24 hours.</p>
             </div>
           ) : (
             <>
-              <h2 style={{ color: '#fff', marginBottom: '0.5rem' }}>Send an Inquiry</h2>
+              <h2 style={{ color: 'var(--text)', marginBottom: '0.5rem' }}>Send an Inquiry</h2>
               <p style={{ color: 'var(--text-muted)', marginBottom: '2rem', fontSize: '0.9rem' }}>Fill out the form below and our representatives will reach out to you.</p>
               
               {error && <div style={{ background: 'rgba(255,71,87,0.08)', color: 'var(--danger)', padding: '0.65rem 0.85rem', borderRadius: '10px', fontSize: '0.82rem', border: '1px solid rgba(255,71,87,0.15)', marginBottom: '1rem' }}>{error}</div>}

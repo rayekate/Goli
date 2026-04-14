@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import { useUI } from '@/context/UIContext';
 import LivePriceTicker from './LivePriceTicker';
+import ThemeToggle from './ThemeToggle';
 import { LogOut, User, Menu, X } from 'lucide-react';
 import styles from './AppHeader.module.css';
 
@@ -37,6 +38,7 @@ export default function AppHeader() {
       <div className={styles.userArea}>
         {user && (
           <>
+            <ThemeToggle />
             <div className={styles.userChip}>
               <div className={styles.avatar}>
                 <User size={14} />

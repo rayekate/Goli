@@ -42,7 +42,7 @@ export default function ForgotPasswordPage() {
       
       <div className="container animate-in" style={{ maxWidth: '440px', width: '100%', padding: '40px 20px', zIndex: 1 }}>
         <div style={{
-          background: 'rgba(8, 14, 26, 0.9)',
+          background: 'var(--surface)',
           backdropFilter: 'blur(20px)',
           border: '1px solid rgba(212, 175, 55, 0.1)',
           borderRadius: '20px',
@@ -51,13 +51,13 @@ export default function ForgotPasswordPage() {
           overflow: 'hidden',
         }}>
           {/* Top accent */}
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, var(--gold), transparent)' }} />
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
 
           {!submitted ? (
             <>
               <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
                 <div style={{ width: '56px', height: '56px', margin: '0 auto 1rem', background: 'rgba(212, 175, 55, 0.08)', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(212,175,55,0.15)' }}>
-                  <Lock size={24} color="var(--gold)" />
+                  <Lock size={24} color="var(--accent)" />
                 </div>
                 <h2 className="text-gradient-gold" style={{ fontSize: '1.8rem', marginBottom: '0.4rem' }}>Reset Password</h2>
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', lineHeight: 1.5 }}>
@@ -98,7 +98,7 @@ export default function ForgotPasswordPage() {
 
               <p style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.88rem', color: 'var(--text-muted)' }}>
                 Remember your password?{' '}
-                <Link href="/login" style={{ color: 'var(--gold)', fontWeight: 600 }}>Login here</Link>
+                <Link href="/login" style={{ color: 'var(--accent)', fontWeight: 600 }}>Login here</Link>
               </p>
             </>
           ) : (
@@ -108,7 +108,7 @@ export default function ForgotPasswordPage() {
               </div>
               <h2 className="text-gradient-gold" style={{ fontSize: '1.6rem', marginBottom: '0.5rem' }}>Check Your Email</h2>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '2rem', lineHeight: 1.6 }}>
-                If an account exists for <strong style={{ color: '#fff' }}>{email}</strong>, a verification code has been sent.
+                If an account exists for <strong style={{ color: 'var(--text)' }}>{email}</strong>, a verification code has been sent.
               </p>
               
               <Link 
