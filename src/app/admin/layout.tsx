@@ -18,13 +18,14 @@ export default function AdminLayout({
   React.useEffect(() => {
     if (!loading) {
       if (!user) {
-        router.replace('/login');
+        router.replace('/admin-343adfasdhl343lkdf9');
       } else if (user.role !== 'admin') {
         router.replace('/dashboard');
       }
     }
   }, [user, loading, router]);
 
+  // Loading or Unauthorized state
   if (loading || !user || user.role !== 'admin') {
     return (
       <div className="container" style={{ padding: '40px', textAlign: 'center' }}>

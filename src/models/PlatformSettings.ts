@@ -44,60 +44,57 @@ export interface IPlatformSettings extends Document {
 
 }
 
-const platformSettingsSchema = new Schema<IPlatformSettings>(
-  {
-    // General
-    platformName: { type: String, default: 'GoldTradex' },
-    siteTitle: { type: String, default: 'GoldXchange' },
-    siteDescription: { type: String, default: 'Institutional Gold Trading Terminal' },
-    maintenanceMode: { type: Boolean, default: false },
+const schemaDefinition: any = {
+  // General
+  platformName: { type: String, default: 'GoldTradex' },
+  siteTitle: { type: String, default: 'GoldXchange' },
+  siteDescription: { type: String, default: 'Institutional Gold Trading Terminal' },
+  maintenanceMode: { type: Boolean, default: false },
 
-    // Security
-    mandatory2FA: { type: Boolean, default: false },
-    allowUser2FA: { type: Boolean, default: true },
-    ticketSystem: { type: Boolean, default: true },
-    withdrawalVerification: { type: Boolean, default: false },
-    requireTransactionHash: { type: Boolean, default: true },
+  // Security
+  mandatory2FA: { type: Boolean, default: false },
+  allowUser2FA: { type: Boolean, default: true },
+  ticketSystem: { type: Boolean, default: true },
+  withdrawalVerification: { type: Boolean, default: false },
+  requireTransactionHash: { type: Boolean, default: true },
 
-    // Finance
-    minWithdrawal: { type: Number, default: 10 },
-    maxWithdrawal: { type: Number, default: 50000 },
-    maxDeposit: { type: Number, default: 100000 },
-    minTrade: { type: Number, default: 1 },
-    maxTrade: { type: Number, default: 10000 },
-    profitPercent: { type: Number, default: 80 },
-    tradeDuration: { type: Number, default: 60 }, // seconds
+  // Finance
+  minWithdrawal: { type: Number, default: 10 },
+  maxWithdrawal: { type: Number, default: 50000 },
+  maxDeposit: { type: Number, default: 100000 },
+  minTrade: { type: Number, default: 1 },
+  maxTrade: { type: Number, default: 10000 },
+  profitPercent: { type: Number, default: 80 },
+  tradeDuration: { type: Number, default: 60 }, // seconds
 
-    // Trading Schedule
-    tradingStartTime: { type: String, default: '00:00' },
-    tradingEndTime: { type: String, default: '23:59' },
-    tradingDays: { 
-      type: [String], 
-      default: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] 
-    },
-
-    // Wallet Addresses (dynamic)
-    wallets: {
-      type: [
-        {
-          coinName: { type: String, required: true },
-          network: { type: String, required: true },
-          address: { type: String, required: true },
-          logo: { type: String, default: '💰' },
-        },
-      ],
-      default: [],
-    },
-
-    // Legacy wallet fields (kept for migration)
-    walletBTC: { type: String, default: '' },
-    walletETH: { type: String, default: '' },
-    walletUSDT: { type: String, default: '' },
-
-
+  // Trading Schedule
+  tradingStartTime: { type: String, default: '00:00' },
+  tradingEndTime: { type: String, default: '23:59' },
+  tradingDays: { 
+    type: [String], 
+    default: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] 
   },
-  { timestamps: true }
-);
+
+  // Wallet Addresses (dynamic)
+  wallets: {
+    type: [
+      {
+        coinName: { type: String, required: true },
+        network: { type: String, required: true },
+        address: { type: String, required: true },
+        logo: { type: String, default: '💰' },
+      },
+    ],
+    default: [],
+  },
+
+  // Legacy wallet fields (kept for migration)
+  walletBTC: { type: String, default: '' },
+  walletETH: { type: String, default: '' },
+  walletUSDT: { type: String, default: '' },
+};
+
+const platformSettingsSchema = new Schema<IPlatformSettings>(schemaDefinition, { timestamps: true });
 
 /**
  * Always returns the singleton settings document.
