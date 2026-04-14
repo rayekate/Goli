@@ -104,7 +104,7 @@ export default function PriceChart({ data, singleColor, minimal = false }: Chart
       )}
 
       <div style={{ flex: 1, minHeight: '230px', minWidth: 0, paddingTop: minimal ? '1rem' : '0' }}>
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
           <AreaChart data={data} margin={{ top: 4, right: 4, left: isMobile ? -10 : 0, bottom: 0 }}>
             <defs>
               {singleColor ? (

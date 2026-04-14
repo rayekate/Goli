@@ -40,10 +40,10 @@ export default function Home() {
     let currentPrice = basePrice;
     for (let i = points; i >= 0; i--) {
       const date = new Date(now - i * stepMs);
-      const time = tf === '1d' 
+      const time = tf === '1d'
         ? date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         : date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      
+
       currentPrice = currentPrice + (Math.random() - 0.5) * volatility;
       initialData.push({ time, price: currentPrice });
     }
@@ -57,37 +57,37 @@ export default function Home() {
 
   const handlePriceUpdate = useCallback((price: number, _history: any[]) => {
     setPriceHistory(prev => {
-       const tf = timeframeRef.current;
-       const intervalMs = tf === '1d' ? 3600000 : 60000;
-       
-       if (prev.length === 0) return generateData(tf, price);
+      const tf = timeframeRef.current;
+      const intervalMs = tf === '1d' ? 3600000 : 60000;
 
-       // If the new real price is massively different from our dummy generator, regenerate
-       if (Math.abs(prev[prev.length - 1].price - price) > 20) {
-          return generateData(tf, price);
-       }
-       
-       const newHistory = [...prev];
-       
-       const now = Date.now();
-       
-       if (now - lastUpdateTimeRef.current >= intervalMs) {
-         // Interval passed! Push new point and slide
-         const timeObj = new Date(now);
-         const time = tf === '1d' 
-           ? timeObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-           : timeObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-           
-         newHistory.push({ time, price });
-         newHistory.shift(); // slide the chart
-         lastUpdateTimeRef.current = now;
-       } else {
-         // Still in the same interval, just update the live price on the current edge
-         const lastIdx = newHistory.length - 1;
-         newHistory[lastIdx] = { ...newHistory[lastIdx], price };
-       }
-       
-       return newHistory;
+      if (prev.length === 0) return generateData(tf, price);
+
+      // If the new real price is massively different from our dummy generator, regenerate
+      if (Math.abs(prev[prev.length - 1].price - price) > 20) {
+        return generateData(tf, price);
+      }
+
+      const newHistory = [...prev];
+
+      const now = Date.now();
+
+      if (now - lastUpdateTimeRef.current >= intervalMs) {
+        // Interval passed! Push new point and slide
+        const timeObj = new Date(now);
+        const time = tf === '1d'
+          ? timeObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          : timeObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+        newHistory.push({ time, price });
+        newHistory.shift(); // slide the chart
+        lastUpdateTimeRef.current = now;
+      } else {
+        // Still in the same interval, just update the live price on the current edge
+        const lastIdx = newHistory.length - 1;
+        newHistory[lastIdx] = { ...newHistory[lastIdx], price };
+      }
+
+      return newHistory;
     });
   }, []);
 
@@ -102,31 +102,21 @@ export default function Home() {
       <section className="hero-section" style={{ padding: '140px 0 180px', position: 'relative', zIndex: 1 }}>
         <div className="container">
           <div className="hero-grid" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8rem' }}>
-            
+
             {/* Left Content */}
-            <motion.div 
-              className="hero-content" 
+            <motion.div
+              className="hero-content"
               style={{ flex: '1 1 520px', minWidth: 0 }}
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div style={{ marginBottom: '3rem' }}>
-                <span className="meta-text" style={{ 
-                  padding: '8px 16px', 
-                  border: '1px solid var(--border-subtle)', 
-                  borderRadius: '100px', 
-                  background: 'rgba(var(--text), 0.02)' 
-                }}>
-                  Institutional Terminal v2.0
-                </span>
-              </div>
 
-              <h1 style={{ 
-                fontSize: 'clamp(4.5rem, 11vw, 9.5rem)', 
+              <h1 style={{
+                fontSize: 'clamp(3.5rem, 9vw, 8rem)',
                 marginBottom: '3rem',
                 color: 'var(--text)',
-                lineHeight: 0.85,
+                lineHeight: 0.88,
                 letterSpacing: '-0.04em',
                 fontWeight: 950
               }}>
@@ -134,12 +124,12 @@ export default function Home() {
                 <span style={{ color: 'var(--primary)' }}>PRECISION</span>
               </h1>
 
-              <motion.p 
-                style={{ 
-                  color: 'var(--text-muted)', 
-                  fontSize: 'clamp(1.1rem, 2vw, 1.25rem)', 
-                  maxWidth: '480px', 
-                  marginBottom: '5rem', 
+              <motion.p
+                style={{
+                  color: 'var(--text-muted)',
+                  fontSize: 'clamp(1.1rem, 2vw, 1.25rem)',
+                  maxWidth: '480px',
+                  marginBottom: '5rem',
                   lineHeight: 1.6,
                   fontWeight: 500
                 }}
@@ -147,22 +137,22 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               >
-                Bespoke trading infrastructure for the modern editorial era. 
+                Bespoke trading infrastructure for the modern editorial era.
                 Experience up to <strong style={{ color: 'var(--text)' }}>80% yields</strong> with raw transparency.
               </motion.p>
-              
-              <motion.div 
-                className="hero-buttons" 
+
+              <motion.div
+                className="hero-buttons"
                 style={{ display: 'flex', alignItems: 'center', gap: '3rem', flexWrap: 'wrap' }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               >
                 {user ? (
-                  <Link href="/dashboard" className="btn btn-asymmetric interactive-haptic" style={{ 
-                    padding: '1.75rem 5rem', 
-                    fontSize: '0.8rem', 
-                    fontWeight: 900, 
+                  <Link href="/dashboard" className="btn btn-asymmetric interactive-haptic" style={{
+                    padding: '1.25rem 4rem',
+                    fontSize: '0.75rem',
+                    fontWeight: 900,
                     backgroundColor: 'var(--primary)',
                     color: 'var(--primary-text)',
                     textTransform: 'uppercase',
@@ -172,21 +162,21 @@ export default function Home() {
                   </Link>
                 ) : (
                   <>
-                    <Link href="/register" className="btn btn-asymmetric interactive-haptic" style={{ 
+                    <Link href="/register" className="btn btn-asymmetric interactive-haptic" style={{
                       display: 'flex',
                       alignItems: 'center',
                       gap: '1rem',
-                      padding: '1.5rem 4rem', 
-                      fontSize: '0.8rem', 
-                      fontWeight: 900, 
+                      padding: '1.25rem 3.5rem',
+                      fontSize: '0.75rem',
+                      fontWeight: 900,
                       backgroundColor: 'var(--primary)',
                       color: 'var(--primary-text)',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.4em'
+                      letterSpacing: '0.35em'
                     }}>
                       Entry Setup <ChevronRight size={16} />
                     </Link>
-                    <Link href="/login" className="meta-text interactive-haptic" style={{ fontSize: '11px', textDecoration: 'underline', textUnderlineOffset: '12px' }}>
+                    <Link href="/login" className="meta-text interactive-haptic" style={{ fontSize: '11px', textDecoration: 'underline', textUnderlineOffset: '12px', color: 'var(--text-muted)' }}>
                       Terminal Access
                     </Link>
                   </>
@@ -195,7 +185,7 @@ export default function Home() {
             </motion.div>
 
             {/* Right Chart Card with Definitive Ghost Border and Glow */}
-            <motion.div 
+            <motion.div
               style={{ flex: '1 1 480px', width: '100%', minWidth: 0, position: 'relative' }}
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -218,29 +208,29 @@ export default function Home() {
               }} />
 
               <div className="ghost-border-wrapper" style={{ position: 'relative', zIndex: 1 }}>
-                <div style={{ 
-                  border: '1px solid var(--border)', 
+                <div style={{
+                  border: '1px solid var(--border)',
                   backgroundColor: 'var(--surface)',
                   overflow: 'hidden',
                   transition: 'var(--transition-editorial)',
                   padding: 0,
                   position: 'relative'
                 }} className="card-asymmetric">
-                  
+
                   {/* Timeframe Controls (Floating) */}
-                  <div style={{ 
-                    position: 'absolute', 
-                    top: '1.5rem', 
-                    left: '1.5rem', 
-                    zIndex: 10, 
-                    display: 'flex', 
-                    gap: '0.5rem', 
-                    flexWrap: 'wrap' 
+                  <div style={{
+                    position: 'absolute',
+                    top: '1.5rem',
+                    left: '1.5rem',
+                    zIndex: 10,
+                    display: 'flex',
+                    gap: '0.5rem',
+                    flexWrap: 'wrap'
                   }}>
                     {['30m', '1h', '1d'].map(tf => (
-                      <button 
+                      <button
                         key={tf}
-                        onClick={() => setTimeframe(tf as '30m'|'1h'|'1d')}
+                        onClick={() => setTimeframe(tf as '30m' | '1h' | '1d')}
                         className="btn-asymmetric interactive-haptic"
                         style={{
                           padding: '0.5rem 1rem',
@@ -274,7 +264,7 @@ export default function Home() {
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
             gap: '6rem',
-            marginTop: '18rem',
+            marginTop: '6rem',
           }}>
             {[
               { label: 'Settlement', value: 'INSTANT', accent: 'var(--primary)' },
@@ -290,27 +280,19 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Narrative Section - Large Typography */}
-      <section style={{ padding: '160px 0', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
-        <div className="container" style={{ maxWidth: '900px' }}>
-          <p className="display-header" style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', color: 'var(--text)', textAlign: 'left' }}>
-            We believe in <span style={{ color: 'var(--primary)' }}>raw whitespace</span> and Zinc neutrals to make your <span style={{ color: 'var(--accent)' }}>capital</span> feel like jewelry.
-          </p>
-        </div>
-      </section>
 
       {/* Feature Grid with Asymmetric Cards */}
-      <section style={{ padding: '160px 0' }}>
+      <section >
         <div className="container">
           <div style={{ marginBottom: '10rem' }}>
             <span className="meta-text">Platform Infrastructure</span>
             <h2 className="display-header" style={{ fontSize: '5rem', marginTop: '2rem' }}>EDITORIAL<br />PRECISION</h2>
           </div>
-          
-          <div style={{ 
+
+          <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', 
-            gap: '6rem',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+            gap: '1.5rem',
             width: '100%'
           }}>
             {[
@@ -320,18 +302,19 @@ export default function Home() {
               { step: '04', title: 'LIQUIDATION', desc: 'Secure your accrued profits with priority administrative review.' },
             ].map((item, i) => (
               <div key={item.step} className="ghost-border-wrapper">
-                <div style={{ 
-                  padding: '5rem 3.5rem', 
+                <div style={{
+                  padding: '3rem 2rem',
                   backgroundColor: 'var(--surface)',
                   border: '1px solid var(--border)',
-                  display: 'flex', 
-                  flexDirection: 'column', 
-                  gap: '2.5rem',
-                  minHeight: '400px'
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '1.5rem',
+                  minHeight: '320px',
+                  justifyContent: 'center'
                 }} className="card-asymmetric">
-                  <div className="meta-text" style={{ fontSize: '12px' }}>{item.step}</div>
-                  <h3 className="display-header" style={{ fontSize: '2.5rem' }}>{item.title}</h3>
-                  <p style={{ color: 'var(--muted)', fontSize: '1.1rem', lineHeight: 1.6 }}>{item.desc}</p>
+                  <div className="meta-text" style={{ fontSize: '11px', letterSpacing: '0.2em' }}>{item.step}</div>
+                  <h3 className="display-header" style={{ fontSize: '1.8rem', lineHeight: 1.1 }}>{item.title}</h3>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: 1.6 }}>{item.desc}</p>
                 </div>
                 <div className="ghost-border" />
               </div>
@@ -340,36 +323,84 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Call To Action */}
+      {/* Call To Action - Editorial Split Layout */}
       {!user && (
-        <section style={{ padding: '160px 0' }}>
+        <section style={{ padding: '80px 0 140px' }}>
           <div className="container">
-            <div style={{ 
-              backgroundColor: 'var(--text)', 
-              color: 'var(--background)',
-              padding: '10rem 4rem', 
-              textAlign: 'center'
-            }} className="card-asymmetric">
-              <span className="meta-text" style={{ color: 'var(--background)', opacity: 0.6 }}>Finality</span>
-              <h2 className="display-header" style={{ 
-                fontSize: 'clamp(3rem, 8vw, 6rem)', 
-                marginTop: '3rem',
-                marginBottom: '4rem',
-                color: 'var(--background)'
+            <div style={{
+              borderRadius: '80px 20px 80px 20px',
+              overflow: 'hidden',
+              position: 'relative',
+              backgroundColor: 'var(--surface)',
+              border: '1px solid var(--border)',
+            }}>
+
+              {/* Top gradient accent line */}
+              <div style={{
+                position: 'absolute', top: 0, left: 0, right: 0, height: '3px',
+                background: 'linear-gradient(90deg, var(--primary), var(--accent), transparent)',
+              }} />
+
+              {/* Ghost XAU watermark - right bottom corner, contained */}
+              <div style={{
+                position: 'absolute', bottom: '-1rem', right: '2rem',
+                fontSize: 'clamp(5rem, 10vw, 9rem)',
+                fontWeight: 950, lineHeight: 1, color: 'var(--text)',
+                opacity: 0.045, pointerEvents: 'none', userSelect: 'none',
+                letterSpacing: '-0.06em',
+              }}>XAU</div>
+
+              {/* Split Layout */}
+              <div style={{
+                display: 'flex', flexWrap: 'wrap', gap: '4rem',
+                padding: 'clamp(3.5rem, 7vw, 6rem) clamp(2.5rem, 5vw, 5rem)',
+                alignItems: 'center',
               }}>
-                JOIN THE<br />COLLECTIVE
-              </h2>
-              <Link href="/register" className="btn btn-asymmetric interactive-haptic" style={{ 
-                padding: '1.5rem 6rem', 
-                fontSize: '1rem', 
-                fontWeight: 900, 
-                backgroundColor: 'var(--background)',
-                color: 'var(--text)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.3em'
-              }}>
-                Register Now
-              </Link>
+
+                {/* Left: Manifesto */}
+                <div style={{ flex: '1 1 340px', minWidth: 0 }}>
+                  <span className="meta-text" style={{ display: 'block', marginBottom: '2rem' }}>Finality</span>
+                  <h2 style={{
+                    fontSize: 'clamp(2.5rem, 5vw, 5rem)',
+                    fontWeight: 950, letterSpacing: '-0.04em', lineHeight: 0.9,
+                    color: 'var(--text)', marginBottom: '3rem',
+                  }}>
+                    JOIN THE<br />
+                    <span style={{ color: 'var(--primary)' }}>COLLECTIVE</span>
+                  </h2>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                    <div style={{ width: '2.5rem', height: '2px', backgroundColor: 'var(--accent)', flexShrink: 0 }} />
+                    <span className="meta-text">Institutional Access</span>
+                  </div>
+                </div>
+
+                {/* Right: Action */}
+                <div style={{
+                  flex: '1 1 260px', minWidth: 0,
+                  display: 'flex', flexDirection: 'column', gap: '2rem', alignItems: 'flex-start',
+                }}>
+                  <p style={{
+                    color: 'var(--text-muted)', fontSize: '1.05rem',
+                    lineHeight: 1.75, maxWidth: '360px', fontWeight: 400,
+                  }}>
+                    Precision instruments for the modern gold market. Begin your session—risk-calibrated, transparent, and instant.
+                  </p>
+                  <Link href="/register" className="btn-asymmetric interactive-haptic" style={{
+                    padding: '1.25rem 3.5rem', fontSize: '0.75rem', fontWeight: 900,
+                    backgroundColor: 'var(--primary)', color: 'var(--primary-text)',
+                    textTransform: 'uppercase', letterSpacing: '0.4em',
+                  }}>
+                    Entry Setup
+                  </Link>
+                  <Link href="/login" className="meta-text interactive-haptic" style={{
+                    textDecoration: 'underline', textUnderlineOffset: '10px',
+                    color: 'var(--text-muted)',
+                  }}>
+                    Already a member · Terminal Access
+                  </Link>
+                </div>
+
+              </div>
             </div>
           </div>
         </section>

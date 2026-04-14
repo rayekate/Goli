@@ -1,53 +1,64 @@
 @import "tailwindcss";
 
-:root {
-  /* === MIDNIGHT BULLION THEME === */
-  --background-base: #020408;
-  --background-radial: radial-gradient(circle at 50% 0%, #080a0f 0%, #020408 100%);
-  --foreground: #F9FAFB;
+:root,
+:root[data-theme="dark"] {
+  /* === MIDNIGHT FOREST v2 - LUMINA-COAL (Dark Mode) === */
+  --background: #050505;
+  --surface: #0f0f0f;
+  --text: #e5e5e5;
+  --primary: #34d399; /* Mint */
+  --accent: #f59e0b;  /* Gold */
+  --primary-text: #050505;
 
-  /* Metallic Gold Palette */
-  --primary: #D4AF37;
-  --primary-hover: #AF8F2C;
-  --primary-glow: rgba(212, 175, 55, 0.15);
-  --gold: #D4AF37;
-  --gold-light: #E5C366;
-  --gold-dark: #9A7B2C;
-  --gold-glow: rgba(212, 175, 55, 0.1);
+  --text-muted: rgba(229, 229, 229, 0.55);
+  --border: rgba(229, 229, 229, 0.1);
+  --border-subtle: rgba(229, 229, 229, 0.05);
 
-  /* Surfaces */
-  --secondary: #0F172A;
-  --accent: #1F2937;
-  --surface: #111827;
-  --surface-hover: #1F2937;
-
-  /* Status */
-  --success: #10B981;
-  --success-glow: rgba(16, 185, 129, 0.15);
-  --danger: #EF4444;
-  --danger-glow: rgba(239, 68, 68, 0.15);
-  --warning: #4B5563; /* Neutral */
-
-  /* Text */
-  --text-muted: #9CA3AF;
-  --text-secondary: #D1D5DB;
-
-  /* Borders */
-  --border: #1F2937;
-  --border-highlight: #374151;
-  --border-subtle: rgba(255, 255, 255, 0.03);
-
-  /* Glass */
-  --glass-bg: rgba(8, 10, 15, 0.6);
-  --glass-border: 1px solid rgba(212, 175, 55, 0.1);
-  --glass-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
+  --glass-bg: rgba(15, 15, 15, 0.7);
   --glass-blur: blur(24px);
+  --success: #34d399;
+  --danger: #ef4444;
 
-  /* Gradients */
-  --gradient-gold: linear-gradient(135deg, #D4AF37 0%, #AF8F2C 100%);
-  --gradient-gold-subtle: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(212, 175, 55, 0.02) 100%);
-  --gradient-dark: linear-gradient(180deg, #111827 0%, #030712 100%);
-  --gradient-card: linear-gradient(135deg, #111827 0%, #030712 100%);
+  /* Legacy aliases kept for compatibility */
+  --gold: #f59e0b;
+  --surface-hover: #1a1a1a;
+  --gradient-gold: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  --border-highlight: rgba(229, 229, 229, 0.2);
+  --text-secondary: rgba(229, 229, 229, 0.8);
+  --glass-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
+  --glass-border: 1px solid rgba(245, 158, 11, 0.1);
+
+  /* Haptics & Transitions */
+  --transition-editorial: all 1000ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+:root[data-theme="light"] {
+  /* === MIDNIGHT FOREST v2 - OBSCURA-ZINC (Light Mode) === */
+  --background: #fafaf9;
+  --surface: #ffffff;
+  --text: #1c1917;
+  --primary: #065f46; /* Jade */
+  --accent: #b45309;  /* Amber */
+  --primary-text: #ffffff;
+
+  --text-muted: rgba(28, 25, 23, 0.55);
+  --border: rgba(28, 25, 23, 0.12);
+  --border-subtle: rgba(28, 25, 23, 0.05);
+
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --success: #065f46;
+  --danger: #dc2626;
+
+  /* Legacy aliases */
+  --gold: #b45309;
+  --surface-hover: #f5f5f5;
+  --gradient-gold: linear-gradient(135deg, #b45309 0%, #92400e 100%);
+  --border-highlight: rgba(28, 25, 23, 0.2);
+  --text-secondary: rgba(28, 25, 23, 0.8);
+  --glass-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+  --glass-border: 1px solid rgba(180, 83, 9, 0.12);
+
+  --transition-editorial: all 1000ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 /* === BASE RESET === */
@@ -62,10 +73,8 @@ html {
 }
 
 body {
-  background: var(--background-base);
-  background-image: var(--background-radial);
-  background-attachment: fixed;
-  color: var(--foreground);
+  background: var(--background);
+  color: var(--text);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   line-height: 1.5;
   min-height: 100vh;
@@ -81,7 +90,7 @@ h4,
 h5 {
   letter-spacing: -0.02em;
   font-weight: 700;
-  color: #fff;
+  color: var(--text);
 }
 
 /* === TEXT GRADIENTS === */
@@ -102,7 +111,7 @@ h5 {
 }
 
 .text-gold {
-  color: var(--gold);
+  color: var(--accent);
 }
 
 .text-muted {
@@ -110,7 +119,7 @@ h5 {
 }
 
 .text-white {
-  color: #fff;
+  color: var(--text);
 }
 
 a {
@@ -120,7 +129,7 @@ a {
 }
 
 a:hover {
-  color: var(--primary-hover);
+  opacity: 0.8;
 }
 
 /* === LAYOUT === */
@@ -481,6 +490,19 @@ textarea::placeholder {
   0% { transform: translate(0, 0); }
   50% { transform: translate(-2%, -2%); }
   100% { transform: translate(0, 0); }
+}
+
+/* === MIDNIGHT FOREST v2 GLOBAL NOISE === */
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
 .glass-card {
@@ -1143,4 +1165,113 @@ select option:hover {
   border-radius: 24px;
   padding: 3.5rem 2.5rem;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================================ */
+/* === MIDNIGHT FOREST v2 — EDITORIAL DESIGN SYSTEM        === */
+/* ============================================================ */
+
+/* --- Asymmetric Geometry --- */
+.card-asymmetric {
+  border-radius: 80px 20px 80px 20px;
+  overflow: hidden;
+}
+
+.btn-asymmetric {
+  border-radius: 40px 10px 40px 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  transition: var(--transition-editorial);
+}
+
+/* --- Ghost Border Depth Layer --- */
+.ghost-border-wrapper {
+  position: relative;
+  overflow: visible;
+}
+
+.ghost-border {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--border);
+  border-radius: 80px 20px 80px 20px;
+  opacity: 0.35;
+  transform: translate(1.5rem, 1.5rem);
+  pointer-events: none;
+  z-index: 0;
+  transition: var(--transition-editorial);
+  background: transparent;
+}
+
+.ghost-border-wrapper:hover .ghost-border {
+  opacity: 0.55;
+  transform: translate(0.85rem, 0.85rem);
+}
+
+/* --- Editorial Typography --- */
+.display-header {
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 0.85;
+  color: var(--text);
+}
+
+.meta-text {
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.55em;
+  color: var(--text-muted);
+}
+
+/* --- Interactive Haptics --- */
+.interactive-haptic {
+  transition: var(--transition-editorial);
+}
+
+.interactive-haptic:active {
+  transform: scale(0.95) !important;
+}
+
+/* --- Updated gradient for new accent color --- */
+.text-gradient-gold {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+}
+
+/* --- Glass card updated borders --- */
+.glass-card {
+  border: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+/* ============================================================ */
+/* === HOMEPAGE EDITORIAL LAYOUT HELPERS                   === */
+/* ============================================================ */
+
+/* Ensure chart card ghost border has right offset on mobile */
+@media (max-width: 768px) {
+  .ghost-border {
+    transform: translate(0.75rem, 0.75rem);
+  }
+
+  .ghost-border-wrapper:hover .ghost-border {
+    transform: translate(0.4rem, 0.4rem);
+  }
+
+  .card-asymmetric {
+    border-radius: 40px 10px 40px 10px;
+  }
+
+  .ghost-border {
+    border-radius: 40px 10px 40px 10px;
+  }
 }

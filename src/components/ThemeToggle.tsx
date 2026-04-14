@@ -14,26 +14,33 @@ export default function ThemeToggle() {
       style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '0.75rem',
-        padding: '0.5rem 1rem',
-        background: 'rgba(var(--text), 0.05)',
+        gap: '0.6rem',
+        padding: '0.45rem 0.9rem',
+        background: 'rgba(128,128,128, 0.08)',
         border: '1px solid var(--border)',
         borderRadius: '100px',
         cursor: 'pointer',
         transition: 'var(--transition-editorial)',
         color: 'var(--text)',
       }}
-      aria-label={`Switch to ${theme === 'dark' ? 'Obscura' : 'Lumina'} mode`}
+      aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
     >
-      <div style={{ position: 'relative', width: '20px', height: '20px' }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         {theme === 'dark' ? (
-          <Moon size={18} style={{ color: 'var(--primary)' }} />
+          <Moon size={14} style={{ color: 'var(--primary)' }} />
         ) : (
-          <Sun size={18} style={{ color: 'var(--accent)' }} />
+          <Sun size={14} style={{ color: 'var(--accent)' }} />
         )}
       </div>
-      <span className="meta-text" style={{ fontSize: '9px', letterSpacing: '0.4em', opacity: 0.8 }}>
-        {theme === 'dark' ? 'LUMINA' : 'OBSCURA'}
+      <span style={{
+        fontSize: '9px',
+        fontWeight: 900,
+        textTransform: 'uppercase',
+        letterSpacing: '0.3em',
+        opacity: 0.75,
+        color: 'var(--text)',
+      }}>
+        {theme === 'dark' ? 'DARK' : 'LIGHT'}
       </span>
     </button>
   );

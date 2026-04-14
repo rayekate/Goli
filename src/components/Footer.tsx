@@ -4,23 +4,23 @@ import { Mail, MapPin, Phone, Shield, TrendingUp, HelpCircle, Lock } from 'lucid
 
 export default function Footer() {
   return (
-    <footer style={{ 
-      background: '#030712',
+    <footer style={{
+      background: 'var(--surface)',
       borderTop: '1px solid var(--border)',
       marginTop: 'auto',
       padding: '4rem 1.5rem 2rem',
       position: 'relative',
     }}>
-      {/* Top gold line accent */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent)' }} />
+      {/* Top gradient accent */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)', opacity: 0.5 }} />
       
       <div className="container">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(220px, 100%), 1fr))', gap: '3rem', marginBottom: '3rem' }}>
           
           <div>
-            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, margin: '0 0 1rem 0', letterSpacing: '-0.5px' }}>
-              <span style={{ color: '#fff' }}>GOLD</span>
-              <span style={{ color: 'var(--gold)' }}>XCHANGE</span>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: 900, margin: '0 0 1rem 0', letterSpacing: '-0.5px' }}>
+              <span style={{ color: 'var(--text)' }}>GOLD</span>
+              <span style={{ color: 'var(--accent)' }}>XCHANGE</span>
             </h2>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', lineHeight: 1.6, maxWidth: '300px' }}>
               The premium destination for institutional gold traders. Execute trades on global XAU/USD aggregates with unparalleled precision.
@@ -28,33 +28,33 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 style={{ color: '#fff', marginBottom: '1.25rem', fontWeight: 700, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Platform</h4>
+            <h4 style={{ color: 'var(--text)', marginBottom: '1.25rem', fontWeight: 700, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Platform</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <Link href="/trade" style={{ color: 'var(--text-muted)', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'color 0.2s' }}>
+              <Link href="/trade" className="interactive-haptic" style={{ color: 'var(--text-muted)', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'color 0.2s' }}>
                 <TrendingUp size={14} /> Live Trading
               </Link>
-              <Link href="/deposit" style={{ color: 'var(--text-muted)', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'color 0.2s' }}>
+              <Link href="/deposit" className="interactive-haptic" style={{ color: 'var(--text-muted)', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'color 0.2s' }}>
                 <Lock size={14} /> Secure Deposit
               </Link>
-              <Link href="/support" style={{ color: 'var(--text-muted)', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'color 0.2s' }}>
+              <Link href="/support" className="interactive-haptic" style={{ color: 'var(--text-muted)', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'color 0.2s' }}>
                 <HelpCircle size={14} /> Support Center
               </Link>
             </div>
           </div>
 
           <div>
-            <h4 style={{ color: '#fff', marginBottom: '1.25rem', fontWeight: 700, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Legal</h4>
+            <h4 style={{ color: 'var(--text)', marginBottom: '1.25rem', fontWeight: 700, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Legal</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Shield size={14} style={{ color: 'var(--success)' }} /> 2FA Protection
+                <Shield size={14} style={{ color: 'var(--primary)' }} /> 2FA Protection
               </div>
-              <Link href="#" style={{ color: 'var(--text-muted)', fontSize: '0.875rem', transition: 'color 0.2s' }}>Terms of Service</Link>
-              <Link href="#" style={{ color: 'var(--text-muted)', fontSize: '0.875rem', transition: 'color 0.2s' }}>Privacy Policy</Link>
+              <Link href="#" className="interactive-haptic" style={{ color: 'var(--text-muted)', fontSize: '0.875rem', transition: 'color 0.2s' }}>Terms of Service</Link>
+              <Link href="#" className="interactive-haptic" style={{ color: 'var(--text-muted)', fontSize: '0.875rem', transition: 'color 0.2s' }}>Privacy Policy</Link>
             </div>
           </div>
 
           <div>
-            <h4 style={{ color: '#fff', marginBottom: '1.25rem', fontWeight: 700, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Contact</h4>
+            <h4 style={{ color: 'var(--text)', marginBottom: '1.25rem', fontWeight: 700, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Contact</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <Mail size={14} /> support@goldxchange.org
@@ -74,7 +74,7 @@ export default function Footer() {
           paddingTop: '2rem', 
           textAlign: 'center',
         }}>
-          <p style={{ color: '#4B5563', fontSize: '0.75rem' }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>
             © {new Date().getFullYear()} GoldXchange. All market data is aggregated and does not constitute financial advice.
           </p>
         </div>

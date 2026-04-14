@@ -25,6 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body className={inter.className} style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }} suppressHydrationWarning>
+        <div className="noise-overlay" />
         <ThemeProvider>
           <AuthProvider>
             <UIProvider>
