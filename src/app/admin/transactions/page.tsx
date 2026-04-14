@@ -420,7 +420,7 @@ export default function AdminTransactionsPage() {
                     </div>
                   ) : <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>No External Ref</span>}
                   
-                  {t.proofImage && (
+                  {t.type === 'deposit' && (
                     <button onClick={() => viewProofImage(t._id)} style={{ marginTop: '0.5rem', background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: 'var(--gold)', fontSize: '0.65rem', padding: '0.35rem 0.75rem', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                       <Eye size={12} /> View Payment Receipt
                     </button>
@@ -461,6 +461,7 @@ export default function AdminTransactionsPage() {
                 <th style={{ padding: '1rem', textAlign: 'right', fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Amount</th>
                 <th style={{ padding: '1rem', textAlign: 'center', fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Status</th>
                 <th style={{ padding: '1rem', textAlign: 'right', fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Reference</th>
+                <th style={{ padding: '1rem', textAlign: 'center', fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Proof</th>
               </tr>
             </thead>
             <tbody>
@@ -479,6 +480,30 @@ export default function AdminTransactionsPage() {
                   </td>
                   <td style={{ padding: '1rem', textAlign: 'right' }}>
                     <code style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>{t.transactionHash || t.walletAddress || '—'}</code>
+                  </td>
+                  <td style={{ padding: '1rem', textAlign: 'center' }}>
+                    {(t.proofImage || t.type === 'deposit') ? (
+                      <button 
+                        onClick={() => viewProofImage(t._id)}
+                        className="interactive-haptic"
+                        style={{ 
+                          background: 'rgba(212,175,55,0.1)', 
+                          border: '1px solid rgba(212,175,55,0.2)', 
+                          color: 'var(--gold)',
+                          padding: '0.4rem',
+                          borderRadius: '8px',
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}
+                        title="View Submission Proof"
+                      >
+                        <Eye size={16} />
+                      </button>
+                    ) : (
+                      <span style={{ color: 'var(--text-muted)', fontSize: '0.7rem' }}>—</span>
+                    )}
                   </td>
                 </tr>
               ))}

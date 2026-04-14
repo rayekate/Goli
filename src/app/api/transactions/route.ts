@@ -7,6 +7,7 @@ import { getAuthUser } from '@/lib/auth';
 import { transactionSchema } from '@/lib/validations';
 import { apiLimiter } from '@/lib/rate-limit';
 import { getClientIP } from '@/lib/api-guard';
+import { uploadToCloudinary } from '@/lib/cloudinary';
 
 /**
  * GET: Fetch transaction history for the current user
@@ -158,7 +159,17 @@ export async function POST(req: NextRequest) {
         );
       }
     }
-
+    
+    // Handle Cloudinary upload for deposit proof
+    let finalProofUrl = data.type === 'deposit' ? data.proofImage : undefined;
+    if (data.type === 'deposit' && data.proofImage) {
+      const uploadedUrl = await uploadToCloudinary(data.proofImage, 'deposits');
+      if (!uploadedUrl) {
+        return NextResponse.json({ error: 'Failed to upload payment proof. Please try a different image.' }, { status: 500 });
+      }
+      finalProofUrl = uploadedUrl;
+    }
+    
     const transaction = await Transaction.create({
       userId: payload.userId,
       type: data.type,
@@ -166,9 +177,11 @@ export async function POST(req: NextRequest) {
       status: 'pending',
       transactionHash: data.type === 'deposit' ? data.transactionHash : undefined,
       cryptoType: data.cryptoType,
-      proofImage: data.type === 'deposit' ? data.proofImage : undefined,
+      proofImage: finalProofUrl,
       walletAddress: data.type === 'withdrawal' ? data.walletAddress : undefined,
     });
+
+    console.log(`[Transaction] ${data.type.toUpperCase()} created. ID: ${transaction._id}. Proof: ${finalProofUrl || 'N/A'}`);
 
     return NextResponse.json({
       message: `${data.type.charAt(0).toUpperCase() + data.type.slice(1)} request submitted`,

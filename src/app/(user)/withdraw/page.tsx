@@ -124,7 +124,7 @@ export default function WithdrawPage() {
             padding: '0.4rem 1rem',
             border: '1px solid var(--border-subtle)',
             borderRadius: '100px'
-          }}>LIQUIDATION_TERMINAL_ACTIVE</div>
+          }}>WITHDRAW_TERMINAL_ACTIVE</div>
           <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--primary)' }} />
           <span className="meta-text" style={{ color: 'var(--primary)' }}>SECURE CHANNEL ACTIVE</span>
         </div>
@@ -133,7 +133,7 @@ export default function WithdrawPage() {
           marginBottom: '1rem', 
           color: 'var(--text)' 
         }}>
-          LIQUIDATE <span style={{ color: 'var(--primary)' }}>RESERVE ASSETS</span>
+          WITHDRAW <span style={{ color: 'var(--primary)' }}>RESERVE ASSETS</span>
         </h1>
         <p className="meta-text" style={{ fontSize: '11px', opacity: 0.6, letterSpacing: '0.1em' }}>
           FINALIZE ASSET EXTRACTION VIA INSTITUTIONAL-GRADE ENCRYPTED BRIDGE.
@@ -198,7 +198,7 @@ export default function WithdrawPage() {
                 onChange={(e) => setAmount(e.target.value)} 
                 style={{ background: 'rgba(var(--text), 0.03)', border: '1px solid var(--border)', padding: '1.25rem 1.5rem', fontWeight: 700 }}
               />
-              {Number(amount) > 0 && (<p className="meta-text" style={{ fontSize: '9px', color: 'var(--primary)', marginTop: '1rem' }}>NET LIQUIDATION VALUE: ${Number(amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}</p>)}
+              {Number(amount) > 0 && (<p className="meta-text" style={{ fontSize: '9px', color: 'var(--primary)', marginTop: '1rem' }}>NET WITHDRAWAL VALUE: ${Number(amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}</p>)}
             </div>
 
             <div className="input-group">
@@ -331,7 +331,7 @@ export default function WithdrawPage() {
               }} 
               disabled={submitting}
             >
-              {submitting ? <GoldCoinLoader mini label="PROCESSING..." /> : 'Initialize Liquidation'}
+              {submitting ? <GoldCoinLoader mini label="PROCESSING..." /> : 'REQUEST WITHDRAW'}
             </button>
           </form>
         </div>

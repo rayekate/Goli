@@ -1167,6 +1167,7 @@ select option:hover {
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
+<<<<<<< Updated upstream
 /* ============================================================ */
 /* === MIDNIGHT FOREST v2 — EDITORIAL DESIGN SYSTEM        === */
 /* ============================================================ */
@@ -1273,5 +1274,17 @@ select option:hover {
 
   .ghost-border {
     border-radius: 40px 10px 40px 10px;
+=======
+/* === RESPONSIVE UTILITIES === */
+@media (min-width: 769px) {
+  .mobile-only {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+>>>>>>> Stashed changes
   }
 }

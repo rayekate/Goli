@@ -113,6 +113,9 @@ export default function DashboardPage() {
           <Link href="/withdraw" className="btn btn-outline" style={{ flex: '1 1 200px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem 2rem', borderRadius: '100px', fontWeight: 900, fontSize: '0.9rem', border: '1px solid rgba(255,255,255,0.1)' }}>
             <ArrowDownLeft size={18} /> Asset Withdrawal
           </Link>
+          <Link href="/trade" className="btn btn-gold mobile-only" style={{ flex: '1 1 200px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem 2rem', borderRadius: '100px', fontWeight: 900, fontSize: '0.9rem', background: 'linear-gradient(135deg, #FFD700 0%, #D4AF37 100%)' }}>
+            <TrendingUp size={18} /> Trade Terminal
+          </Link>
         </div>
       </div>
 
