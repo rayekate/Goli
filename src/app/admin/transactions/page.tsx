@@ -100,7 +100,7 @@ export default function AdminTransactionsPage() {
         alert(d.error || 'Action failed'); 
       }
     } catch { 
-      alert('Network error'); 
+      console.error('Network error - Action failed'); 
     } finally {
       setSaving(false);
     }
@@ -117,7 +117,7 @@ export default function AdminTransactionsPage() {
           alert('No proof image available.');
         }
       }
-    } catch { alert('Network error'); }
+    } catch { console.error('Network error during proof fetch'); }
   };
 
   const submitManualTx = async () => {
@@ -139,7 +139,7 @@ export default function AdminTransactionsPage() {
         const d = await res.json(); 
         alert(d.error || 'Failed'); 
       }
-    } catch { alert('Network error'); } finally { setSaving(false); }
+    } catch { console.error('Network error - Manual Tx failed'); } finally { setSaving(false); }
   };
 
   const stats = useMemo(() => {
@@ -451,9 +451,9 @@ export default function AdminTransactionsPage() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
           <h3 style={{ color: '#fff', fontSize: '1.1rem' }}>Transaction Audit Log</h3>
         </div>
-        <div className="glass-card" style={{ padding: 0, overflow: 'hidden' }}>
+        <div className="glass-card" style={{ padding: 0, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.05)' }}>
           <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '600px' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '900px' }}>
             <thead>
               <tr style={{ background: 'rgba(255,255,255,0.02)', borderBottom: '1px solid var(--border)' }}>
                 <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Timestamp / User</th>
