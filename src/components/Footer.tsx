@@ -1,8 +1,26 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Mail, MapPin, Phone, Shield, TrendingUp, HelpCircle, Lock } from 'lucide-react';
+import { Mail, MapPin, Phone, Shield, TrendingUp, HelpCircle, Lock, MessageCircle } from 'lucide-react';
 
 export default function Footer() {
+  const [telegramUsername, setTelegramUsername] = useState<string>('');
+
+  useEffect(() => {
+    fetch('/api/settings')
+      .then((res) => res.json())
+      .then((data) => {
+        const username = data.settings?.telegramUsername;
+        if (typeof username === 'string' && username.trim() !== '') {
+          setTelegramUsername(username.trim());
+        } else {
+          setTelegramUsername('');
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <footer style={{
       background: 'var(--surface)',
@@ -59,9 +77,23 @@ export default function Footer() {
               <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <Mail size={14} /> support@goldxchange.org
               </div>
-              <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Phone size={14} /> +1 (888) 123-GOLD
-              </div>
+              
+              {telegramUsername ? (
+                <a 
+                  href={`https://t.me/${telegramUsername.replace('@', '')}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="interactive-haptic"
+                  style={{ color: 'var(--text-muted)', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'color 0.2s' }}
+                >
+                  <MessageCircle size={14} /> Telegram
+                </a>
+              ) : (
+                <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <Phone size={14} /> +1 (888) 123-GOLD
+                </div>
+              )}
+
               <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <MapPin size={14} /> Global Financial Hub
               </div>

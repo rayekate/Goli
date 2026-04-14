@@ -32,6 +32,7 @@ export interface IUser extends Document {
   withdrawalOtpExpiry: Date;
   resetPasswordOtp: string;
   resetPasswordOtpExpiry: Date;
+  telegramUsername?: string;
   notifications: IUserNotifications;
   payoutWallet: IPayoutWallet;
   passwordChangedAt: Date;
@@ -60,6 +61,17 @@ const userSchema = new Schema<IUser>(
     withdrawalOtpExpiry: { type: Date },
     resetPasswordOtp: { type: String, default: '' },
     resetPasswordOtpExpiry: { type: Date },
+    telegramUsername: {
+      type: String,
+      default: '',
+      validate: [
+        function (this: any, v: string) {
+          if (v && this.role !== 'admin') return false;
+          return true;
+        },
+        'Only admins can have a Telegram username.',
+      ],
+    },
     notifications: {
       platformBroadcasts: { type: Boolean, default: true },
       financialConfirmations: { type: Boolean, default: true },

@@ -162,6 +162,7 @@ export const adminPlatformSettingsSchema = z.object({
   platformName: z.string().min(1).max(100).trim().optional(),
   siteTitle: z.string().min(1).max(100).trim().optional(),
   siteDescription: z.string().max(500).trim().optional(),
+  telegramUsername: z.string().max(100).trim().optional(),
   maintenanceMode: z.boolean().optional(),
   mandatory2FA: z.boolean().optional(),
   allowUser2FA: z.boolean().optional(),

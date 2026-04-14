@@ -1,36 +1,45 @@
 import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db';
+import mongoose from 'mongoose';
 import { getSettings } from '@/models/PlatformSettings';
+
+const COLLECTION = 'platformsettings';
 
 /**
  * GET: Public platform settings (non-sensitive fields only).
- * Used by the client to check maintenance mode, feature flags, etc.
+ * Uses raw MongoDB driver to avoid Mongoose schema caching issues.
  */
 export async function GET() {
   try {
     await connectToDatabase();
-    const s = await getSettings();
+
+    let doc = await mongoose.connection.db!.collection(COLLECTION).findOne({});
+    if (!doc) {
+      const s = await getSettings();
+      doc = s.toObject();
+    }
 
     return NextResponse.json({
       settings: {
-        platformName: s.platformName,
-        maintenanceMode: s.maintenanceMode,
-        mandatory2FA: s.mandatory2FA,
-        allowUser2FA: s.allowUser2FA,
-        ticketSystem: s.ticketSystem,
-        withdrawalVerification: s.withdrawalVerification,
-        requireTransactionHash: s.requireTransactionHash,
-        minWithdrawal: s.minWithdrawal,
-        maxWithdrawal: s.maxWithdrawal,
-        maxDeposit: s.maxDeposit,
-        wallets: s.wallets || [],
-        walletBTC: s.walletBTC,
-        walletETH: s.walletETH,
-        walletUSDT: s.walletUSDT,
-        minTrade: s.minTrade,
-        maxTrade: s.maxTrade,
-        profitPercent: s.profitPercent,
-        tradeDuration: s.tradeDuration,
+        platformName: doc.platformName ?? '',
+        telegramUsername: doc.telegramUsername ?? '',
+        maintenanceMode: doc.maintenanceMode ?? false,
+        mandatory2FA: doc.mandatory2FA ?? false,
+        allowUser2FA: doc.allowUser2FA ?? true,
+        ticketSystem: doc.ticketSystem ?? true,
+        withdrawalVerification: doc.withdrawalVerification ?? true,
+        requireTransactionHash: doc.requireTransactionHash ?? true,
+        minWithdrawal: doc.minWithdrawal ?? 10,
+        maxWithdrawal: doc.maxWithdrawal ?? 50000,
+        maxDeposit: doc.maxDeposit ?? 100000,
+        wallets: doc.wallets ?? [],
+        walletBTC: doc.walletBTC ?? '',
+        walletETH: doc.walletETH ?? '',
+        walletUSDT: doc.walletUSDT ?? '',
+        minTrade: doc.minTrade ?? 1,
+        maxTrade: doc.maxTrade ?? 10000,
+        profitPercent: doc.profitPercent ?? 80,
+        tradeDuration: doc.tradeDuration ?? 60,
       },
     });
   } catch {

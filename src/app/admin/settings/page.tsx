@@ -23,6 +23,7 @@ interface PlatformSettings {
   platformName: string;
   siteTitle: string;
   siteDescription: string;
+  telegramUsername?: string;
   maintenanceMode: boolean;
   mandatory2FA: boolean;
   allowUser2FA: boolean;
@@ -46,6 +47,7 @@ const defaultSettings: PlatformSettings = {
   platformName: 'Gold Trading Platform',
   siteTitle: 'GoldXchange',
   siteDescription: 'Institutional Gold Trading Terminal',
+  telegramUsername: '',
   maintenanceMode: false,
   mandatory2FA: false,
   allowUser2FA: true,
@@ -261,6 +263,24 @@ export default function AdminSettingsPage() {
             value={settings.siteDescription}
             onChange={(e) => update('siteDescription', e.target.value)}
           />
+        </div>
+
+        <div style={{ ...rowStyle, flexDirection: 'column', alignItems: 'stretch', gap: '0.5rem' }}>
+          <div style={labelStyle}>
+            <span style={labelTitle}>Telegram Username</span>
+            <span style={labelDesc}>Global support contact username (starts with @ or standard name)</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+            <input
+              style={{ ...inputStyle, width: '260px' }}
+              value={settings.telegramUsername || ''}
+              onChange={(e) => update('telegramUsername', e.target.value)}
+              placeholder="@goldsupport"
+            />
+            <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+              Current saved handle: <strong style={{ color: 'var(--primary)' }}>{settings.telegramUsername || 'None'}</strong>
+            </span>
+          </div>
         </div>
 
         <div style={rowStyle}>

@@ -36,12 +36,13 @@ export interface IPlatformSettings extends Document {
     logo?: string;
   }[];
 
+  // Contact
+  telegramUsername: string;
+
   // Legacy (kept for migration compatibility)
   walletBTC: string;
   walletETH: string;
   walletUSDT: string;
-
-
 }
 
 const schemaDefinition: any = {
@@ -87,6 +88,9 @@ const schemaDefinition: any = {
     ],
     default: [],
   },
+
+  // Contact
+  telegramUsername: { type: String, default: '' },
 
   // Legacy wallet fields (kept for migration)
   walletBTC: { type: String, default: '' },
