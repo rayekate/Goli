@@ -110,7 +110,7 @@ export default function AdminUsersPage() {
   if (loading || dataLoading) return (
     <div className="admin-users-page" style={{ padding: 'clamp(12px, 3vw, 20px)' }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        {[1,2,3].map(i => (
+        {[1, 2, 3].map(i => (
           <div key={i} className="skeleton" style={{ height: '120px', borderRadius: '16px' }} />
         ))}
       </div>
@@ -141,7 +141,7 @@ export default function AdminUsersPage() {
       <style>{`
         .admin-users-page .user-card-grid {
           display: grid;
-          grid-template-columns: minmax(180px, 1.5fr) 100px 130px 110px auto;
+          grid-template-columns: minmax(200px, 1fr) 100px 120px 120px 2.5fr;
           align-items: center;
           padding: 1.25rem 1.5rem;
           gap: 1rem;
@@ -187,17 +187,29 @@ export default function AdminUsersPage() {
           display: block;
         }
         .admin-users-page .action-btn {
-          padding: 0.5rem;
+          padding: 0.35rem 0.65rem;
+          height: 42px;
           border-radius: 8px;
           cursor: pointer;
           display: inline-flex;
+          flex-direction: column;
           align-items: center;
           justify-content: center;
           transition: all 0.2s ease;
-          min-width: 34px;
-          min-height: 34px;
+          background: rgba(255,255,255,0.05);
+          color: var(--text-muted);
+          border: 1px solid rgba(255,255,255,0.1);
+          font-family: inherit;
+          font-size: 0.65rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.4px;
+          line-height: 1.2;
+          text-align: center;
         }
         .admin-users-page .action-btn:hover {
+          background: rgba(255,255,255,0.1);
+          color: #fff;
           transform: translateY(-1px);
         }
         .admin-users-page .select-field {
@@ -429,7 +441,7 @@ export default function AdminUsersPage() {
           const adminBadge = u.role === 'admin' && (
             <span className="badge" style={{ fontSize: '0.55rem', padding: '0.15rem 0.45rem', background: 'rgba(212,175,55,0.1)', color: '#d4af37', border: '1px solid rgba(212,175,55,0.3)', lineHeight: 1.3 }}>ADMIN</span>
           );
-          
+
           const twofaBadge = u.twoFactorEnabled && (
             <span style={{
               display: 'inline-block',
@@ -445,24 +457,52 @@ export default function AdminUsersPage() {
 
           const actionButtons = (
             <div className="user-card-actions">
-              <button onClick={() => openBalanceModal(u)} className="action-btn btn btn-outline" style={{ border: '1px solid rgba(212,175,55,0.3)', color: '#d4af37' }} title="Adjust Balance">
-                <DollarSign size={15} />
+              <button 
+                onClick={() => openBalanceModal(u)} 
+                className="action-btn"
+              >
+                <span>Adjust</span><span>Balance</span>
               </button>
-              <button onClick={() => openManualTx(u, 'deposit')} className="action-btn btn btn-outline" style={{ border: '1px solid rgba(0,255,102,0.3)', color: '#00ff66' }} title="Manual Deposit">
-                <ArrowDownCircle size={15} />
+              <button 
+                onClick={() => openManualTx(u, 'deposit')} 
+                className="action-btn"
+              >
+                <span>Manual</span><span>Deposit</span>
               </button>
-              <button onClick={() => openManualTx(u, 'withdrawal')} className="action-btn btn btn-outline" style={{ border: '1px solid rgba(255,0,85,0.3)', color: '#ff0055' }} title="Manual Withdrawal">
-                <ArrowUpCircle size={15} />
+              <button 
+                onClick={() => openManualTx(u, 'withdrawal')} 
+                className="action-btn"
+              >
+                <span>Manual</span><span>Withdraw</span>
               </button>
-              <span className="action-divider" />
-              <button onClick={() => updateField(u._id, 'isBlocked', !u.isBlocked)} className="action-btn btn btn-outline" style={{ border: 'none', background: u.isBlocked ? 'rgba(255,0,85,0.15)' : 'rgba(255,255,255,0.05)', color: u.isBlocked ? '#ff0055' : 'var(--text-muted)' }} title={u.isBlocked ? 'Unblock User' : 'Block User'}>
-                {u.isBlocked ? <ShieldOff size={15} /> : <Shield size={15} />}
+
+              <button 
+                onClick={() => updateField(u._id, 'isBlocked', !u.isBlocked)} 
+                className="action-btn" 
+                style={{ 
+                  background: u.isBlocked ? 'rgba(255,0,85,0.15)' : 'rgba(255,255,255,0.05)', 
+                  color: u.isBlocked ? '#ff0055' : 'var(--text-muted)',
+                }}
+              >
+                <span>{u.isBlocked ? 'Unblock' : 'Block'}</span><span>User</span>
               </button>
-              <button onClick={() => updateField(u._id, 'twoFactorEnabled', !u.twoFactorEnabled)} className="action-btn btn btn-outline" style={{ border: 'none', background: u.twoFactorEnabled ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.05)', color: u.twoFactorEnabled ? '#d4af37' : 'var(--text-muted)' }} title={u.twoFactorEnabled ? 'Disable 2FA' : 'Enable 2FA'}>
-                <span style={{ fontSize: '10px', fontWeight: 'bold' }}>2FA</span>
+
+              <button 
+                onClick={() => updateField(u._id, 'twoFactorEnabled', !u.twoFactorEnabled)} 
+                className="action-btn" 
+                style={{ 
+                  background: u.twoFactorEnabled ? 'rgba(212,175,55,0.1)' : 'rgba(255,255,255,0.05)', 
+                  color: u.twoFactorEnabled ? '#d4af37' : 'var(--text-muted)',
+                }}
+              >
+                <span>2FA</span><span>{u.twoFactorEnabled ? 'Enabled' : 'Disabled'}</span>
               </button>
-              <button onClick={() => setExpandedUser(isExpanded ? null : u._id)} className="action-btn btn btn-outline" style={{ border: '1px solid var(--border)' }} title="View Statistics">
-                {isExpanded ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
+
+              <button 
+                onClick={() => setExpandedUser(isExpanded ? null : u._id)} 
+                className="action-btn"
+              >
+                <span>{isExpanded ? 'Hide' : 'View'}</span><span>Stats</span>
               </button>
             </div>
           );

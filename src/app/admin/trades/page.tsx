@@ -64,12 +64,42 @@ export default function AdminTradesPage() {
         </div>
 
         <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
-          <select value={filterResult} onChange={(e) => setFilterResult(e.target.value as any)} style={{ width: '150px', maxWidth: '100%', background: 'rgba(255,255,255,0.05)', color: '#fff', border: '1px solid var(--border)', padding: '0.5rem 0.75rem', borderRadius: '8px', fontSize: '0.82rem', outline: 'none' }}>
-            <option value="all">All Results</option>
-            <option value="win">Wins</option>
-            <option value="loss">Losses</option>
-            <option value="pending">Pending</option>
-          </select>
+          <div style={{ 
+            display: 'flex', 
+            background: 'rgba(0,0,0,0.2)', 
+            padding: '3px', 
+            borderRadius: '10px', 
+            border: '1px solid rgba(255,255,255,0.05)',
+            gap: '2px'
+          }}>
+            {[
+              { id: 'all', label: 'All Results' },
+              { id: 'pending', label: 'Pending' },
+              { id: 'win', label: 'Wins' },
+              { id: 'loss', label: 'Losses' }
+            ].map((f) => (
+              <button
+                key={f.id}
+                onClick={() => setFilterResult(f.id as any)}
+                style={{
+                  padding: '0.45rem 0.9rem',
+                  borderRadius: '7px',
+                  fontSize: '0.72rem',
+                  fontWeight: 700,
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                  background: filterResult === f.id ? 'rgba(212,175,55,0.1)' : 'transparent',
+                  color: filterResult === f.id ? '#d4af37' : 'var(--text-muted)',
+                  boxShadow: filterResult === f.id ? '0 2px 10px rgba(0,0,0,0.2)' : 'none',
+                }}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
           <div style={{ position: 'relative', width: '260px', maxWidth: '100%' }}>
             <Search size={16} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
             <input type="text" placeholder="Search by user..." className="input" style={{ paddingLeft: '2.25rem', fontSize: '0.85rem' }} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />

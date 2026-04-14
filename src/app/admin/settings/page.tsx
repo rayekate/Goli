@@ -278,6 +278,7 @@ export default function AdminSettingsPage() {
           <Shield size={20} color="var(--primary)" /> Security & Access Control
         </div>
 
+        {/* 
         <div style={rowStyle}>
           <div style={labelStyle}>
             <span style={labelTitle}>Mandatory 2FA</span>
@@ -293,6 +294,7 @@ export default function AdminSettingsPage() {
           </div>
           <ToggleSwitch checked={settings.allowUser2FA} onChange={() => toggle('allowUser2FA')} />
         </div>
+        */}
 
         <div style={rowStyle}>
           <div style={labelStyle}>

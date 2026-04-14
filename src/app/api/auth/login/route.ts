@@ -59,49 +59,29 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Incorrect password' }, { status: 401 });
     }
 
-    // Role-based bypass: Admins skip OTP
-    if (user.role === 'admin') {
-      const { rememberMe } = body;
-      const expiresIn = rememberMe ? '30d' : '7d';
-      const maxAge = rememberMe ? 30 * 24 * 60 * 60 : 7 * 24 * 60 * 60;
-      
-      const token = signToken({
-        userId: user._id.toString(),
-        email: user.email,
-        role: user.role,
-      }, expiresIn);
+    // Generate session token and log in user directly (2FA disabled by user request)
+    const { rememberMe } = body;
+    const expiresIn = rememberMe ? '30d' : '7d';
+    const maxAge = rememberMe ? 30 * 24 * 60 * 60 : 7 * 24 * 60 * 60;
+    
+    const token = signToken({
+      userId: user._id.toString(),
+      email: user.email,
+      role: user.role,
+    }, expiresIn);
 
-      await setAuthCookie(token, maxAge);
-
-      return NextResponse.json({
-        requires2FA: false,
-        user: {
-          id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-          balance: user.balance,
-        },
-        message: 'Admin login successful',
-      });
-    }
-
-    // Standard User: Always send OTP for email verification on every login
-    const otp = generateOtp();
-    user.loginOtp = otp;
-    user.loginOtpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 min expiry
-    await user.save();
-
-    try {
-      await sendOtpEmail(user.email, otp, 'login', user.name);
-    } catch {
-      return NextResponse.json({ error: 'Failed to send verification email. Please try again.' }, { status: 500 });
-    }
+    await setAuthCookie(token, maxAge);
 
     return NextResponse.json({
-      requires2FA: true,
-      message: 'Verification code sent to your email',
-      email: user.email.replace(/(.{2})(.*)(@.*)/, '$1***$3'),
+      requires2FA: false,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        balance: user.balance,
+      },
+      message: 'Login successful',
     });
 
 
