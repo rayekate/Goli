@@ -1167,7 +1167,6 @@ select option:hover {
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
-<<<<<<< Updated upstream
 /* ============================================================ */
 /* === MIDNIGHT FOREST v2 — EDITORIAL DESIGN SYSTEM        === */
 /* ============================================================ */
@@ -1262,6 +1261,7 @@ select option:hover {
 @media (max-width: 768px) {
   .ghost-border {
     transform: translate(0.75rem, 0.75rem);
+    border-radius: 40px 10px 40px 10px;
   }
 
   .ghost-border-wrapper:hover .ghost-border {
@@ -1271,10 +1271,8 @@ select option:hover {
   .card-asymmetric {
     border-radius: 40px 10px 40px 10px;
   }
+}
 
-  .ghost-border {
-    border-radius: 40px 10px 40px 10px;
-=======
 /* === RESPONSIVE UTILITIES === */
 @media (min-width: 769px) {
   .mobile-only {
@@ -1285,6 +1283,5 @@ select option:hover {
 @media (max-width: 768px) {
   .desktop-only {
     display: none !important;
->>>>>>> Stashed changes
   }
 }
