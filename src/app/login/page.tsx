@@ -74,7 +74,7 @@ function LoginContent() {
           setOtpStep(true);
           setResendCooldown(60);
         } else {
-          setFormData({ email: '', password: '' });
+          setFormData({ email: '', password: '', rememberMe: false });
           login(data.user);
         }
       } else {
@@ -104,7 +104,7 @@ function LoginContent() {
 
       const data = await res.json();
       if (res.ok) {
-        setFormData({ email: '', password: '' });
+        setFormData({ email: '', password: '', rememberMe: false });
         setOtpCode('');
         login(data.user);
       } else {
