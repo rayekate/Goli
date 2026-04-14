@@ -156,19 +156,28 @@ export default function TradePage() {
   return (
     <div className="animate-in trade-page-root" style={{ padding: '24px 16px', maxWidth: '1200px', margin: '0 auto' }}>
       <style>{`
-        /* Desktop: chart LEFT, trade RIGHT using named grid areas */
+        /* Center the trade panel and remove chart references */
         .trade-main-grid {
-          grid-template-areas: "chart trade";
-          grid-template-columns: minmax(0, 1fr) minmax(0, 400px);
+          display: flex;
+          justify-content: center;
+          align-items: flex-start;
+          width: 100%;
         }
-        .trade-chart-col { grid-area: chart; }
-        .trade-panel-col { grid-area: trade; }
+        .trade-panel-col {
+          width: 100%;
+          max-width: 900px; /* Flattened down, more horizontal space */
+          padding: 1.5rem 2rem !important; /* Slightly more compact vertically */
+        }
 
-        /* Mobile: trade on TOP, chart on BOTTOM */
+        @media (max-width: 1000px) {
+          .trade-panel-col {
+            max-width: 95%;
+          }
+        }
         @media (max-width: 860px) {
-          .trade-main-grid {
-            grid-template-areas: "trade" "chart" !important;
-            grid-template-columns: 1fr !important;
+          .trade-panel-col {
+            max-width: 100%;
+            padding: 1.25rem 1rem !important;
           }
           /* Hide the big header panel on mobile — price is already in the navbar */
           .trade-header-panel {
@@ -209,7 +218,7 @@ export default function TradePage() {
 
       
       {/* Main grid: chart LEFT on desktop, trade RIGHT on desktop | trade TOP on mobile, chart BOTTOM */}
-      <div className="trade-main-grid" style={{ display: 'grid', gap: '1.5rem', alignItems: 'stretch' }}>
+      <div className="trade-main-grid" style={{ gap: '1.5rem' }}>
         {/* Trade Panel */}
         <div className="neon-pulse animate-float trade-panel-col" style={{
           background: 'var(--glass-bg)',
@@ -270,213 +279,141 @@ export default function TradePage() {
 
           {error && <div style={{ background: 'rgba(255,71,87,0.08)', color: 'var(--danger)', padding: '0.65rem 0.85rem', borderRadius: '10px', fontSize: '0.82rem', border: '1px solid rgba(255,71,87,0.15)', marginBottom: '1rem' }}>{error}</div>}
           {success && <div style={{ background: 'rgba(0,230,138,0.08)', color: 'var(--success)', padding: '0.65rem 0.85rem', borderRadius: '10px', fontSize: '0.82rem', border: '1px solid rgba(0,230,138,0.15)', marginBottom: '1rem' }}>{success}</div>}
-
-          {/* Active Strategy Info */}
-          <div style={{ marginBottom: '1.5rem', background: 'rgba(212,175,55,0.05)', padding: '1.25rem', borderRadius: '12px', border: '1px solid rgba(212,175,55,0.1)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>Contract Strategy</span>
-              <span style={{
-                fontSize: '0.7rem',
-                background: 'var(--gold)',
-                color: '#000',
-                padding: '0.2rem 0.6rem',
-                borderRadius: '20px',
-                fontWeight: 800,
-                textTransform: 'uppercase'
-              }}>{activeTier.label}</span>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <div style={{ padding: '0.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
-                  <DollarSign size={16} color="var(--gold)" />
+          <div className="trade-panel-layout" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem', marginBottom: '1.5rem' }}>
+            {/* Left Column: Strategy & Duration */}
+            <div>
+              <div style={{ marginBottom: '1.5rem', background: 'rgba(212,175,55,0.05)', padding: '1.25rem', borderRadius: '12px', border: '1px solid rgba(212,175,55,0.1)', height: 'fit-content' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>Strategy Tier</span>
+                  <span style={{
+                    fontSize: '0.7rem',
+                    background: 'var(--gold)',
+                    color: '#000',
+                    padding: '0.2rem 0.6rem',
+                    borderRadius: '20px',
+                    fontWeight: 800,
+                    textTransform: 'uppercase'
+                  }}>{activeTier.label}</span>
                 </div>
-                <div>
-                  <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Profit / Loss</p>
-                  <p style={{ color: 'var(--success)', fontWeight: 800, fontSize: '0.95rem' }}>±{activeTier.profitPercent}%</p>
-                </div>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <div style={{ padding: '0.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
-                  <Clock size={16} color="var(--gold)" />
-                </div>
-                <div>
-                  <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Trade Window</p>
-                  <p style={{ color: '#fff', fontWeight: 800, fontSize: '0.95rem' }}>{selectedDuration}s</p>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                  <div>
+                    <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Yield Scale</p>
+                    <p style={{ color: 'var(--success)', fontWeight: 800, fontSize: '1.1rem' }}>±{activeTier.profitPercent}%</p>
+                  </div>
+                  <div>
+                    <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Time Window</p>
+                    <p style={{ color: '#fff', fontWeight: 800, fontSize: '1.1rem' }}>{selectedDuration}s</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          {/* Duration Selector */}
-          <div style={{ marginBottom: '1.25rem' }}>
-            <label style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-muted)', display: 'block', marginBottom: '0.75rem' }}>Trade Duration</label>
-            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-              {DURATION_PRESETS.map((d) => (
+              <div style={{ marginBottom: '1.25rem' }}>
+                <label style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-muted)', display: 'block', marginBottom: '1rem' }}>Execution Duration</label>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem' }}>
+                  {DURATION_PRESETS.map((d) => (
+                    <button
+                      key={d}
+                      onClick={() => setSelectedDuration(d)}
+                      style={{
+                        padding: '0.6rem',
+                        borderRadius: '8px',
+                        border: `1px solid ${selectedDuration === d ? 'var(--gold)' : 'rgba(255,255,255,0.05)'}`,
+                        background: selectedDuration === d ? 'rgba(212,175,55,0.1)' : 'rgba(255,255,255,0.03)',
+                        color: selectedDuration === d ? 'var(--gold)' : 'var(--text-muted)',
+                        fontSize: '0.85rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s',
+                      }}
+                    >
+                      {d}s
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column: Amount & Direction */}
+            <div>
+              <div style={{ marginBottom: '1.5rem', background: 'rgba(0,0,0,0.2)', padding: '1.25rem', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.03)' }}>
+                <label style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-muted)', display: 'block', marginBottom: '0.75rem' }}>Investment Amount</label>
+                <div style={{ position: 'relative', marginBottom: '1rem' }}>
+                  <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--gold)', fontSize: '1.4rem', fontWeight: 800 }}>$</span>
+                  <input
+                    type="number"
+                    min={activeTier.minAmount}
+                    max={user.balance}
+                    step="0.01"
+                    placeholder={`${settings.minTrade.toLocaleString()}`}
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    style={{
+                      width: '100%',
+                      background: 'rgba(0,0,0,0.4)',
+                      border: '1px solid rgba(212,175,55,0.2)',
+                      borderRadius: '10px',
+                      padding: '1.1rem 1rem 1.1rem 2.5rem',
+                      fontSize: '1.5rem',
+                      fontWeight: 800,
+                      color: '#fff',
+                      fontFamily: 'var(--font-mono, monospace)',
+                      outline: 'none',
+                    }}
+                  />
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.4rem' }}>
+                  {presets.map((p) => (
+                    <button
+                      key={p}
+                      onClick={() => setAmount(String(p))}
+                      style={{
+                        padding: '0.5rem 0',
+                        borderRadius: '6px',
+                        background: amount === String(p) ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.03)',
+                        color: amount === String(p) ? 'var(--gold)' : 'var(--text-muted)',
+                        border: `1px solid ${amount === String(p) ? 'var(--gold)' : 'transparent'}`,
+                        fontSize: '0.8rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      +${p}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
                 <button
-                  key={d}
-                  onClick={() => setSelectedDuration(d)}
+                  onClick={() => setDirection('up')}
                   style={{
-                    flex: '1 1 auto',
-                    padding: '0.4rem 0.6rem',
-                    borderRadius: '8px',
-                    border: `1px solid ${selectedDuration === d ? 'var(--gold)' : 'rgba(255,255,255,0.05)'}`,
-                    background: selectedDuration === d ? 'rgba(212,175,55,0.1)' : 'rgba(255,255,255,0.03)',
-                    color: selectedDuration === d ? 'var(--gold)' : 'var(--text-muted)',
-                    fontSize: '0.85rem',
-                    fontWeight: 700,
+                    padding: '1.25rem',
+                    borderRadius: '12px',
+                    border: `2px solid ${direction === 'up' ? 'var(--success)' : 'rgba(0,230,138,0.1)'}`,
+                    background: direction === 'up' ? 'rgba(0,230,138,0.1)' : 'rgba(0,0,0,0.2)',
                     cursor: 'pointer',
                     transition: 'all 0.2s',
                   }}
                 >
-                  {d}s
+                  <TrendingUp size={24} color={direction === 'up' ? 'var(--success)' : 'rgba(0,230,138,0.5)'} style={{ marginBottom: '0.4rem' }} />
+                  <span style={{ display: 'block', fontWeight: 900, color: direction === 'up' ? 'var(--success)' : 'rgba(0,230,138,0.6)' }}>CALL</span>
                 </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Amount & Presets */}
-          <div style={{ marginBottom: '1.5rem', background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.03)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-              <label style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-muted)' }}>Investment Amount</label>
-            </div>
-
-            <div style={{ position: 'relative', marginBottom: '1rem' }}>
-              <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--gold)', fontSize: '1.2rem', fontWeight: 800 }}>$</span>
-              <input
-                type="number"
-                min={activeTier.minAmount}
-                max={user.balance}
-                step="0.01"
-                placeholder={`${settings.minTrade.toLocaleString()}`}
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                style={{
-                  width: '100%',
-                  background: 'rgba(0,0,0,0.4)',
-                  border: '1px solid rgba(212,175,55,0.2)',
-                  borderRadius: '8px',
-                  padding: '1rem 1rem 1rem 2.2rem',
-                  fontSize: '1.25rem',
-                  fontWeight: 800,
-                  color: '#fff',
-                  fontFamily: 'var(--font-mono, monospace)',
-                  outline: 'none',
-                  transition: 'border-color 0.2s',
-                }}
-                onFocus={(e) => e.target.style.borderColor = 'var(--gold)'}
-                onBlur={(e) => e.target.style.borderColor = 'rgba(212,175,55,0.2)'}
-              />
-            </div>
-
-            {/* Presets */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
-              {presets.map((p) => (
                 <button
-                  key={p}
-                  onClick={() => setAmount(String(p))}
+                  onClick={() => setDirection('down')}
                   style={{
-                    flex: '1 1 auto',
-                    padding: '0.35rem 0',
-                    borderRadius: '6px',
-                    border: `1px solid ${amount === String(p) ? 'var(--gold)' : 'transparent'}`,
-                    background: amount === String(p) ? 'rgba(212,175,55,0.1)' : 'rgba(255,255,255,0.03)',
-                    color: amount === String(p) ? 'var(--gold)' : 'var(--text-muted)',
-                    fontSize: '0.78rem',
-                    fontWeight: 600,
+                    padding: '1.25rem',
+                    borderRadius: '12px',
+                    border: `2px solid ${direction === 'down' ? 'var(--danger)' : 'rgba(255,71,87,0.1)'}`,
+                    background: direction === 'down' ? 'rgba(255,71,87,0.1)' : 'rgba(0,0,0,0.2)',
                     cursor: 'pointer',
                     transition: 'all 0.2s',
                   }}
-                  onMouseOver={(e) => {
-                    if (amount !== String(p)) {
-                      e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
-                      e.currentTarget.style.color = '#fff';
-                    }
-                  }}
-                  onMouseOut={(e) => {
-                    if (amount !== String(p)) {
-                      e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
-                      e.currentTarget.style.color = 'var(--text-muted)';
-                    }
-                  }}
                 >
-                  +{p}
+                  <TrendingDown size={24} color={direction === 'down' ? 'var(--danger)' : 'rgba(255,71,87,0.5)'} style={{ marginBottom: '0.4rem' }} />
+                  <span style={{ display: 'block', fontWeight: 900, color: direction === 'down' ? 'var(--danger)' : 'rgba(255,71,87,0.6)' }}>PUT</span>
                 </button>
-              ))}
+              </div>
             </div>
-          </div>
-
-          {/* Direction */}
-          <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '0.6rem', display: 'block', textTransform: 'uppercase', letterSpacing: '1px' }}>Forecast Direction</label>
-          {/* Direction */}
-          <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '0.6rem', display: 'block', textTransform: 'uppercase', letterSpacing: '1px' }}>Forecast</label>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1.5rem' }}>
-            <button
-              onClick={() => setDirection('up')}
-              style={{
-                padding: '1rem',
-                borderRadius: '10px',
-                border: `2px solid ${direction === 'up' ? 'var(--success)' : 'rgba(0,230,138,0.1)'}`,
-                background: direction === 'up' ? 'rgba(0,230,138,0.12)' : 'rgba(0,0,0,0.2)',
-                boxShadow: direction === 'up' ? '0 0 20px rgba(0,230,138,0.2)' : 'none',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '0.75rem',
-                transition: 'all 0.2s',
-              }}
-              onMouseOver={(e) => {
-                if (direction !== 'up') {
-                  e.currentTarget.style.background = 'rgba(0,230,138,0.05)';
-                  e.currentTarget.style.borderColor = 'rgba(0,230,138,0.3)';
-                }
-              }}
-              onMouseOut={(e) => {
-                if (direction !== 'up') {
-                  e.currentTarget.style.background = 'rgba(0,0,0,0.2)';
-                  e.currentTarget.style.borderColor = 'rgba(0,230,138,0.1)';
-                }
-              }}
-            >
-              <TrendingUp size={24} color={direction === 'up' ? 'var(--success)' : 'rgba(0,230,138,0.5)'} />
-              <div style={{ textAlign: 'left' }}>
-                <span style={{ display: 'block', fontWeight: 800, fontSize: '0.95rem', color: direction === 'up' ? 'var(--success)' : 'rgba(0,230,138,0.8)' }}>UP</span>
-              </div>
-            </button>
-
-            <button
-              onClick={() => setDirection('down')}
-              style={{
-                padding: '1rem',
-                borderRadius: '10px',
-                border: `2px solid ${direction === 'down' ? 'var(--danger)' : 'rgba(255,71,87,0.1)'}`,
-                background: direction === 'down' ? 'rgba(255,71,87,0.12)' : 'rgba(0,0,0,0.2)',
-                boxShadow: direction === 'down' ? '0 0 20px rgba(255,71,87,0.2)' : 'none',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '0.75rem',
-                transition: 'all 0.2s',
-              }}
-              onMouseOver={(e) => {
-                if (direction !== 'down') {
-                  e.currentTarget.style.background = 'rgba(255,71,87,0.05)';
-                  e.currentTarget.style.borderColor = 'rgba(255,71,87,0.3)';
-                }
-              }}
-              onMouseOut={(e) => {
-                if (direction !== 'down') {
-                  e.currentTarget.style.background = 'rgba(0,0,0,0.2)';
-                  e.currentTarget.style.borderColor = 'rgba(255,71,87,0.1)';
-                }
-              }}
-            >
-              <TrendingDown size={24} color={direction === 'down' ? 'var(--danger)' : 'rgba(255,71,87,0.5)'} />
-              <div style={{ textAlign: 'left' }}>
-                <span style={{ display: 'block', fontWeight: 800, fontSize: '0.95rem', color: direction === 'down' ? 'var(--danger)' : 'rgba(255,71,87,0.8)' }}>DOWN</span>
-              </div>
-            </button>
           </div>
 
           {/* Summary */}
@@ -575,10 +512,6 @@ export default function TradePage() {
           </p>
         </div>
 
-        {/* Chart — second in DOM so it appears below trade on mobile; CSS order:1 puts it LEFT on desktop */}
-        <div className="trade-chart-col" style={{ minWidth: 0, height: '100%', overflow: 'hidden' }}>
-          <PriceChart data={priceHistory} />
-        </div>
       </div>
 
       {/* Active Trades (Pending) */}
