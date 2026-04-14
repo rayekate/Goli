@@ -43,7 +43,7 @@ export default function ContactPage() {
       
       <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
         <h1 style={{ fontSize: 'clamp(1.8rem, 5vw, 3rem)', marginBottom: '1rem', color: '#fff' }}>
-          Contact <span className="text-gradient-gold">GoldTradex</span>
+          Contact <span className="text-gradient-gold">GoldXchange</span>
         </h1>
         <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', maxWidth: '600px', margin: '0 auto' }}>
           Have legal inquiries, partnership proposals, or need help before opening an account? Our global support team is available 24/7.
@@ -73,7 +73,7 @@ export default function ContactPage() {
               </div>
               <div>
                 <p style={{ margin: 0, fontWeight: 600 }}>Phone Support</p>
-                <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-muted)' }}>+1 (888) 123-GOLD<br/>Mon-Fri, 9am - 5pm EST</p>
+                <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-muted)' }}>+1 (888) XCHANGE-1<br/>Mon-Fri, 9am - 5pm EST</p>
               </div>
             </div>
 
@@ -83,7 +83,7 @@ export default function ContactPage() {
               </div>
               <div>
                 <p style={{ margin: 0, fontWeight: 600 }}>Email Address</p>
-                <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-muted)' }}>support@goldtradex.com<br/>partners@goldtradex.com</p>
+                <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-muted)' }}>support@goldxchange.org<br/>partners@goldxchange.org</p>
               </div>
             </div>
 

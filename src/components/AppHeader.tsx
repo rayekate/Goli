@@ -25,7 +25,7 @@ export default function AppHeader() {
 
       {/* Logo */}
       <Link href="/dashboard" className={styles.logo}>
-        GOLD<span>TRADEX</span>
+        GOLD<span>XCHANGE</span>
       </Link>
 
       {/* Live price — centre */}

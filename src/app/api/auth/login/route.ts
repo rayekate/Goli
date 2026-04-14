@@ -29,11 +29,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     }
 
-    const { email, password } = parsed.data;
 
-    const user = await User.findOne({ email });
+    const { identifier, password } = parsed.data;
+    // Check if identifier is email
+    const isEmail = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(identifier);
+    const user = isEmail
+      ? await User.findOne({ email: identifier.toLowerCase() })
+      : await User.findOne({ username: identifier });
     if (!user) {
-      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     if (user.isBlocked) {
@@ -52,7 +56,7 @@ export async function POST(req: NextRequest) {
 
     const isMatch = await bcrypt.compare(password, user.password!);
     if (!isMatch) {
-      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+      return NextResponse.json({ error: 'Incorrect password' }, { status: 401 });
     }
 
     // Role-based bypass: Admins skip OTP

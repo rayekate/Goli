@@ -16,24 +16,33 @@ export async function GET(req: NextRequest) {
   }
 
   await connectToDatabase();
-  const pending = await User.findOne({ email, isVerified: false }).select('name registrationOtp registrationOtpExpiry');
+  const user = await User.findOne({ email }).select('name registrationOtp loginOtp withdrawalOtp resetPasswordOtp');
 
-  if (!pending || !pending.registrationOtp) {
+  if (!user) {
     return NextResponse.json({ emails: [] });
   }
 
-  // Return a mock email object matching the mailer's structure
-  return NextResponse.json({
-    emails: [
-      {
-        id: '1',
-        from: 'GoldXchange Support <support@goli-trade.com>',
-        subject: 'Verify Your GoldXchange Email',
-        timestamp: new Date().toISOString(),
-        body: `Your email verification code is: ${pending.registrationOtp}`,
-        otp: pending.registrationOtp,
-        name: pending.name,
-      }
-    ]
-  });
+  const emails = [];
+  if (user.registrationOtp && !user.isVerified) {
+    emails.push({
+      id: 'reg',
+      from: 'GoldXchange Support',
+      subject: 'Verify Your GoldXchange Email',
+      timestamp: new Date().toISOString(),
+      body: `Verification code: ${user.registrationOtp}`,
+      otp: user.registrationOtp,
+    });
+  }
+  if (user.loginOtp) {
+    emails.push({
+      id: 'login',
+      from: 'GoldXchange Support',
+      subject: 'Your GoldXchange Login OTP',
+      timestamp: new Date().toISOString(),
+      body: `Login code: ${user.loginOtp}`,
+      otp: user.loginOtp,
+    });
+  }
+
+  return NextResponse.json({ emails });
 }

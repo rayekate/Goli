@@ -1,15 +1,40 @@
 'use client';
 
+import React, { useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import { TrendingUp, Shield, Wallet, BarChart2, ArrowRight, Zap, Globe, Clock } from 'lucide-react';
-import ProfitChart from '@/components/ProfitChart';
+import PriceChart from '@/components/PriceChart';
+import LivePriceTicker from '@/components/LivePriceTicker';
 
 export default function Home() {
   const { user } = useAuth();
+  const [priceHistory, setPriceHistory] = useState<{ time: string; price: number }[]>([]);
+
+  // Pre-fill history on load so chart isn't empty
+  React.useEffect(() => {
+    const basePrice = 2345.50; // Sensible starting point
+    const initialData = [];
+    const now = Date.now();
+    for (let i = 60; i >= 0; i--) {
+      const time = new Date(now - i * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      const price = basePrice + (Math.random() - 0.5) * 5;
+      initialData.push({ time, price });
+    }
+    setPriceHistory(initialData);
+  }, []);
+
+  const handlePriceUpdate = useCallback((_price: number, history: { time: string; price: number }[]) => {
+    setPriceHistory(history);
+  }, []);
 
   return (
     <div className="animate-in" style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh' }}>
+      {/* Hidden price ticker to drive the chart data */}
+      <div style={{ display: 'none' }}>
+        <LivePriceTicker onPriceUpdate={handlePriceUpdate} />
+      </div>
+
       {/* Premium Texture Layers */}
       <div className="noise-texture" />
       
@@ -140,9 +165,11 @@ export default function Home() {
                 borderRadius: '24px', 
                 overflow: 'hidden',
                 background: '#02040a',
-                transition: 'all 0.4s ease'
+                transition: 'all 0.4s ease',
               }}>
-                <ProfitChart />
+                <div className="trade-chart-col" style={{ minWidth: 0, height: '480px', overflow: 'hidden' }}>
+                  <PriceChart data={priceHistory} />
+                </div>
               </div>
             </div>
           </div>
@@ -174,6 +201,35 @@ export default function Home() {
                 </div>
               ))}
             </div>
+        </div>
+      </section>
+
+      {/* Transparency Metrics Bar */}
+      <section style={{ position: 'relative', zIndex: 2, marginTop: '-60px', marginBottom: '60px' }}>
+        <div className="container" style={{ maxWidth: '1000px' }}>
+          <div className="glass-card" style={{ 
+            padding: '2rem', 
+            background: 'rgba(10, 15, 25, 0.8)',
+            display: 'flex', 
+            justifyContent: 'space-around', 
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '2rem',
+            border: '1px solid rgba(212, 175, 55, 0.15)',
+            boxShadow: '0 20px 50px rgba(0,0,0,0.5)'
+          }}>
+            {[
+              { label: 'Network status', value: 'Operational', color: 'var(--success)' },
+              { label: '24h Volume', value: '$14.8M+', color: '#fff' },
+              { label: 'Active nodes', value: '1,204', color: '#fff' },
+              { label: 'Security level', value: 'Institutional', color: 'var(--gold)' },
+            ].map((stat, i) => (
+              <div key={i} style={{ textAlign: 'center' }}>
+                <div style={{ fontSize: '0.65rem', fontWeight: 900, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.4rem' }}>{stat.label}</div>
+                <div style={{ fontSize: '1.25rem', fontWeight: 900, color: stat.color }}>{stat.value}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -236,6 +292,61 @@ export default function Home() {
                 </div>
               );
             })}
+          </div>
+        </div>
+      </section>
+
+      {/* Trader Testimonials Section */}
+      <section style={{ padding: '140px 0', background: 'rgba(212, 175, 55, 0.01)' }}>
+        <div className="container">
+          <div style={{ textAlign: 'center', marginBottom: '6rem' }}>
+            <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', marginBottom: '1.5rem', fontWeight: 900, color: '#fff', letterSpacing: '-2px' }}>Trusted by <span style={{ color: 'var(--gold)' }}>Professionals</span></h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: '1.15rem', maxWidth: '640px', margin: '0 auto', lineHeight: 1.8 }}>The choice of institutional traders for high-precision XAU/USD movements.</p>
+          </div>
+          
+          <div className="dashboard-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+            {[
+              { 
+                name: "Marcus V.", 
+                role: "Institutional Arbitrageur", 
+                text: "The execution speed on GoldXchange is unmatched. I've switched my entire portfolio here for the pinpoint accuracy of the XAU/USD terminal.",
+                avatar: "MV"
+              },
+              { 
+                name: "Elena G.", 
+                role: "Macro Strategist", 
+                text: "Finally, a platform that understands the need for institutional-grade data. The transparency metrics and real-time settle-up times are best-in-class.",
+                avatar: "EG"
+              },
+              { 
+                name: "David K.", 
+                role: "Proprietary Trader", 
+                text: "GoldXchange provides the liquidity and clean UI necessary for high-stakes trading. The glassmorphic terminal is beautiful and highly functional.",
+                avatar: "DK"
+              }
+            ].map((t, i) => (
+              <div key={i} className="glass-card" style={{ padding: '3rem 2.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', position: 'relative' }}>
+                <div style={{ 
+                  width: '48px', 
+                  height: '48px', 
+                  borderRadius: '12px', 
+                  background: 'var(--gradient-gold)', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  fontSize: '1rem',
+                  fontWeight: 900,
+                  color: '#000'
+                }}>
+                  {t.avatar}
+                </div>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: 1.8, fontStyle: 'italic' }}>"{t.text}"</p>
+                <div>
+                  <div style={{ color: '#fff', fontWeight: 800 }}>{t.name}</div>
+                  <div style={{ color: 'var(--gold)', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{t.role}</div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

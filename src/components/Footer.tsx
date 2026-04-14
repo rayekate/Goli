@@ -20,10 +20,10 @@ export default function Footer() {
           <div>
             <h2 style={{ fontSize: '1.5rem', fontWeight: 800, margin: '0 0 1rem 0', letterSpacing: '-0.5px' }}>
               <span style={{ color: '#fff' }}>GOLD</span>
-              <span style={{ color: 'var(--gold)' }}>TRADEX</span>
+              <span style={{ color: 'var(--gold)' }}>XCHANGE</span>
             </h2>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', lineHeight: 1.6, maxWidth: '300px' }}>
-              The premium destination for active traders. Execute trades on global XAU/USD aggregates with institutional speed.
+              The premium destination for institutional gold traders. Execute trades on global XAU/USD aggregates with unparalleled precision.
             </p>
           </div>
 
@@ -57,7 +57,7 @@ export default function Footer() {
             <h4 style={{ color: '#fff', marginBottom: '1.25rem', fontWeight: 700, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Contact</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Mail size={14} /> support@goldtradex.com
+                <Mail size={14} /> support@goldxchange.org
               </div>
               <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <Phone size={14} /> +1 (888) 123-GOLD
@@ -75,7 +75,7 @@ export default function Footer() {
           textAlign: 'center',
         }}>
           <p style={{ color: '#4B5563', fontSize: '0.75rem' }}>
-            © {new Date().getFullYear()} GoldTradex. All market data is aggregated and does not constitute financial advice.
+            © {new Date().getFullYear()} GoldXchange. All market data is aggregated and does not constitute financial advice.
           </p>
         </div>
       </div>

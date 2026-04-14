@@ -24,7 +24,7 @@ export default function Navbar() {
         <div className={styles.inner}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
             <Link href="/" className={`${styles.logo} text-gradient-gold`}>
-              GOLD<span>TRADEX</span>
+              GOLD<span>XCHANGE</span>
             </Link>
             
             <div className={styles.statusContainer}>

@@ -46,6 +46,8 @@ const platformSettingsSchema = new Schema<IPlatformSettings>(
   {
     // General
     platformName: { type: String, default: 'GoldTradex' },
+    siteTitle: { type: String, default: 'GoldXchange' },
+    siteDescription: { type: String, default: 'Institutional Gold Trading Terminal' },
     maintenanceMode: { type: Boolean, default: false },
 
     // Security

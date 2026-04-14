@@ -19,12 +19,16 @@ export async function POST(req: NextRequest) {
     await connectToDatabase();
     const body = await req.json();
 
-    const { email, otp, rememberMe } = body;
-    if (!email || !otp || typeof otp !== 'string' || otp.length !== 6) {
+    const { email: identifier, otp, rememberMe } = body;
+    if (!identifier || !otp || typeof otp !== 'string' || otp.length !== 6) {
       return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
     }
 
-    const user = await User.findOne({ email });
+    const isEmail = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(identifier);
+    const user = isEmail
+      ? await User.findOne({ email: identifier.toLowerCase() })
+      : await User.findOne({ username: identifier });
+
     if (!user) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     }

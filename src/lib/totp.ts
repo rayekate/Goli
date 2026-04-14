@@ -7,7 +7,7 @@ import crypto from 'crypto';
 
 const TOTP_PERIOD = 30; // seconds
 const TOTP_DIGITS = 6;
-const ISSUER = 'GoldTradex';
+const ISSUER = 'GoldXchange';
 
 /** Generate a random base32-encoded secret */
 export function generateSecret(): string {

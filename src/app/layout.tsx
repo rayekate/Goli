@@ -8,8 +8,12 @@ import NavigationWrapper from "@/components/NavigationWrapper";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "GoldTradeX | Premium Gold Trading Platform",
-  description: "Trade gold price movements with real-time analysis and instant execution.",
+  title: "GoldXchange | Institutional Gold Trading Terminal",
+  description: "Trade gold price movements with real-time analysis, institutional-grade tools, and instant settlement on GoldXchange.",
+  metadataBase: new URL("https://goldxchange.org"),
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default function RootLayout({

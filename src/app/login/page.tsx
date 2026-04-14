@@ -11,7 +11,7 @@ function LoginContent() {
   const searchParams = useSearchParams();
   const isVerified = searchParams.get('verified') === 'true';
 
-  const [formData, setFormData] = useState({ email: '', password: '', rememberMe: false });
+  const [formData, setFormData] = useState({ identifier: '', password: '', rememberMe: false });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -19,7 +19,7 @@ function LoginContent() {
 
   // 2FA OTP state
   const [otpStep, setOtpStep] = useState(false);
-  const [otpEmail, setOtpEmail] = useState('');
+  const [otpIdentifier, setOtpIdentifier] = useState('');
   const [maskedEmail, setMaskedEmail] = useState('');
   const [otpCode, setOtpCode] = useState('');
   const [otpLoading, setOtpLoading] = useState(false);
@@ -64,7 +64,7 @@ function LoginContent() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          email: formData.email, 
+          identifier: formData.identifier, 
           password: formData.password,
           rememberMe: formData.rememberMe 
         }),
@@ -73,12 +73,12 @@ function LoginContent() {
       const data = await res.json();
       if (res.ok) {
         if (data.requires2FA) {
-          setOtpEmail(formData.email);
+          setOtpIdentifier(formData.identifier);
           setMaskedEmail(data.email);
           setOtpStep(true);
           setResendCooldown(60);
         } else {
-          setFormData({ email: '', password: '', rememberMe: false });
+          setFormData({ identifier: '', password: '', rememberMe: false });
           login(data.user);
         }
       } else {
@@ -103,12 +103,12 @@ function LoginContent() {
       const res = await fetch('/api/auth/verify-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: otpEmail, otp: otpCode, rememberMe: formData.rememberMe }),
+        body: JSON.stringify({ email: otpIdentifier, otp: otpCode, rememberMe: formData.rememberMe }),
       });
 
       const data = await res.json();
       if (res.ok) {
-        setFormData({ email: '', password: '', rememberMe: false });
+        setFormData({ identifier: '', password: '', rememberMe: false });
         setOtpCode('');
         login(data.user);
       } else {
@@ -215,15 +215,15 @@ function LoginContent() {
 
               <form onSubmit={handleSubmit}>
                 <div className="input-group">
-                  <label>Email Address</label>
+                  <label>Email or Username</label>
                   <div style={{ position: 'relative' }}>
                     <Mail size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', pointerEvents: 'none' }} />
                     <input
-                      type="email"
-                      placeholder="name@example.com"
+                      type="text"
+                      placeholder="Enter email or username"
                       required
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      value={formData.identifier}
+                      onChange={(e) => setFormData({ ...formData, identifier: e.target.value })}
                       style={{ paddingLeft: '2.5rem' }}
                     />
                   </div>
