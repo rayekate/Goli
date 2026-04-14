@@ -21,7 +21,7 @@ export default function Home() {
           <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '4rem' }}>
             
             {/* Left Content */}
-            <div style={{ flex: '1 1 450px', textAlign: 'left' }}>
+            <div style={{ flex: '1 1 320px', textAlign: 'left', minWidth: 0 }}>
               <div className="badge badge-primary animate-float" style={{ marginBottom: '2rem', display: 'inline-flex' }}>
                 <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--gold)', boxShadow: '0 0 8px var(--gold-glow)', display: 'inline-block', marginRight: '8px' }} />
                 LIVE GOLD PRICE: XAU/USD
@@ -61,7 +61,7 @@ export default function Home() {
             </div>
 
             {/* Right Content - The Chart */}
-            <div style={{ flex: '1 1 500px', width: '100%', minWidth: 0, perspective: '1000px' }}>
+            <div style={{ flex: '1 1 320px', width: '100%', minWidth: 0, perspective: '1000px' }}>
               <div className="animate-float" style={{ animationDelay: '0.5s', transformStyle: 'preserve-3d', transform: 'rotateY(-5deg) rotateX(2deg)', boxShadow: '-20px 20px 60px rgba(0,0,0,0.5)' }}>
                 <ProfitChart />
               </div>
@@ -90,8 +90,8 @@ export default function Home() {
               { label: 'Supported Crypto', value: 'BTC · ETH · USDT' },
               { label: 'Withdrawals', value: 'Admin Verified' },
             ].map((stat) => (
-              <div key={stat.label} style={{ textAlign: 'center', flex: '1 1 200px' }}>
-                <p style={{ fontSize: '2.4rem', fontWeight: 900, color: '#fff', textShadow: '0 0 20px rgba(212,175,55,0.3)' }}>{stat.value}</p>
+              <div key={stat.label} style={{ textAlign: 'center', flex: '1 1 150px', minWidth: 0 }}>
+                <p style={{ fontSize: 'clamp(1.5rem, 4vw, 2.4rem)', fontWeight: 900, color: '#fff', textShadow: '0 0 20px rgba(212,175,55,0.3)' }}>{stat.value}</p>
                 <p style={{ fontSize: '0.8rem', color: 'var(--gold)', marginTop: '0.5rem', textTransform: 'uppercase', letterSpacing: '3px', fontWeight: 700 }}>{stat.label}</p>
               </div>
             ))}

@@ -41,7 +41,7 @@ export default function ContactPage() {
     <div className="container animate-in stagger-1" style={{ padding: '30px 15px', maxWidth: '1000px' }}>
       
       <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-        <h1 style={{ fontSize: '3rem', marginBottom: '1rem', color: '#fff' }}>
+        <h1 style={{ fontSize: 'clamp(1.8rem, 5vw, 3rem)', marginBottom: '1rem', color: '#fff' }}>
           Contact <span className="text-gradient-gold">GoldTradex</span>
         </h1>
         <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', maxWidth: '600px', margin: '0 auto' }}>

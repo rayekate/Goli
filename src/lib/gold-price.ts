@@ -94,7 +94,7 @@ async function refreshPrice(): Promise<number> {
 
       // Only add to history if price actually changed or enough time passed
       const lastEntry = priceHistory[priceHistory.length - 1];
-      const timeDiff = lastEntry ? now - new Date().getTime() : Infinity;
+      const timeDiff = lastEntry ? Date.now() - lastFetchMs : Infinity;
       if (!lastEntry || lastEntry.price !== price || timeDiff > 10_000) {
         priceHistory.push({
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),

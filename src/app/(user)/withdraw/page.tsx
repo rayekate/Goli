@@ -11,6 +11,9 @@ export default function WithdrawPage() {
   const [walletAddress, setWalletAddress] = useState('');
   const [network, setNetwork] = useState('USDT_TRC20');
   const [otpCode, setOtpCode] = useState('');
+  const [otpSending, setOtpSending] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpCooldown, setOtpCooldown] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
@@ -43,19 +46,44 @@ export default function WithdrawPage() {
     }
   }, [user]);
 
+  // OTP cooldown timer
+  useEffect(() => {
+    if (otpCooldown <= 0) return;
+    const t = setTimeout(() => setOtpCooldown(otpCooldown - 1), 1000);
+    return () => clearTimeout(t);
+  }, [otpCooldown]);
+
+  const sendOtp = async () => {
+    setOtpSending(true);
+    setError('');
+    try {
+      const res = await fetch('/api/user/send-otp', { method: 'POST' });
+      const data = await res.json();
+      if (res.ok) {
+        setOtpSent(true);
+        setOtpCooldown(60);
+      } else {
+        setError(data.error || 'Failed to send OTP');
+      }
+    } catch { setError('Network error sending OTP'); }
+    finally { setOtpSending(false); }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    const numAmount = Number(amount);
+    const numAmount = Math.round(Number(amount) * 100) / 100;
     if (!numAmount || numAmount < limits.minWithdrawal) { setError(`Minimum withdrawal is $${limits.minWithdrawal}.`); return; }
+    if (numAmount > limits.maxWithdrawal) { setError(`Maximum withdrawal is $${limits.maxWithdrawal}.`); return; }
     if (numAmount > (user?.balance || 0)) { setError('Amount exceeds your available balance.'); return; }
-    if (!walletAddress.trim()) { setError('Please enter your wallet address.'); return; }
+    if (!walletAddress.trim() || walletAddress.trim().length < 10) { setError('Please enter a valid wallet address.'); return; }
+    if (user?.withdrawalOtpEnabled && otpCode.trim().length !== 6) { setError('Please enter a valid 6-digit OTP code.'); return; }
     setSubmitting(true);
     try {
       const res = await fetch('/api/transactions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'withdrawal', amount: numAmount, walletAddress: walletAddress.trim(), cryptoType: network, otpCode: user?.twoFactorEnabled ? otpCode.trim() : undefined }),
+        body: JSON.stringify({ type: 'withdrawal', amount: numAmount, walletAddress: walletAddress.trim(), cryptoType: network, otpCode: user?.withdrawalOtpEnabled ? otpCode.trim() : undefined }),
       });
       if (res.ok) { setSubmitted(true); }
       else { const data = await res.json(); setError(data.error || 'Failed to submit'); }
@@ -107,7 +135,34 @@ export default function WithdrawPage() {
           <div className="input-group"><label>Network / Currency</label><select value={network} onChange={(e) => setNetwork(e.target.value)}><option value="USDT_TRC20">USDT (TRC20 / Tron)</option><option value="USDT_ERC20">USDT (ERC20 / Ethereum)</option><option value="BTC">Bitcoin (BTC)</option><option value="ETH">Ethereum (ETH)</option></select></div>
           <div className="input-group"><label>Your Wallet Address</label><input type="text" placeholder="Enter your withdrawal wallet address" required value={walletAddress} onChange={(e) => setWalletAddress(e.target.value)} /></div>
           <div style={{ background: 'rgba(0,230,138,0.03)', padding: '0.85rem', borderRadius: '10px', marginBottom: '1.25rem', display: 'flex', gap: '0.6rem', border: '1px solid rgba(0,230,138,0.08)' }}><ShieldCheck size={16} color="var(--success)" style={{ flexShrink: 0, marginTop: '1px' }} /><p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>Once approved, funds are sent directly to your wallet. Processing time: 1-24 hours.</p></div>
-          {user?.twoFactorEnabled && (<div className="input-group" style={{ padding: '1.25rem', background: 'rgba(212,175,55,0.03)', border: '1px solid rgba(212,175,55,0.1)', borderRadius: '12px', marginBottom: '1.25rem' }}><label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--gold)', fontSize: '0.85rem' }}><ShieldCheck size={16} /> Two-Step Verification</label><input type="text" placeholder="Enter 6-digit code" required value={otpCode} onChange={(e) => setOtpCode(e.target.value)} maxLength={6} style={{ letterSpacing: '4px', fontFamily: 'monospace', fontSize: '1.1rem', textAlign: 'center' }} /></div>)}
+          {user?.withdrawalOtpEnabled && (
+            <div style={{ padding: '1.25rem', background: 'rgba(212,175,55,0.03)', border: '1px solid rgba(212,175,55,0.1)', borderRadius: '12px', marginBottom: '1.25rem' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--gold)', fontSize: '0.85rem', marginBottom: '0.75rem' }}>
+                <ShieldCheck size={16} /> Email Verification
+              </label>
+              <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                <input
+                  type="text"
+                  placeholder="Enter 6-digit OTP"
+                  required
+                  value={otpCode}
+                  onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                  maxLength={6}
+                  style={{ letterSpacing: '4px', fontFamily: 'monospace', fontSize: '1.1rem', textAlign: 'center', flex: 1 }}
+                />
+                <button
+                  type="button"
+                  onClick={sendOtp}
+                  disabled={otpSending || otpCooldown > 0}
+                  className="btn btn-outline"
+                  style={{ whiteSpace: 'nowrap', padding: '0.6rem 1rem', fontSize: '0.8rem', borderColor: 'var(--gold)', color: 'var(--gold)', minWidth: '110px' }}
+                >
+                  {otpSending ? <Loader2 size={14} className="animate-spin" /> : otpCooldown > 0 ? `Resend (${otpCooldown}s)` : otpSent ? 'Resend OTP' : 'Send OTP'}
+                </button>
+              </div>
+              {otpSent && <p style={{ fontSize: '0.72rem', color: 'var(--success)', marginTop: '0.5rem' }}>OTP sent to your registered email. Valid for 5 minutes.</p>}
+            </div>
+          )}
           <button type="submit" className="btn btn-gold" style={{ width: '100%', fontSize: '0.95rem', padding: '0.85rem', borderRadius: '10px' }} disabled={submitting}>{submitting ? 'Processing...' : 'Request Withdrawal'}</button>
         </form>
       </div>

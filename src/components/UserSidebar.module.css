@@ -89,10 +89,10 @@
 @media (max-width: 768px) {
   .sidebar {
     position: fixed;
-    top: 60px;
+    top: 54px;
     left: 0;
     width: 240px;
-    height: calc(100vh - 60px);
+    height: calc(100vh - 54px);
     transform: translateX(-100%);
     z-index: 50;
     background: rgba(8, 14, 26, 0.97);
@@ -120,5 +120,19 @@
 
   .activeItem::before {
     left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    top: 50px;
+    height: calc(100vh - 50px);
+    width: 220px;
+  }
+
+  .menuItem {
+    padding: 0.65rem 0.85rem;
+    font-size: 0.82rem;
+    gap: 0.6rem;
   }
 }

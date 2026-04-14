@@ -58,7 +58,7 @@ export const withdrawalSchema = z.object({
     .refine(v => Number(v.toFixed(2)) === v, 'Amount must have at most 2 decimal places'),
   walletAddress: z.string().min(10, 'Invalid wallet address').max(256).trim(),
   cryptoType: z.enum(['USDT_TRC20', 'USDT_ERC20', 'BTC', 'ETH'], { error: 'Invalid crypto type' }),
-  otpCode: z.string().max(6).optional(),
+  otpCode: z.string().length(6).regex(/^\d{6}$/, 'OTP must be 6 digits').optional(),
 });
 
 export const transactionSchema = z.discriminatedUnion('type', [
@@ -107,6 +107,7 @@ export const updateSettingsSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters').max(50).trim().optional(),
   twoFactorEnabled: z.boolean().optional(),
   withdrawalOtpEnabled: z.boolean().optional(),
+  verificationCode: z.string().length(6).regex(/^\d{6}$/).optional(),
   notifications: z.object({
     platformBroadcasts: z.boolean().optional(),
     financialConfirmations: z.boolean().optional(),

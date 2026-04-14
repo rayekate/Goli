@@ -34,6 +34,8 @@ export default function SettingsPage() {
   const [showCurrentPw, setShowCurrentPw] = useState(false);
   const [showNewPw, setShowNewPw] = useState(false);
 
+
+
   // Populate form fields from live user context
   useEffect(() => {
     if (user && !initialized) {
@@ -237,7 +239,9 @@ export default function SettingsPage() {
               <div style={toggleCardStyle}>
                 <div style={{ flex: 1 }}>
                   <h4 style={{ color: '#fff', marginBottom: '0.2rem', fontSize: '0.95rem' }}>Two-Factor Authentication</h4>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>Add an extra layer of security to your account</p>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>
+                    {twoFactorEnabled ? 'Enabled — OTP will be sent to your email on login' : 'Add an extra layer of security to your account'}
+                  </p>
                 </div>
                 <ToggleSwitch checked={twoFactorEnabled} onChange={() => setTwoFactorEnabled(!twoFactorEnabled)} />
               </div>

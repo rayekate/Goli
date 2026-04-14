@@ -23,6 +23,7 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
   const [currentPrice, setCurrentPrice] = useState<number | null>(null);
   const [timeframe, setTimeframe] = useState<number>(60); // seconds
   const [zoom, setZoom] = useState<number>(80); // amount of visible candles
+  const [isMobile, setIsMobile] = useState(false);
 
   // Interactivity State
   const [hoverData, setHoverData] = useState<{ x: number, y: number, candle: Candle | null } | null>(null);
@@ -42,8 +43,12 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
       width: containerRef.current.clientWidth,
       height: containerRef.current.clientHeight
     });
+
+    const checkMobile = () => setIsMobile(window.innerWidth < 600);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
     
-    return () => observer.disconnect();
+    return () => { observer.disconnect(); window.removeEventListener('resize', checkMobile); };
   }, []);
 
   // Fetch API & Simulate Live Market
@@ -135,7 +140,7 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
 
   const visibleData = data.slice(-zoom);
   const { width, height } = dimensions;
-  const padding = { top: 20, bottom: 25, left: 10, right: 65 };
+  const padding = { top: 20, bottom: 25, left: isMobile ? 5 : 10, right: isMobile ? 50 : 65 };
   const chartW = Math.max(1, width - padding.left - padding.right);
   const chartH = Math.max(1, height - padding.top - padding.bottom);
   const volumeH = Math.min(60, chartH * 0.25);
@@ -202,9 +207,9 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
       backdropFilter: 'blur(20px)',
       border: '1px solid rgba(212, 175, 55, 0.15)',
       borderRadius: '16px',
-      padding: '1.25rem 1.5rem',
+      padding: isMobile ? '1rem 0.5rem' : '1.25rem 1.5rem',
       height: '100%',
-      minHeight: '500px',
+      minHeight: isMobile ? '350px' : '500px',
       position: 'relative',
       overflow: 'hidden',
       display: 'flex',
@@ -213,10 +218,10 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, rgba(212,175,55,0.25), transparent)' }} />
       
       {/* Chart Controls Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.25rem', position: 'relative', zIndex: 10 }}>
-        <div>
-          <h3 style={{ fontSize: '1.1rem', color: '#fff', fontWeight: 600 }}>LIVE PRICE: <span className="text-gradient-gold">{symbol}</span></h3>
-          <div style={{ display: 'flex', gap: '6px', marginTop: '8px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.25rem', position: 'relative', zIndex: 10, flexWrap: 'wrap', gap: '0.5rem' }}>
+        <div style={{ minWidth: 0 }}>
+          <h3 style={{ fontSize: isMobile ? '0.9rem' : '1.1rem', color: '#fff', fontWeight: 600 }}>LIVE PRICE: <span className="text-gradient-gold">{symbol}</span></h3>
+          <div style={{ display: 'flex', gap: '4px', marginTop: '8px', flexWrap: 'wrap' }}>
             {timeframes.map(tf => (
                <button 
                   key={tf.val}
@@ -225,9 +230,9 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
                     background: timeframe === tf.val ? 'rgba(212,175,55,0.15)' : 'transparent',
                     border: `1px solid ${timeframe === tf.val ? 'rgba(212,175,55,0.5)' : 'rgba(255,255,255,0.1)'}`,
                     color: timeframe === tf.val ? '#D4AF37' : '#7B8CA8',
-                    padding: '4px 12px',
+                    padding: isMobile ? '3px 8px' : '4px 12px',
                     borderRadius: '6px',
-                    fontSize: '0.75rem',
+                    fontSize: isMobile ? '0.68rem' : '0.75rem',
                     cursor: 'pointer',
                     transition: 'all 0.2s ease',
                     fontWeight: timeframe === tf.val ? 600 : 400
@@ -238,21 +243,23 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
             ))}
           </div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'rgba(15, 23, 42, 0.6)', padding: '6px 16px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
-          <span style={{ fontSize: '0.75rem', color: '#7B8CA8', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>Zoom</span>
-          <input 
-            type="range" 
-            min="20" 
-            max="120" 
-            value={140 - zoom} 
-            onChange={(e) => setZoom(140 - parseInt(e.target.value))} 
-            style={{ width: '80px', accentColor: '#D4AF37', cursor: 'ew-resize' }}
-          />
-        </div>
+        {!isMobile && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'rgba(15, 23, 42, 0.6)', padding: '6px 16px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+            <span style={{ fontSize: '0.75rem', color: '#7B8CA8', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>Zoom</span>
+            <input 
+              type="range" 
+              min="20" 
+              max="120" 
+              value={140 - zoom} 
+              onChange={(e) => setZoom(140 - parseInt(e.target.value))} 
+              style={{ width: '80px', accentColor: '#D4AF37', cursor: 'ew-resize' }}
+            />
+          </div>
+        )}
       </div>
 
       {/* OHLC Bar */}
-      <div style={{ height: '24px', display: 'flex', gap: '15px', alignItems: 'center', fontSize: '0.8rem', color: '#7B8CA8', zIndex: 10 }}>
+      <div style={{ minHeight: '24px', display: 'flex', gap: isMobile ? '8px' : '15px', alignItems: 'center', fontSize: isMobile ? '0.7rem' : '0.8rem', color: '#7B8CA8', zIndex: 10, flexWrap: 'wrap', overflow: 'hidden' }}>
         {currentHoverCandle && (
           <>
             <span>O <span style={{color: '#fff', fontWeight: 500}}>{currentHoverCandle.open.toFixed(2)}</span></span>
@@ -266,7 +273,7 @@ export default function ProfitChart({ symbol = 'XAU/USD' }: ChartProps) {
         )}
       </div>
       
-      <div ref={containerRef} style={{ width: '100%', flex: 1, position: 'relative', marginTop: '5px' }}>
+      <div ref={containerRef} style={{ width: '100%', flex: 1, position: 'relative', marginTop: '5px', minWidth: 0, overflow: 'hidden' }}>
         {visibleData.length > 0 && (
           <svg 
             width={width} 

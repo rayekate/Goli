@@ -9,14 +9,14 @@ export default function Footer() {
       backdropFilter: 'blur(20px)',
       borderTop: '1px solid rgba(212, 175, 55, 0.06)',
       marginTop: 'auto',
-      padding: '3.5rem 2rem 1.5rem',
+      padding: 'clamp(2rem, 5vw, 3.5rem) clamp(1rem, 3vw, 2rem) 1.5rem',
       position: 'relative',
     }}>
       {/* Top gold line accent */}
       <div style={{ position: 'absolute', top: 0, left: '10%', right: '10%', height: '1px', background: 'linear-gradient(90deg, transparent, rgba(212,175,55,0.2), transparent)' }} />
       
       <div className="container">
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '2.5rem', marginBottom: '2.5rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(220px, 100%), 1fr))', gap: '2.5rem', marginBottom: '2.5rem' }}>
           
           <div>
             <h2 style={{ fontSize: '1.6rem', fontWeight: 800, margin: '0 0 1rem 0', letterSpacing: '-1px' }}>

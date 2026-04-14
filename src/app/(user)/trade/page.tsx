@@ -153,9 +153,31 @@ export default function TradePage() {
   const marketStatus = checkMarketStatus();
 
   return (
-    <div className="animate-in" style={{ padding: '24px 16px', maxWidth: '1200px', margin: '0 auto' }}>
+    <div className="animate-in trade-page-root" style={{ padding: '24px 16px', maxWidth: '1200px', margin: '0 auto' }}>
+      <style>{`
+        @media (max-width: 860px) {
+          .trade-main-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .trade-page-root {
+            padding: 12px 8px !important;
+          }
+          .trade-header-panel {
+            padding: 1rem !important;
+          }
+          .trade-price-box {
+            padding: 0.75rem 1rem !important;
+            gap: 1rem !important;
+          }
+          .trade-price-box .trade-divider {
+            display: none;
+          }
+        }
+      `}</style>
       {/* Header & Live Price Ticker (Unified Dashboard Panel) */}
-      <div className="glass-card mb-8" style={{ padding: '1.5rem 2rem', position: 'relative', overflow: 'hidden' }}>
+      <div className="glass-card mb-8 trade-header-panel" style={{ padding: '1.5rem 2rem', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'var(--gradient-gold)' }} />
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -167,10 +189,10 @@ export default function TradePage() {
             <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>Predict market direction and earn up to <strong className="text-gold text-gradient-gold">80% profit</strong> per winning cycle.</p>
           </div>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', alignItems: 'center', background: 'rgba(0,0,0,0.25)', padding: '1rem 1.5rem', borderRadius: '14px', border: '1px solid var(--border-subtle)' }}>
+          <div className="trade-price-box" style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', alignItems: 'center', background: 'rgba(0,0,0,0.25)', padding: '1rem 1.5rem', borderRadius: '14px', border: '1px solid var(--border-subtle)', width: '100%', maxWidth: '500px' }}>
             <LivePriceTicker onPriceUpdate={handlePriceUpdate} />
-            <div style={{ width: '1px', height: '40px', background: 'var(--border)' }} className="hidden md:block"></div>
-            <div style={{ textAlign: 'right' }}>
+            <div className="trade-divider" style={{ width: '1px', height: '40px', background: 'var(--border)' }}></div>
+            <div style={{ textAlign: 'right', marginLeft: 'auto' }}>
               <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '0.2rem' }}>Balance</p>
               <p className="text-gradient-gold" style={{ fontSize: '1.6rem', fontWeight: 800, fontFamily: 'var(--font-mono, monospace)', textShadow: '0 0 20px rgba(212,175,55,0.2)' }}>
                 ${user.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -180,71 +202,11 @@ export default function TradePage() {
         </div>
       </div>
 
-      {/* Investment Tiers Guide */}
-      <div className="mb-8 mt-4 animate-in stagger-2">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-          <div style={{ height: '1px', flex: 1, background: 'linear-gradient(90deg, transparent, var(--border))' }} />
-          <h2 style={{ fontSize: '1.25rem', color: '#fff', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 800, whiteSpace: 'nowrap' }}>Yield Tiers Guide</h2>
-          <div style={{ height: '1px', flex: 1, background: 'linear-gradient(90deg, var(--border), transparent)' }} />
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.25rem' }}>
-          {[
-            { name: 'Starter', range: '$1 - $5,000', profit: 30, color: '#94a3b8' },
-            { name: 'Intermediate', range: '$5,001 - $20,000', profit: 40, color: '#38bdf8' },
-            { name: 'Advanced', range: '$20,001 - $50,000', profit: 50, color: '#818cf8' },
-            { name: 'Professional', range: '$50,001 - $100,000', profit: 60, color: '#fb923c' },
-            { name: 'Grandmaster', range: '$100,001 - $200,000', profit: 70, color: '#f472b6' },
-            { name: 'Apex', range: 'Over $200,000', profit: 80, color: 'var(--gold)' },
-          ].map((tier, idx) => (
-            <div key={tier.name} className="glass-card" style={{
-              padding: '1.5rem',
-              border: '1px solid rgba(255,255,255,0.05)',
-              borderTop: `2px solid ${tier.color}`,
-              background: 'rgba(255,255,255,0.01)',
-              transition: 'all 0.3s ease',
-              cursor: 'default',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '1rem'
-            }} onMouseOver={(e) => {
-              e.currentTarget.style.transform = 'translateY(-5px)';
-              e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
-              e.currentTarget.style.boxShadow = `0 10px 30px -10px ${tier.color}33`;
-            }} onMouseOut={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.background = 'rgba(255,255,255,0.01)';
-              e.currentTarget.style.boxShadow = 'none';
-            }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <div>
-                  <h4 style={{ color: tier.color, fontWeight: 900, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.25rem' }}>Tier {idx + 1}</h4>
-                  <h3 style={{ color: '#fff', fontSize: '1.2rem', fontWeight: 800 }}>{tier.name}</h3>
-                </div>
-                <div style={{ fontSize: '0.75rem', padding: '0.3rem 0.6rem', borderRadius: '6px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-muted)', fontWeight: 600 }}>
-                  {tier.range}
-                </div>
-              </div>
-
-              <div style={{ display: 'flex', gap: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '1rem' }}>
-                <div>
-                  <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.2rem' }}>Investment Range</p>
-                  <p style={{ color: '#fff', fontWeight: 800, fontSize: '1.1rem' }}>{tier.range}</p>
-                </div>
-                <div>
-                  <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.2rem' }}>Profit / Loss</p>
-                  <p style={{ color: 'var(--success)', fontWeight: 800, fontSize: '1.1rem' }}>±{tier.profit}%</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
+      
       {/* Main grid: Chart + Trade Panel */}
-      <div className="grid-responsive-2col" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 380px', gap: '1.5rem', alignItems: 'stretch' }}>
+      <div className="trade-main-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 380px)', gap: '1.5rem', alignItems: 'stretch' }}>
         {/* Chart */}
-        <div style={{ minWidth: 0, height: '100%' }}>
+        <div style={{ minWidth: 0, height: '100%', overflow: 'hidden' }}>
           <PriceChart data={priceHistory} />
         </div>
 
@@ -642,8 +604,8 @@ export default function TradePage() {
                   borderRadius: '12px',
                   padding: '1rem 1.25rem',
                 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flexWrap: 'wrap' }}>
                       <span style={{ color: trade.direction === 'up' ? 'var(--success)' : 'var(--danger)', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px', background: trade.direction === 'up' ? 'rgba(0,230,138,0.1)' : 'rgba(255,71,87,0.1)', padding: '0.2rem 0.5rem', borderRadius: '6px' }}>
                         {trade.direction === 'up' ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
                         {trade.direction.toUpperCase()}
@@ -702,8 +664,8 @@ export default function TradePage() {
             <Link href="/history" style={{ fontSize: '0.82rem', color: 'var(--gold)' }}>View All →</Link>
           </div>
 
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
+          <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem', minWidth: '550px' }}>
               <thead>
                 <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
                   {['Direction', 'Amount', 'Open Price', 'Close Price', 'P/L', 'Result'].map((h) => (
@@ -736,6 +698,68 @@ export default function TradePage() {
           </div>
         </div>
       )}
+
+      {/* Investment Tiers Guide */}
+      <div className="mb-8 mt-4 animate-in stagger-2">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+          <div style={{ height: '1px', flex: 1, background: 'linear-gradient(90deg, transparent, var(--border))' }} />
+          <h2 style={{ fontSize: 'clamp(1rem, 3vw, 1.25rem)', color: '#fff', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 800, whiteSpace: 'nowrap' }}>Yield Tiers Guide</h2>
+          <div style={{ height: '1px', flex: 1, background: 'linear-gradient(90deg, var(--border), transparent)' }} />
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(280px, 100%), 1fr))', gap: '1.25rem' }}>
+          {[
+            { name: 'Starter', range: '$1 - $5,000', profit: 30, color: '#94a3b8' },
+            { name: 'Intermediate', range: '$5,001 - $20,000', profit: 40, color: '#38bdf8' },
+            { name: 'Advanced', range: '$20,001 - $50,000', profit: 50, color: '#818cf8' },
+            { name: 'Professional', range: '$50,001 - $100,000', profit: 60, color: '#fb923c' },
+            { name: 'Grandmaster', range: '$100,001 - $200,000', profit: 70, color: '#f472b6' },
+            { name: 'Apex', range: 'Over $200,000', profit: 80, color: 'var(--gold)' },
+          ].map((tier, idx) => (
+            <div key={tier.name} className="glass-card" style={{
+              padding: '1.5rem',
+              border: '1px solid rgba(255,255,255,0.05)',
+              borderTop: `2px solid ${tier.color}`,
+              background: 'rgba(255,255,255,0.01)',
+              transition: 'all 0.3s ease',
+              cursor: 'default',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1rem'
+            }} onMouseOver={(e) => {
+              e.currentTarget.style.transform = 'translateY(-5px)';
+              e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
+              e.currentTarget.style.boxShadow = `0 10px 30px -10px ${tier.color}33`;
+            }} onMouseOut={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.background = 'rgba(255,255,255,0.01)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <div>
+                  <h4 style={{ color: tier.color, fontWeight: 900, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.25rem' }}>Tier {idx + 1}</h4>
+                  <h3 style={{ color: '#fff', fontSize: '1.2rem', fontWeight: 800 }}>{tier.name}</h3>
+                </div>
+                <div style={{ fontSize: '0.75rem', padding: '0.3rem 0.6rem', borderRadius: '6px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-muted)', fontWeight: 600 }}>
+                  {tier.range}
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '1rem' }}>
+                <div>
+                  <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.2rem' }}>Investment Range</p>
+                  <p style={{ color: '#fff', fontWeight: 800, fontSize: '1.1rem' }}>{tier.range}</p>
+                </div>
+                <div>
+                  <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.2rem' }}>Profit / Loss</p>
+                  <p style={{ color: 'var(--success)', fontWeight: 800, fontSize: '1.1rem' }}>±{tier.profit}%</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
     </div>
   );
 }

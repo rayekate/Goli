@@ -52,8 +52,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const payload = await getAuthUser();
-    if (!payload || payload.role !== 'admin') {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    if (!payload) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     await connectToDatabase();
@@ -65,8 +65,21 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     }
 
     const { id } = await params;
-    const ticket = await Ticket.findByIdAndUpdate(id, { status: parsed.data.status }, { new: true });
+    const ticket = await Ticket.findById(id);
     if (!ticket) return NextResponse.json({ error: 'Ticket not found' }, { status: 404 });
+
+    // Users can only close their own tickets; admins can set any status
+    if (payload.role !== 'admin') {
+      if (ticket.userId.toString() !== payload.userId) {
+        return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      }
+      if (parsed.data.status !== 'closed') {
+        return NextResponse.json({ error: 'You can only close your own tickets' }, { status: 403 });
+      }
+    }
+
+    ticket.status = parsed.data.status;
+    await ticket.save();
 
     return NextResponse.json({ ticket });
   } catch (error) {

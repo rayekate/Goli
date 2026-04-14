@@ -4,7 +4,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { 
   ArrowLeftRight, Check, X, ExternalLink, Search, Plus, 
-  ArrowDownCircle, ArrowUpCircle, Download, Eye,
+  ArrowDownCircle, ArrowUpCircle, Eye,
   Clock, ShieldCheck, AlertCircle, TrendingUp, Filter,
   Maximize2, Copy, Wallet
 } from 'lucide-react';
@@ -228,20 +228,20 @@ export default function AdminTransactionsPage() {
       {/* Header & Stats Dock */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2rem', flexWrap: 'wrap', gap: '1.5rem' }}>
         <div>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '0.25rem' }} className="text-gradient-gold">Transactions</h1>
+          <h1 style={{ fontSize: 'clamp(1.6rem, 4vw, 2.5rem)', fontWeight: 900, marginBottom: '0.25rem' }} className="text-gradient-gold">Transactions</h1>
           <p style={{ color: 'var(--text-muted)' }}>Financial Control Terminal & Verification Queue</p>
         </div>
         
-        <div style={{ display: 'flex', gap: '1rem' }}>
-          <div className="glass-card" style={{ padding: '0.75rem 1.5rem', textAlign: 'center', border: '1px solid rgba(212,175,55,0.2)', background: 'rgba(212,175,55,0.03)' }}>
+        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+          <div className="glass-card" style={{ padding: '0.75rem 1.5rem', textAlign: 'center', border: '1px solid rgba(212,175,55,0.2)', background: 'rgba(212,175,55,0.03)', flex: '1 1 120px', minWidth: 0 }}>
             <p style={{ fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.2rem', color: 'var(--text-muted)' }}>Pending</p>
             <p style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--gold)' }}>{stats.pendingCount}</p>
           </div>
-          <div className="glass-card" style={{ padding: '0.75rem 1.5rem', textAlign: 'center' }}>
+          <div className="glass-card" style={{ padding: '0.75rem 1.5rem', textAlign: 'center', flex: '1 1 120px', minWidth: 0 }}>
             <p style={{ fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.2rem', color: 'var(--text-muted)' }}>Today's Vol</p>
             <p style={{ fontSize: '1.25rem', fontWeight: 800, color: '#fff' }}>${stats.todayVol.toLocaleString()}</p>
           </div>
-          <div className="glass-card" style={{ padding: '0.75rem 1.5rem', textAlign: 'center', border: '1px solid rgba(255,71,87,0.1)' }}>
+          <div className="glass-card" style={{ padding: '0.75rem 1.5rem', textAlign: 'center', border: '1px solid rgba(255,71,87,0.1)', flex: '1 1 120px', minWidth: 0 }}>
             <p style={{ fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.2rem', color: 'var(--text-muted)' }}>Withdrawal Req</p>
             <p style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--danger)' }}>${stats.withdrawalPressure.toLocaleString()}</p>
           </div>
@@ -254,7 +254,7 @@ export default function AdminTransactionsPage() {
         <button onClick={() => setManualModal({ type: 'withdrawal' })} className="btn btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.82rem', borderColor: 'var(--danger)', color: 'var(--danger)' }}><Plus size={16} /> Manual Withdrawal</button>
         <div style={{ flex: 1 }} />
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-          <div className="search-box" style={{ width: '240px', position: 'relative' }}>
+          <div className="search-box" style={{ width: '100%', maxWidth: '240px', minWidth: '150px', position: 'relative' }}>
             <Search size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', opacity: 0.5 }} />
             <input 
               type="text" 
@@ -290,8 +290,8 @@ export default function AdminTransactionsPage() {
                 padding: '1.5rem',
                 borderLeft: `4px solid ${t.type === 'deposit' ? 'var(--success)' : 'var(--warning)'}`,
                 display: 'grid',
-                gridTemplateColumns: '1.5fr 1fr 1.5fr 1fr',
-                gap: '2rem',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                gap: '1.5rem',
                 alignItems: 'center'
               }}>
                 <div>
@@ -348,10 +348,10 @@ export default function AdminTransactionsPage() {
       <section>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
           <h3 style={{ color: '#fff', fontSize: '1.1rem' }}>Transaction Audit Log</h3>
-          <button className="btn btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem' }}><Download size={14} /> Export CSV</button>
         </div>
         <div className="glass-card" style={{ padding: 0, overflow: 'hidden' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '600px' }}>
             <thead>
               <tr style={{ background: 'rgba(255,255,255,0.02)', borderBottom: '1px solid var(--border)' }}>
                 <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Timestamp / User</th>
@@ -385,6 +385,7 @@ export default function AdminTransactionsPage() {
               )}
             </tbody>
           </table>
+          </div>
         </div>
       </section>
     </div>

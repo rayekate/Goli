@@ -6,6 +6,7 @@ import { signToken, setAuthCookie } from '@/lib/auth';
 import { loginSchema } from '@/lib/validations';
 import { authLimiter } from '@/lib/rate-limit';
 import { getClientIP } from '@/lib/api-guard';
+import { generateOtp, sendOtpEmail } from '@/lib/mailer';
 
 export async function POST(req: NextRequest) {
   try {
@@ -45,6 +46,26 @@ export async function POST(req: NextRequest) {
     const isMatch = await bcrypt.compare(password, user.password!);
     if (!isMatch) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+    }
+
+    // If 2FA is enabled, send OTP email instead of logging in
+    if (user.twoFactorEnabled) {
+      const otp = generateOtp();
+      user.loginOtp = otp;
+      user.loginOtpExpiry = new Date(Date.now() + 5 * 60 * 1000);
+      await user.save();
+
+      try {
+        await sendOtpEmail(user.email, otp, 'login');
+      } catch {
+        return NextResponse.json({ error: 'Failed to send verification email. Please try again.' }, { status: 500 });
+      }
+
+      return NextResponse.json({
+        requires2FA: true,
+        message: 'Verification code sent to your email',
+        email: user.email.replace(/(.{2})(.*)(@.*)/, '$1***$3'),
+      });
     }
 
     const token = signToken({

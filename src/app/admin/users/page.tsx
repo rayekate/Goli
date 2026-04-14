@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { Users, Search, X, DollarSign, Plus, Minus, ArrowDownCircle, ArrowUpCircle, Shield, ShieldOff, ChevronDown, ChevronUp, Download, UserCircle } from 'lucide-react';
+import { Users, Search, X, DollarSign, Plus, Minus, ArrowDownCircle, ArrowUpCircle, Shield, ShieldOff, ChevronDown, ChevronUp, UserCircle } from 'lucide-react';
 
 type BalanceModal = { userId: string; name: string; balance: number } | null;
 type ManualTxModal = { userId: string; name: string; balance: number; type: 'deposit' | 'withdrawal' } | null;
@@ -105,34 +105,6 @@ export default function AdminUsersPage() {
     } catch (err) {
       console.error('Update error:', err);
     }
-  };
-
-  const exportUsersCSV = () => {
-    if (users.length === 0) return;
-    const headers = ['ID', 'Name', 'Email', 'Role', 'Balance', 'Status', 'Total Trades', 'Win/Loss', 'Net P&L', 'Joined Date'];
-    const csvContent = [
-      headers.join(','),
-      ...users.map(u => [
-        u._id,
-        `"${u.name.replace(/"/g, '""')}"`,
-        `"${u.email.replace(/"/g, '""')}"`,
-        u.role,
-        u.balance,
-        u.isBlocked ? 'Blocked' : 'Active',
-        u.stats?.totalTrades || 0,
-        `${u.stats?.wins || 0}/${u.stats?.losses || 0}`,
-        u.stats?.totalProfitLoss || 0,
-        new Date(u.createdAt).toISOString()
-      ].join(','))
-    ].join('\n');
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `goldtradex_users_${new Date().toISOString().split('T')[0]}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
   };
 
   if (loading || dataLoading) return (
@@ -424,9 +396,6 @@ export default function AdminUsersPage() {
           <span className="user-count-badge">
             <Users size={14} /> {filteredUsers.length} user{filteredUsers.length !== 1 ? 's' : ''}
           </span>
-          <button onClick={exportUsersCSV} className="btn btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.65rem 1rem', whiteSpace: 'nowrap' }}>
-            <Download size={16} /> Export CSV
-          </button>
           <div className="search-box">
             <Search size={16} style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', zIndex: 1 }} />
             <input type="text" placeholder="Search by name or email..." className="input" style={{ paddingLeft: '2.5rem', fontSize: '0.85rem', width: '100%', background: 'rgba(255,255,255,0.05)' }} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />

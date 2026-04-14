@@ -113,7 +113,7 @@ export default function AdminWalletsPage() {
       {/* Header */}
       <div style={{ marginBottom: '2rem', borderBottom: '1px solid var(--border)', paddingBottom: '1.5rem' }}>
         <h1
-          style={{ fontSize: '2.2rem', display: 'flex', alignItems: 'center', gap: '0.75rem', color: '#fff', marginBottom: '0.5rem' }}
+          style={{ fontSize: 'clamp(1.5rem, 4vw, 2.2rem)', display: 'flex', alignItems: 'center', gap: '0.75rem', color: '#fff', marginBottom: '0.5rem', flexWrap: 'wrap' }}
           className="text-gradient-gold"
         >
           <Wallet size={30} color="var(--gold)" style={{ filter: 'drop-shadow(0 0 10px var(--gold-glow))' }} />
@@ -169,7 +169,7 @@ export default function AdminWalletsPage() {
             }}
           >
             {/* Card header */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
                 <GripVertical size={16} color="var(--text-muted)" style={{ opacity: 0.4 }} />
                 <span style={{ fontSize: '1.5rem', lineHeight: 1 }}>{w.logo || '💰'}</span>
@@ -205,7 +205,7 @@ export default function AdminWalletsPage() {
             </div>
 
             {/* Fields */}
-            <div style={{ display: 'grid', gridTemplateColumns: '80px repeat(2, minmax(0, 1fr))', gap: '0.75rem', marginBottom: '0.75rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '80px repeat(2, minmax(0, 1fr))', gap: '0.75rem', marginBottom: '0.75rem' }} className="grid-responsive-2col">
               <div>
                 <label style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: 600 }}>Logo</label>
                 <input

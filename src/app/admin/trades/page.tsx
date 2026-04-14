@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { Activity, Search, TrendingUp, TrendingDown, Clock, User, DollarSign, BarChart3, Download, CheckCircle, XCircle, Loader2 } from 'lucide-react';
+import { Activity, Search, TrendingUp, TrendingDown, Clock, User, DollarSign, BarChart3, CheckCircle, XCircle, Loader2 } from 'lucide-react';
 
 export default function AdminTradesPage() {
   const { user, loading } = useAuth();
@@ -59,34 +59,6 @@ export default function AdminTradesPage() {
     return matchSearch && matchResult;
   });
 
-  const exportTradesCSV = () => {
-    if (trades.length === 0) return;
-    const headers = ['Trade ID', 'User Name', 'User Email', 'Direction', 'Amount', 'Entry Price', 'Exit Price', 'Result', 'Profit/Loss', 'Time'];
-    const csvContent = [
-      headers.join(','),
-      ...trades.map(t => [
-        t._id,
-        `"${(t.userId?.name || '').replace(/"/g, '""')}"`,
-        `"${(t.userId?.email || '').replace(/"/g, '""')}"`,
-        t.direction,
-        t.amount,
-        t.entryPrice || '',
-        t.exitPrice || '',
-        t.result,
-        t.profitOrLoss || 0,
-        new Date(t.createdAt).toISOString()
-      ].join(','))
-    ].join('\n');
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `goldtradex_trades_${new Date().toISOString().split('T')[0]}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
 
   // Platform stats
   const totalVolume = trades.reduce((s, t) => s + t.amount, 0);
@@ -100,23 +72,20 @@ export default function AdminTradesPage() {
     <div className="container animate-in stagger-1" style={{ padding: '20px 15px', maxWidth: '1200px' }}>
       <div style={{ marginBottom: '2.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem', borderBottom: '1px solid var(--border)', paddingBottom: '1.5rem' }}>
         <div>
-          <h1 style={{ fontSize: '2.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }} className="text-gradient-gold">
+          <h1 style={{ fontSize: 'clamp(1.6rem, 4vw, 2.5rem)', display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem', flexWrap: 'wrap' }} className="text-gradient-gold">
             <Activity size={32} color="var(--gold)" style={{ filter: 'drop-shadow(0 0 10px var(--gold-glow))' }} /> Trade Surveillance
           </h1>
           <p style={{ color: 'var(--text-muted)' }}>Complete oversight of all platform trading activity and house profit/loss.</p>
         </div>
 
-        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-          <button onClick={exportTradesCSV} className="btn btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.65rem 1rem' }}>
-            <Download size={16} /> Export CSV
-          </button>
-          <select value={filterResult} onChange={(e) => setFilterResult(e.target.value as any)} style={{ width: '150px', background: 'rgba(255,255,255,0.05)', color: '#fff', border: '1px solid var(--border)', padding: '0.5rem 0.75rem', borderRadius: '8px', fontSize: '0.82rem', outline: 'none' }}>
+        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
+          <select value={filterResult} onChange={(e) => setFilterResult(e.target.value as any)} style={{ width: '150px', maxWidth: '100%', background: 'rgba(255,255,255,0.05)', color: '#fff', border: '1px solid var(--border)', padding: '0.5rem 0.75rem', borderRadius: '8px', fontSize: '0.82rem', outline: 'none' }}>
             <option value="all">All Results</option>
             <option value="win">Wins</option>
             <option value="loss">Losses</option>
             <option value="pending">Pending</option>
           </select>
-          <div style={{ position: 'relative', width: '260px' }}>
+          <div style={{ position: 'relative', width: '260px', maxWidth: '100%' }}>
             <Search size={16} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
             <input type="text" placeholder="Search by user..." className="input" style={{ paddingLeft: '2.25rem', fontSize: '0.85rem' }} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
           </div>

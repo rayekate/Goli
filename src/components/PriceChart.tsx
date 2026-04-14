@@ -30,6 +30,15 @@ function CustomTooltip({ active, payload, label }: any) {
 }
 
 export default function PriceChart({ data }: ChartProps) {
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 600);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
   if (!data || data.length === 0) {
     return (
       <div style={{ width: '100%', height: '250px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -63,13 +72,14 @@ export default function PriceChart({ data }: ChartProps) {
       background: 'rgba(8,14,26,0.7)',
       borderRadius: '16px',
       border: '1px solid rgba(212,175,55,0.06)',
-      padding: '1rem 0.5rem 0.5rem',
+      padding: isMobile ? '0.75rem 0.25rem 0.25rem' : '1rem 0.5rem 0.5rem',
       overflow: 'hidden',
       display: 'flex',
       flexDirection: 'column',
+      minHeight: 0,
     }}>
       {/* Mini header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 1rem', marginBottom: '0.5rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 0.5rem', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.25rem' }}>
         <span style={{ fontSize: '0.72rem', color: '#7B8CA8', letterSpacing: '1px', textTransform: 'uppercase' }}>
           XAU/USD · {data.length}s of data
         </span>
@@ -89,9 +99,9 @@ export default function PriceChart({ data }: ChartProps) {
         )}
       </div>
 
-      <div style={{ flex: 1, minHeight: '230px' }}>
+      <div style={{ flex: 1, minHeight: '230px', minWidth: 0 }}>
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={data} margin={{ top: 4, right: 4, left: 0, bottom: 0 }}>
+          <AreaChart data={data} margin={{ top: 4, right: 4, left: isMobile ? -10 : 0, bottom: 0 }}>
             <defs>
               <linearGradient id="colorUp" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%"  stopColor={stopColorUp}   stopOpacity={0.22} />
@@ -108,22 +118,22 @@ export default function PriceChart({ data }: ChartProps) {
             <XAxis
               dataKey="time"
               stroke="#3a4a5c"
-              fontSize={10}
+              fontSize={isMobile ? 9 : 10}
               tickLine={false}
               axisLine={{ stroke: 'rgba(255,255,255,0.04)' }}
               interval={tickInterval}
-              minTickGap={50}
+              minTickGap={isMobile ? 40 : 50}
               tick={{ fill: '#7B8CA8' }}
             />
             <YAxis
               domain={[domainMin, domainMax]}
               stroke="#3a4a5c"
-              fontSize={10}
+              fontSize={isMobile ? 9 : 10}
               tickLine={false}
               axisLine={false}
-              tickFormatter={(v) => `$${Number(v).toFixed(2)}`}
+              tickFormatter={(v) => isMobile ? `${Number(v).toFixed(0)}` : `$${Number(v).toFixed(2)}`}
               tick={{ fill: '#7B8CA8' }}
-              width={68}
+              width={isMobile ? 40 : 68}
             />
             <Tooltip content={<CustomTooltip />} />
             <Area

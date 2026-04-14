@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { MessageSquare, Plus, Loader2, Send } from 'lucide-react';
+import { MessageSquare, Plus, Loader2, Send, XCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export default function SupportPage() {
@@ -89,6 +89,26 @@ export default function SupportPage() {
     setSubmitting(false);
   };
 
+  const closeTicket = async () => {
+    if (!activeTicket) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch(`/api/tickets/${activeTicket._id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'closed' })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setActiveTicket(data.ticket);
+        setTickets(tickets.map(t => t._id === data.ticket._id ? data.ticket : t));
+      }
+    } catch (err) {
+      console.error(err);
+    }
+    setSubmitting(false);
+  };
+
   if (loading) {
     return (
       <div style={{ padding: '60px 20px', textAlign: 'center' }}>
@@ -102,7 +122,7 @@ export default function SupportPage() {
       
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
         <div>
-          <h1 style={{ fontSize: '2rem', color: '#fff' }} className="text-gradient-gold">Support Center</h1>
+          <h1 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', color: '#fff' }} className="text-gradient-gold">Support Center</h1>
           <p style={{ color: 'var(--text-muted)' }}>Get help directly from our specialized support team.</p>
         </div>
         {view === 'list' && (
@@ -226,20 +246,31 @@ export default function SupportPage() {
 
           {/* Reply Form */}
           {activeTicket.status !== 'closed' ? (
-            <form onSubmit={sendReply} className="glass-card" style={{ padding: '1.5rem', display: 'flex', gap: '1rem' }}>
-              <input 
-                type="text" 
-                className="input" 
-                placeholder="Type a reply..." 
-                value={reply} 
-                onChange={e => setReply(e.target.value)} 
-                required 
-                style={{ flex: 1, margin: 0 }}
-              />
-              <button type="submit" className="btn btn-primary" disabled={submitting} style={{ margin: 0, padding: '0 1.5rem' }}>
-                <Send size={18} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <form onSubmit={sendReply} className="glass-card" style={{ padding: '1.5rem', display: 'flex', gap: '1rem' }}>
+                <input 
+                  type="text" 
+                  className="input" 
+                  placeholder="Type a reply..." 
+                  value={reply} 
+                  onChange={e => setReply(e.target.value)} 
+                  required 
+                  style={{ flex: 1, margin: 0 }}
+                />
+                <button type="submit" className="btn btn-primary" disabled={submitting} style={{ margin: 0, padding: '0 1.5rem' }}>
+                  <Send size={18} />
+                </button>
+              </form>
+              <button
+                type="button"
+                onClick={closeTicket}
+                disabled={submitting}
+                className="btn btn-outline"
+                style={{ alignSelf: 'flex-end', padding: '0.5rem 1.25rem', fontSize: '0.82rem', color: 'var(--text-muted)', borderColor: 'var(--border)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+              >
+                <XCircle size={14} /> Close Ticket
               </button>
-            </form>
+            </div>
           ) : (
             <div className="glass-card" style={{ padding: '1rem', textAlign: 'center', color: 'var(--text-muted)' }}>
               This ticket has been closed.

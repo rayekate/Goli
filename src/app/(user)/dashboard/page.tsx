@@ -77,7 +77,7 @@ export default function DashboardPage() {
   return (
     <div className="animate-in" style={{ padding: '24px 16px', maxWidth: '1200px', margin: '0 auto' }}>
       {/* Header */}
-      <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem', paddingBottom: '1.5rem', borderBottom: '1px solid var(--border)' }}>
+      <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', paddingBottom: '1.5rem', borderBottom: '1px solid var(--border)' }}>
         <div>
           <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.2rem)', marginBottom: '0.3rem', color: '#fff' }}>
             Welcome back, <span className="text-gradient-gold">{user.name}</span>
@@ -129,7 +129,7 @@ export default function DashboardPage() {
       {/* Stats */}
       <div className="dashboard-grid" style={{ marginTop: 0 }}>
         <StatCard title="Current Balance" value={`$${user.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} icon={Wallet} />
-        <StatCard title="Total Profit / Loss" value={`${stats.totalProfit >= 0 ? '+' : ''}$${stats.totalProfit.toFixed(2)}`} icon={TrendingUp} trend={{ value: stats.totalProfit >= 0 ? 'Profitable' : 'In Loss', isPositive: stats.totalProfit >= 0 }} />
+        <StatCard title="Total Profit / Loss" value={`$${Math.abs(stats.totalProfit).toFixed(2)}`} icon={TrendingUp} trend={{ value: stats.totalProfit >= 0 ? 'Profitable' : 'In Loss', isPositive: stats.totalProfit >= 0 }} />
         <StatCard title="Win Rate" value={`${stats.winRate.toFixed(1)}%`} icon={Activity} trend={{ value: `${trades.filter((t: any) => t.result === 'win').length}W / ${trades.filter((t: any) => t.result === 'loss').length}L`, isPositive: stats.winRate >= 50 }} />
 
         {/* Live Gold Price Card */}
@@ -148,8 +148,8 @@ export default function DashboardPage() {
       </div>
 
       {/* Chart + Recent Trades */}
-      <div className="grid-responsive-2col" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem', marginTop: '1.5rem' }}>
-        <div>
+      <div className="grid-responsive-2col" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) minmax(0, 1fr)', gap: '1.5rem', marginTop: '1.5rem', overflow: 'hidden' }}>
+        <div style={{ minWidth: 0, overflow: 'hidden' }}>
           <ProfitChart />
         </div>
         <div style={{
@@ -160,7 +160,7 @@ export default function DashboardPage() {
           padding: '1.5rem',
           position: 'relative',
           overflow: 'hidden',
-          marginTop: '1.5rem',
+          minWidth: 0,
         }}>
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, rgba(212,175,55,0.15), transparent)' }} />
           <h3 style={{ marginBottom: '1rem', color: '#fff', fontSize: '1rem' }}>Recent Trades</h3>

@@ -21,7 +21,11 @@ export interface IUser extends Document {
   isBlocked: boolean;
   twoFactorEnabled: boolean;
   twoFactorSecret: string;
+  loginOtp: string;
+  loginOtpExpiry: Date;
   withdrawalOtpEnabled: boolean;
+  withdrawalOtp: string;
+  withdrawalOtpExpiry: Date;
   notifications: IUserNotifications;
   payoutWallet: IPayoutWallet;
   passwordChangedAt: Date;
@@ -39,7 +43,11 @@ const userSchema = new Schema<IUser>(
     isBlocked: { type: Boolean, default: false },
     twoFactorEnabled: { type: Boolean, default: false },
     twoFactorSecret: { type: String, default: '' },
+    loginOtp: { type: String, default: '' },
+    loginOtpExpiry: { type: Date },
     withdrawalOtpEnabled: { type: Boolean, default: false },
+    withdrawalOtp: { type: String, default: '' },
+    withdrawalOtpExpiry: { type: Date },
     notifications: {
       platformBroadcasts: { type: Boolean, default: true },
       financialConfirmations: { type: Boolean, default: true },

@@ -7,6 +7,7 @@ import { getAuthUser, signToken, setAuthCookie } from '@/lib/auth';
 import { updateSettingsSchema, changePasswordSchema } from '@/lib/validations';
 import { passwordLimiter } from '@/lib/rate-limit';
 
+
 /**
  * PATCH: Update user profile settings (name, 2FA, withdrawal OTP, telegram, notifications, payout wallet)
  */
@@ -23,7 +24,7 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: parsed.error.issues[0]?.message || 'Invalid input' }, { status: 400 });
     }
 
-    const { name, twoFactorEnabled, withdrawalOtpEnabled, notifications, payoutWallet } = parsed.data;
+    const { name, twoFactorEnabled, withdrawalOtpEnabled, verificationCode, notifications, payoutWallet } = parsed.data;
 
     const user = await User.findById(payload.userId);
     if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
@@ -34,7 +35,6 @@ export async function PATCH(req: NextRequest) {
     if (name !== undefined) user.name = name;
 
     if (twoFactorEnabled !== undefined) {
-      // Only allow user to toggle 2FA if admin permits it
       if (!platformSettings.allowUser2FA && twoFactorEnabled) {
         return NextResponse.json({ error: 'User-controlled 2FA is disabled by admin' }, { status: 403 });
       }

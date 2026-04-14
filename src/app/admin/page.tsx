@@ -88,7 +88,7 @@ export default function AdminOverviewPage() {
   return (
     <div className="container animate-in stagger-1" style={{ padding: '20px 15px', maxWidth: '1200px' }}>
       <div style={{ marginBottom: '2.5rem', borderBottom: '1px solid var(--border)', paddingBottom: '1.5rem' }}>
-        <h1 style={{ fontSize: '2.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem', color: '#fff', marginBottom: '0.5rem' }} className="text-gradient-gold">
+        <h1 style={{ fontSize: 'clamp(1.6rem, 4vw, 2.5rem)', display: 'flex', alignItems: 'center', gap: '0.75rem', color: '#fff', marginBottom: '0.5rem', flexWrap: 'wrap' }} className="text-gradient-gold">
           <BarChart3 size={32} color="var(--gold)" style={{ filter: 'drop-shadow(0 0 10px var(--gold-glow))' }} /> Command Center
         </h1>
         <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>Full platform overview — users, finances, trades, and house profitability.</p>
@@ -159,7 +159,7 @@ export default function AdminOverviewPage() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {recentPending.map((t: any, i: number) => (
               <div key={t._id} className={`glass-card stagger-${Math.min((i % 4) + 1, 4)}`} style={{ padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', borderLeft: `4px solid ${t.type === 'deposit' ? 'var(--success)' : 'var(--warning)'}` }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', minWidth: '250px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', minWidth: 0, flex: '1 1 auto' }}>
                   <div style={{ padding: '0.75rem', background: 'rgba(255,255,255,0.03)', borderRadius: '12px' }}>
                     {t.type === 'deposit' ? <ArrowDownCircle size={24} color="var(--success)" style={{ filter: 'drop-shadow(0 0 5px var(--success-glow))' }} /> : <ArrowUpCircle size={24} color="var(--warning)" style={{ filter: 'drop-shadow(0 0 5px rgba(255,204,0,0.3))' }} />}
                   </div>

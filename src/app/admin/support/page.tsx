@@ -88,9 +88,9 @@ export default function AdminSupportQueue() {
 
   return (
     <div>
-      <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+      <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h1 style={{ fontSize: '2rem', color: '#fff' }}>Global Help Desk</h1>
+          <h1 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', color: '#fff' }}>Global Help Desk</h1>
           <p style={{ color: 'var(--text-muted)' }}>Respond to active user priority queries.</p>
         </div>
         <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -101,7 +101,7 @@ export default function AdminSupportQueue() {
         </div>
       </div>
 
-      <div className="grid-responsive-2col" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 2fr', gap: '1.5rem', height: 'calc(100vh - 200px)' }}>
+      <div className="grid-responsive-2col" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 2fr', gap: '1.5rem', minHeight: '500px' }}>
         
         {/* Master Active List */}
         <div className="card glass" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
@@ -194,7 +194,7 @@ export default function AdminSupportQueue() {
               {/* Action Form */}
               <div style={{ padding: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
                 {activeTicket.status !== 'closed' ? (
-                  <form onSubmit={sendReply} style={{ display: 'flex', gap: '1rem' }}>
+                  <form onSubmit={sendReply} style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                     <input 
                       type="text" className="input" placeholder="Enter official admin directive..." 
                       value={reply} onChange={e => setReply(e.target.value)} required 

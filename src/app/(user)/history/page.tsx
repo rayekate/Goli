@@ -80,7 +80,7 @@ export default function HistoryPage() {
   return (
     <div className="container animate-in stagger-1" style={{ padding: '30px 15px', maxWidth: '1000px' }}>
       <div style={{ marginBottom: '2.5rem', borderBottom: '1px solid var(--border)', paddingBottom: '1.5rem' }}>
-        <h1 style={{ fontSize: '2.2rem', marginBottom: '0.5rem', color: '#fff' }} className="text-gradient-gold">Activity History</h1>
+        <h1 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.2rem)', marginBottom: '0.5rem', color: '#fff' }} className="text-gradient-gold">Activity History</h1>
         <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem' }}>Complete record of your trading and financial activities.</p>
       </div>
 
@@ -99,7 +99,7 @@ export default function HistoryPage() {
         <div className="glass-card" style={{ padding: '1.25rem' }}>
           <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '0.4rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Net Profit / Loss</p>
           <p style={{ fontSize: '1.8rem', fontWeight: 800, color: totalProfit >= 0 ? 'var(--success)' : 'var(--danger)', textShadow: totalProfit >= 0 ? '0 0 10px var(--success-glow)' : '0 0 10px var(--danger-glow)' }}>
-            {totalProfit >= 0 ? '+' : ''}${totalProfit.toFixed(2)}
+            ${Math.abs(totalProfit).toFixed(2)}
           </p>
         </div>
         <div className="glass-card" style={{ padding: '1.25rem' }}>
@@ -161,7 +161,7 @@ export default function HistoryPage() {
                       color: trade.result === 'win' ? 'var(--success)' : 'var(--danger)',
                       textShadow: trade.result === 'win' ? '0 0 10px var(--success-glow)' : '0 0 10px var(--danger-glow)',
                     }}>
-                      {trade.profitOrLoss >= 0 ? '+' : ''}{trade.profitOrLoss != null ? `$${trade.profitOrLoss.toFixed(2)}` : `-$${trade.amount?.toFixed(2)}`}
+                      {trade.profitOrLoss >= 0 ? '+' : '-'}{trade.profitOrLoss != null ? `$${Math.abs(trade.profitOrLoss).toFixed(2)}` : `$${trade.amount?.toFixed(2)}`}
                     </p>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '0.25rem' }}>
                       <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>

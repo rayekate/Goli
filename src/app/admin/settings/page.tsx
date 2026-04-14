@@ -147,6 +147,8 @@ export default function AdminSettingsPage() {
     borderRadius: '10px',
     marginBottom: '0.5rem',
     border: '1px solid var(--border)',
+    flexWrap: 'wrap',
+    gap: '0.75rem',
   };
 
   const labelStyle: React.CSSProperties = {
@@ -174,6 +176,7 @@ export default function AdminSettingsPage() {
     color: '#fff',
     fontSize: '0.9rem',
     width: '260px',
+    maxWidth: '100%',
     outline: 'none',
   };
 
@@ -182,7 +185,7 @@ export default function AdminSettingsPage() {
       {/* Header */}
       <div style={{ marginBottom: '2.5rem', borderBottom: '1px solid var(--border)', paddingBottom: '1.5rem' }}>
         <h1
-          style={{ fontSize: '2.2rem', display: 'flex', alignItems: 'center', gap: '0.75rem', color: '#fff', marginBottom: '0.5rem' }}
+          style={{ fontSize: 'clamp(1.5rem, 4vw, 2.2rem)', display: 'flex', alignItems: 'center', gap: '0.75rem', color: '#fff', marginBottom: '0.5rem', flexWrap: 'wrap' }}
           className="text-gradient-gold"
         >
           <Settings size={30} color="var(--gold)" style={{ filter: 'drop-shadow(0 0 10px var(--gold-glow))' }} />
@@ -364,38 +367,6 @@ export default function AdminSettingsPage() {
             step={1}
             value={settings.maxTrade}
             onChange={(e) => update('maxTrade', Math.max(0, Number(e.target.value)))}
-          />
-        </div>
-
-        <div style={rowStyle}>
-          <div style={labelStyle}>
-            <span style={labelTitle}>Profit Percentage</span>
-            <span style={labelDesc}>Percentage profit on winning trades (0-100%)</span>
-          </div>
-          <input
-            style={{ ...inputStyle, width: '140px', textAlign: 'right' }}
-            type="number"
-            min={0}
-            max={100}
-            step={1}
-            value={settings.profitPercent}
-            onChange={(e) => update('profitPercent', Math.min(100, Math.max(0, Number(e.target.value))))}
-          />
-        </div>
-
-        <div style={rowStyle}>
-          <div style={labelStyle}>
-            <span style={labelTitle}>Trade Duration (seconds)</span>
-            <span style={labelDesc}>Time before a trade settles (10-600 seconds)</span>
-          </div>
-          <input
-            style={{ ...inputStyle, width: '140px', textAlign: 'right' }}
-            type="number"
-            min={10}
-            max={600}
-            step={5}
-            value={settings.tradeDuration}
-            onChange={(e) => update('tradeDuration', Math.min(600, Math.max(10, Number(e.target.value))))}
           />
         </div>
 
