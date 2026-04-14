@@ -19,7 +19,7 @@ function LoginContent() {
 
   // 2FA OTP state
   const [otpStep, setOtpStep] = useState(false);
-  const [otpIdentifier, setOtpIdentifier] = useState('');
+  const [otpEmail, setOtpEmail] = useState('');
   const [maskedEmail, setMaskedEmail] = useState('');
   const [otpCode, setOtpCode] = useState('');
   const [otpLoading, setOtpLoading] = useState(false);
@@ -73,7 +73,7 @@ function LoginContent() {
       const data = await res.json();
       if (res.ok) {
         if (data.requires2FA) {
-          setOtpIdentifier(formData.identifier);
+          setOtpEmail(formData.identifier);
           setMaskedEmail(data.email);
           setOtpStep(true);
           setResendCooldown(60);
@@ -103,7 +103,7 @@ function LoginContent() {
       const res = await fetch('/api/auth/verify-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: otpIdentifier, otp: otpCode, rememberMe: formData.rememberMe }),
+        body: JSON.stringify({ email: otpEmail, otp: otpCode, rememberMe: formData.rememberMe }),
       });
 
       const data = await res.json();
@@ -215,12 +215,12 @@ function LoginContent() {
 
               <form onSubmit={handleSubmit}>
                 <div className="input-group">
-                  <label>Email or Username</label>
+                  <label>Username or Email</label>
                   <div style={{ position: 'relative' }}>
                     <Mail size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', pointerEvents: 'none' }} />
                     <input
                       type="text"
-                      placeholder="Enter email or username"
+                      placeholder="Enter username or email"
                       required
                       value={formData.identifier}
                       onChange={(e) => setFormData({ ...formData, identifier: e.target.value })}
