@@ -1,7 +1,7 @@
 {
-  "name": "trading-app",
-  "version": "0.1.0",
-  "private": true,
+  "name": "goldxchange-platform",
+  "version": "1.0.0",
+  "description": "Institutional Gold Trading Terminal & Digital Asset Exchange",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

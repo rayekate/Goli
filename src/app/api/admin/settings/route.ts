@@ -32,6 +32,8 @@ export const PATCH = withAuth(async (req: NextRequest, ctx) => {
   // Apply only provided fields
   const data = parsed.data;
   if (data.platformName !== undefined) settings.platformName = data.platformName;
+  if (data.siteTitle !== undefined) settings.siteTitle = data.siteTitle;
+  if (data.siteDescription !== undefined) settings.siteDescription = data.siteDescription;
   if (data.maintenanceMode !== undefined) settings.maintenanceMode = data.maintenanceMode;
   if (data.mandatory2FA !== undefined) settings.mandatory2FA = data.mandatory2FA;
   if (data.allowUser2FA !== undefined) settings.allowUser2FA = data.allowUser2FA;

@@ -21,6 +21,8 @@ interface WalletEntry {
 
 interface PlatformSettings {
   platformName: string;
+  siteTitle: string;
+  siteDescription: string;
   maintenanceMode: boolean;
   mandatory2FA: boolean;
   allowUser2FA: boolean;
@@ -42,6 +44,8 @@ interface PlatformSettings {
 
 const defaultSettings: PlatformSettings = {
   platformName: 'Gold Trading Platform',
+  siteTitle: 'GoldXchange',
+  siteDescription: 'Institutional Gold Trading Terminal',
   maintenanceMode: false,
   mandatory2FA: false,
   allowUser2FA: true,
@@ -226,12 +230,36 @@ export default function AdminSettingsPage() {
         <div style={{ ...rowStyle, flexDirection: 'column', alignItems: 'stretch', gap: '0.5rem' }}>
           <div style={labelStyle}>
             <span style={labelTitle}>Platform Name</span>
-            <span style={labelDesc}>Displayed in the navbar and browser title</span>
+            <span style={labelDesc}>Internal branding name used in emails and admin logs</span>
           </div>
           <input
             style={{ ...inputStyle, width: '100%' }}
             value={settings.platformName}
             onChange={(e) => update('platformName', e.target.value)}
+          />
+        </div>
+
+        <div style={{ ...rowStyle, flexDirection: 'column', alignItems: 'stretch', gap: '0.5rem' }}>
+          <div style={labelStyle}>
+            <span style={labelTitle}>Site Title</span>
+            <span style={labelDesc}>Browser tab title and SEO primary headline</span>
+          </div>
+          <input
+            style={{ ...inputStyle, width: '100%' }}
+            value={settings.siteTitle}
+            onChange={(e) => update('siteTitle', e.target.value)}
+          />
+        </div>
+
+        <div style={{ ...rowStyle, flexDirection: 'column', alignItems: 'stretch', gap: '0.5rem' }}>
+          <div style={labelStyle}>
+            <span style={labelTitle}>Site Description</span>
+            <span style={labelDesc}>SEO meta description and social sharing text</span>
+          </div>
+          <textarea
+            style={{ ...inputStyle, width: '100%', height: '80px', resize: 'vertical' }}
+            value={settings.siteDescription}
+            onChange={(e) => update('siteDescription', e.target.value)}
           />
         </div>
 

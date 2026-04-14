@@ -3,6 +3,8 @@ import mongoose, { Document, Model, Schema } from 'mongoose';
 export interface IPlatformSettings extends Document {
   // General
   platformName: string;
+  siteTitle: string;
+  siteDescription: string;
   maintenanceMode: boolean;
 
   // Security

@@ -11,6 +11,10 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const email = searchParams.get('email')?.toLowerCase();
 
+  if (process.env.NODE_ENV === 'production' && process.env.ENABLE_MOCK_EMAILS !== 'true') {
+    return NextResponse.json({ error: 'Endpoint restricted' }, { status: 403 });
+  }
+
   if (!email) {
     return NextResponse.json({ error: 'Email parameter is required' }, { status: 400 });
   }

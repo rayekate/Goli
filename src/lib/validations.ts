@@ -160,6 +160,8 @@ export const changePasswordSchema = z.object({
 // ─── Admin Platform Settings ─────────────────────────────────────────────
 export const adminPlatformSettingsSchema = z.object({
   platformName: z.string().min(1).max(100).trim().optional(),
+  siteTitle: z.string().min(1).max(100).trim().optional(),
+  siteDescription: z.string().min(1).max(200).trim().optional(),
   maintenanceMode: z.boolean().optional(),
   mandatory2FA: z.boolean().optional(),
   allowUser2FA: z.boolean().optional(),
