@@ -95,7 +95,11 @@ export default function DepositPage() {
     finally { setSubmitting(false); }
   };
 
-  if (loading || !user || settingsLoading) return (<div style={{ padding: '60px 20px', textAlign: 'center' }}><div className="skeleton" style={{ width: '200px', height: '32px', margin: '0 auto 1rem' }} /><div className="skeleton" style={{ width: '300px', height: '16px', margin: '0 auto' }} /></div>);
+  if (loading || !user || settingsLoading) return (
+    <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <GoldCoinLoader label="Loading deposit terminal…" />
+    </div>
+  );
 
   if (cryptoOptions.length === 0) {
     return (
@@ -112,34 +116,34 @@ export default function DepositPage() {
   if (submitted) {
     return (
       <div className="animate-in" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', padding: '0' }}>
-        <div className="glass-card" style={{ 
-          textAlign: 'center', 
-          maxWidth: '540px', 
+        <div className="glass-card" style={{
+          textAlign: 'center',
+          maxWidth: '540px',
           width: '100%',
-          padding: '4rem 2.5rem', 
+          padding: '4rem 2.5rem',
           borderRadius: '32px',
           borderTop: '2px solid var(--success)',
           position: 'relative'
         }}>
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '100%', background: 'radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.05) 0%, transparent 70%)', pointerEvents: 'none' }} />
-          
-          <div className="icon-box" style={{ 
-            width: '80px', height: '80px', margin: '0 auto 2rem', 
-            background: 'rgba(16, 185, 129, 0.1)', 
-            borderRadius: '50%', 
-            color: 'var(--success)' 
+
+          <div className="icon-box" style={{
+            width: '80px', height: '80px', margin: '0 auto 2rem',
+            background: 'rgba(16, 185, 129, 0.1)',
+            borderRadius: '50%',
+            color: 'var(--success)'
           }}>
             <Check size={36} strokeWidth={3} />
           </div>
-          
+
           <div className="badge" style={{ background: 'rgba(16, 185, 129, 0.1)', color: 'var(--success)', border: '1px solid rgba(16, 185, 129, 0.2)', marginBottom: '1rem' }}>
             TRANSACTION CAPTURED
           </div>
-          
+
           <h2 style={{ fontSize: '2.5rem', fontWeight: 950, color: 'var(--text)', letterSpacing: '-0.04em', lineHeight: 1, marginBottom: '1.5rem' }}>
             Asset <span style={{ color: 'var(--success)' }}>Initialization</span>
           </h2>
-          
+
           <div style={{ background: 'var(--surface-hover)', padding: '1.5rem', borderRadius: '20px', border: '1px solid var(--border)', marginBottom: '2.5rem' }}>
             <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.6 }}>
               Your deposit of <strong style={{ color: 'var(--text)' }}>${Number(amount).toLocaleString()}</strong> via <strong style={{ color: 'var(--text)' }}>{selectedCoin}</strong> has been received by the terminal.
@@ -149,10 +153,10 @@ export default function DepositPage() {
               RESERVE SYNCHRONIZATION IN PROGRESS
             </p>
           </div>
-          
-          <button 
-            className="btn btn-gold" 
-            style={{ width: '100%', padding: '1.15rem', borderRadius: '100px', fontWeight: 950 }} 
+
+          <button
+            className="btn btn-gold"
+            style={{ width: '100%', padding: '1.15rem', borderRadius: '100px', fontWeight: 950 }}
             onClick={() => router.push('/dashboard')}
           >
             RETURN TO TERMINAL
@@ -163,30 +167,26 @@ export default function DepositPage() {
   }
 
   return (
-    <div className="animate-in" style={{ padding: '24px 16px', maxWidth: '1100px', margin: '0 auto' }}>
+    <div className="animate-in" style={{ padding: '0 16px', maxWidth: '1100px', margin: '0 auto' }}>
       {/* Institutional Header */}
-      <div style={{ 
-        marginBottom: '3rem', 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center', 
-        flexWrap: 'wrap', 
+      <div style={{
+        marginBottom: '3rem',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap',
         gap: '2rem',
         position: 'relative'
       }}>
         <div style={{ flex: 1, minWidth: '300px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
-            <div className="badge" style={{ background: 'var(--surface-hover)', color: 'var(--text-muted)', border: '1px solid var(--border)' }}>FUNDING TERMINAL</div>
-            <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--success)', boxShadow: '0 0 10px var(--success)' }} />
-            <span style={{ fontSize: '0.65rem', fontWeight: 900, color: 'var(--success)', letterSpacing: '0.2em' }}>SECURE CHANNEL ESTABLISHED</span>
-          </div>
-          <h1 style={{ 
-            fontSize: 'clamp(2rem, 5vw, 2.8rem)', 
-            marginBottom: '0.5rem', 
+
+          <h1 style={{
+            fontSize: 'clamp(2rem, 5vw, 2.8rem)',
+            marginBottom: '0.5rem',
             fontWeight: 950,
             letterSpacing: '-0.04em',
             lineHeight: 1,
-            color: 'var(--text)' 
+            color: 'var(--text)'
           }}>
             Initialize <span className="text-gradient-gold">Asset Funding</span>
           </h1>
@@ -201,49 +201,49 @@ export default function DepositPage() {
         <div className="animate-in stagger-1">
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
             <div style={{ width: '20px', height: '1px', background: 'var(--accent)' }} />
-            <h3 style={{ 
-              fontSize: '0.7rem', 
-              color: 'var(--text)', 
-              textTransform: 'uppercase', 
-              letterSpacing: '0.25em', 
-              fontWeight: 900 
+            <h3 style={{
+              fontSize: '0.7rem',
+              color: 'var(--text)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.25em',
+              fontWeight: 900
             }}>
               01 CONFIGURATION
             </h3>
           </div>
-          
+
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2.5rem' }}>
             {Array.from(new Set(cryptoOptions.map(c => c.name))).map((coinName) => {
               const isSelected = selectedCoin === coinName;
               const option = cryptoOptions.find(c => c.name === coinName);
-              
+
               return (
-                <div 
-                  key={coinName} 
+                <div
+                  key={coinName}
                   onClick={() => {
                     setSelectedCoin(coinName);
                     const firstNetwork = cryptoOptions.find(c => c.name === coinName)?.network || '';
                     setSelectedNetwork(firstNetwork);
-                  }} 
+                  }}
                   className="glass-card"
-                  style={{ 
-                    padding: '1.5rem', 
-                    cursor: 'pointer', 
-                    display: 'flex', 
-                    alignItems: 'center', 
+                  style={{
+                    padding: '1.5rem',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
                     justifyContent: 'space-between',
-                    borderRadius: '20px', 
-                    background: isSelected ? 'rgba(212,175,55,0.06)' : 'var(--surface)', 
-                    borderColor: isSelected ? 'rgba(212,175,55,0.4)' : 'var(--border)', 
+                    borderRadius: '20px',
+                    background: isSelected ? 'rgba(212,175,55,0.06)' : 'var(--surface)',
+                    borderColor: isSelected ? 'rgba(212,175,55,0.4)' : 'var(--border)',
                     boxShadow: isSelected ? '0 0 40px rgba(212,175,55,0.05)' : 'none',
                     transform: isSelected ? 'translateX(4px)' : 'none'
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-                    <div style={{ 
-                      width: '48px', height: '48px', 
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', 
-                      background: isSelected ? 'var(--accent)' : 'var(--surface-hover)', 
+                    <div style={{
+                      width: '48px', height: '48px',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      background: isSelected ? 'var(--accent)' : 'var(--surface-hover)',
                       borderRadius: '14px',
                       transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                       color: isSelected ? '#000' : 'var(--accent)',
@@ -273,18 +273,18 @@ export default function DepositPage() {
               {cryptoOptions.filter(c => c.name === selectedCoin).map((crypto) => {
                 const isSelected = selectedNetwork === crypto.network;
                 return (
-                  <div 
-                    key={crypto.id} 
-                    onClick={() => setSelectedNetwork(crypto.network)} 
-                    style={{ 
-                      padding: '0.6rem 1.25rem', 
-                      cursor: 'pointer', 
-                      display: 'inline-flex', 
-                      alignItems: 'center', 
-                      borderRadius: '10px', 
-                      border: isSelected ? '1px solid rgba(212,175,55,0.4)' : '1px solid var(--border)', 
-                      background: isSelected ? 'rgba(212,175,55,0.1)' : 'var(--surface)', 
-                      transition: 'all 0.2s' 
+                  <div
+                    key={crypto.id}
+                    onClick={() => setSelectedNetwork(crypto.network)}
+                    style={{
+                      padding: '0.6rem 1.25rem',
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      borderRadius: '10px',
+                      border: isSelected ? '1px solid rgba(212,175,55,0.4)' : '1px solid var(--border)',
+                      background: isSelected ? 'rgba(212,175,55,0.1)' : 'var(--surface)',
+                      transition: 'all 0.2s'
                     }}
                   >
                     <span style={{ fontSize: '0.85rem', fontWeight: isSelected ? 700 : 500, color: isSelected ? 'var(--accent)' : 'var(--text-muted)' }}>{crypto.network}</span>
@@ -301,12 +301,12 @@ export default function DepositPage() {
                 </div>
                 <h4 style={{ color: 'var(--accent)', fontSize: '0.75rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em' }}>DEPOSIT ADDRESS</h4>
               </div>
-              
+
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <div style={{ 
-                  background: 'var(--surface-hover)', 
-                  padding: '1.25rem', 
-                  borderRadius: '16px', 
+                <div style={{
+                  background: 'var(--surface-hover)',
+                  padding: '1.25rem',
+                  borderRadius: '16px',
                   border: '1px solid var(--border)',
                   position: 'relative',
                   overflow: 'hidden'
@@ -315,10 +315,10 @@ export default function DepositPage() {
                     {selectedCrypto.address}
                   </p>
                 </div>
-                
-                <button 
-                  onClick={handleCopy} 
-                  className="btn btn-gold" 
+
+                <button
+                  onClick={handleCopy}
+                  className="btn btn-gold"
                   style={{ width: '100%', borderRadius: '14px', fontWeight: 900 }}
                 >
                   {copied ? <><Check size={18} /> COPIED</> : <><Copy size={18} /> COPY ADDRESS</>}
@@ -339,12 +339,12 @@ export default function DepositPage() {
         <div className="animate-in stagger-2">
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
             <div style={{ width: '20px', height: '1px', background: 'var(--accent)' }} />
-            <h3 style={{ 
-              fontSize: '0.7rem', 
-              color: 'var(--text)', 
-              textTransform: 'uppercase', 
-              letterSpacing: '0.25em', 
-              fontWeight: 900 
+            <h3 style={{
+              fontSize: '0.7rem',
+              color: 'var(--text)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.25em',
+              fontWeight: 900
             }}>
               02 VERIFICATION
             </h3>
@@ -352,13 +352,13 @@ export default function DepositPage() {
 
           <div className="glass-card" style={{ padding: '2.5rem', borderRadius: '28px', borderTop: '2px solid var(--accent)' }}>
             {error && (
-              <div style={{ 
-                background: 'rgba(255,71,87,0.08)', 
-                color: 'var(--danger)', 
-                padding: '1rem', 
-                borderRadius: '12px', 
-                fontSize: '0.85rem', 
-                border: '1px solid rgba(255,71,87,0.15)', 
+              <div style={{
+                background: 'rgba(255,71,87,0.08)',
+                color: 'var(--danger)',
+                padding: '1rem',
+                borderRadius: '12px',
+                fontSize: '0.85rem',
+                border: '1px solid rgba(255,71,87,0.15)',
                 marginBottom: '1.5rem',
                 display: 'flex',
                 gap: '0.75rem',
@@ -367,45 +367,45 @@ export default function DepositPage() {
                 <AlertTriangle size={18} /> {error}
               </div>
             )}
-            
+
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               <div className="input-group">
                 <label className="meta-text" style={{ fontSize: '9px', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>AMOUNT (USD VALUE)</label>
-                <input 
-                  type="number" 
-                  placeholder="0.00" 
-                  required 
-                  min="1" 
-                  step="0.01" 
+                <input
+                  type="number"
+                  placeholder="0.00"
+                  required
+                  min="1"
+                  step="0.01"
                   className="btn-asymmetric"
-                  value={amount} 
-                  onChange={(e) => setAmount(e.target.value)} 
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
                   style={{ background: 'var(--surface-hover)', border: '1px solid var(--border)', padding: '1.25rem 1.5rem', fontWeight: 700, fontFamily: 'monospace', fontSize: '1.1rem' }}
                 />
               </div>
-              
+
               <div className="input-group">
                 <label className="meta-text" style={{ fontSize: '9px', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>INSTITUTIONAL TX HASH</label>
-                <input 
-                  type="text" 
-                  placeholder="ENTER TRANSACTION FINGERPRINT" 
-                  required 
+                <input
+                  type="text"
+                  placeholder="ENTER TRANSACTION FINGERPRINT"
+                  required
                   className="btn-asymmetric"
-                  value={txHash} 
-                  onChange={(e) => setTxHash(e.target.value)} 
+                  value={txHash}
+                  onChange={(e) => setTxHash(e.target.value)}
                   style={{ background: 'var(--surface-hover)', border: '1px solid var(--border)', padding: '1.25rem 1.5rem', fontWeight: 700, fontFamily: 'monospace', fontSize: '1.1rem' }}
                 />
               </div>
-              
+
               <div style={{ marginTop: '0.5rem' }}>
                 <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 800, color: 'var(--text-muted)', marginBottom: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>TRANSFER PROOF SCAN</label>
-                <div style={{ 
-                  border: '1px dashed var(--border-highlight)', 
-                  padding: '2.5rem 1.5rem', 
-                  borderRadius: '20px', 
-                  textAlign: 'center', 
-                  background: 'var(--surface)', 
-                  position: 'relative', 
+                <div style={{
+                  border: '1px dashed var(--border-highlight)',
+                  padding: '2.5rem 1.5rem',
+                  borderRadius: '20px',
+                  textAlign: 'center',
+                  background: 'var(--surface)',
+                  position: 'relative',
                   cursor: 'pointer',
                   transition: 'all 0.3s ease'
                 }} className="hover-glow">
@@ -426,11 +426,11 @@ export default function DepositPage() {
                   )}
                 </div>
               </div>
-              
-              <button 
-                type="submit" 
-                className="btn btn-gold" 
-                style={{ width: '100%', marginTop: '1rem', fontSize: '1rem', padding: '1.15rem', borderRadius: '100px', fontWeight: 950, letterSpacing: '0.02em', boxShadow: '0 20px 40px rgba(212,175,55,0.15)' }} 
+
+              <button
+                type="submit"
+                className="btn btn-gold"
+                style={{ width: '100%', marginTop: '1rem', fontSize: '1rem', padding: '1.15rem', borderRadius: '100px', fontWeight: 950, letterSpacing: '0.02em', boxShadow: '0 20px 40px rgba(212,175,55,0.15)' }}
                 disabled={submitting}
               >
                 {submitting ? <GoldCoinLoader mini label="VERIFYING..." /> : 'AUTHORIZE DEPOSIT REQUEST'}

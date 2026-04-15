@@ -2,13 +2,14 @@
 
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { 
+import {
   TrendingUp, Wallet, Activity, ArrowUpRight, ArrowDownLeft,
   Clock, AlertCircle, XCircle, TrendingDown
 } from 'lucide-react';
 import StatCard from '@/components/StatCard';
 import ProfitChart from '@/components/ProfitChart';
 import LivePriceTicker from '@/components/LivePriceTicker';
+import GoldCoinLoader from '@/components/GoldCoinLoader';
 import Link from 'next/link';
 
 export default function DashboardPage() {
@@ -52,9 +53,8 @@ export default function DashboardPage() {
 
   if (loading || !user) {
     return (
-      <div style={{ padding: '60px 20px', textAlign: 'center' }}>
-        <div className="skeleton" style={{ width: '200px', height: '32px', margin: '0 auto 1rem' }} />
-        <div className="skeleton" style={{ width: '300px', height: '16px', margin: '0 auto' }} />
+      <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <GoldCoinLoader label="Loading your dashboard…" />
       </div>
     );
   }
@@ -77,28 +77,24 @@ export default function DashboardPage() {
   return (
     <div className="animate-in" style={{ padding: '0', maxWidth: '1400px', margin: '0 auto' }}>
       {/* Header Section */}
-      <div style={{ 
-        marginBottom: '3rem', 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'flex-end', 
-        flexWrap: 'wrap', 
+      <div style={{
+        marginBottom: '3rem',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-end',
+        flexWrap: 'wrap',
         gap: '2rem',
         position: 'relative'
       }}>
         <div style={{ flex: 1, minWidth: '300px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
-            <div className="badge" style={{ background: 'var(--surface-hover)', color: 'var(--text-muted)', border: '1px solid var(--border)' }}>INSTITUTIONAL TERMINAL</div>
-            <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--success)', boxShadow: '0 0 10px var(--success)' }} />
-            <span style={{ fontSize: '0.65rem', fontWeight: 900, color: 'var(--success)', letterSpacing: '0.2em' }}>SYSTEM LIVE</span>
-          </div>
-          <h1 style={{ 
-            fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', 
-            marginBottom: '0.5rem', 
+
+          <h1 style={{
+            fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
+            marginBottom: '0.5rem',
             fontWeight: 950,
             letterSpacing: '-0.04em',
             lineHeight: 0.9,
-            color: 'var(--text)' 
+            color: 'var(--text)'
           }}>
             Welcome, <span className="text-gold" style={{ filter: 'drop-shadow(0 0 10px var(--border))' }}>{user.name}</span>
           </h1>
@@ -181,7 +177,7 @@ export default function DashboardPage() {
             <h3 style={{ color: 'var(--text)', fontSize: '1.1rem', fontWeight: 900, letterSpacing: '0.02em' }}>MISSION ACTIVITY</h3>
             <div className="badge" style={{ padding: '0.25rem 0.6rem', background: 'var(--surface-hover)', color: 'var(--text-muted)', border: '1px solid var(--border)' }}>RECENT</div>
           </div>
-          
+
           {trades.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '3rem 0', color: 'var(--text-muted)' }}>
               <Clock size={48} style={{ marginBottom: '1rem', opacity: 0.2 }} />
@@ -201,9 +197,9 @@ export default function DashboardPage() {
                   transition: 'all 0.3s ease'
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    <div style={{ 
-                      padding: '0.5rem', 
-                      borderRadius: '10px', 
+                    <div style={{
+                      padding: '0.5rem',
+                      borderRadius: '10px',
                       background: trade.result === 'win' ? 'rgba(0,230,138,0.05)' : 'rgba(255,71,87,0.05)'
                     }}>
                       {trade.direction === 'up' ? <TrendingUp size={16} color="var(--success)" /> : <TrendingDown size={16} color="var(--danger)" />}
@@ -217,9 +213,9 @@ export default function DashboardPage() {
                     <p style={{ fontSize: '1rem', fontWeight: 900, color: trade.result === 'win' ? 'var(--success)' : 'var(--danger)', letterSpacing: '-0.02em' }}>
                       {trade.profitOrLoss >= 0 ? '+' : ''}${trade.profitOrLoss.toFixed(2)}
                     </p>
-                    <div style={{ 
-                      fontSize: '0.6rem', 
-                      fontWeight: 900, 
+                    <div style={{
+                      fontSize: '0.6rem',
+                      fontWeight: 900,
                       color: trade.result === 'win' ? 'var(--success)' : 'var(--danger)',
                       textTransform: 'uppercase',
                       letterSpacing: '0.1em',
@@ -228,13 +224,13 @@ export default function DashboardPage() {
                   </div>
                 </div>
               ))}
-              <Link href="/history" style={{ 
-                textAlign: 'center', 
-                fontSize: '0.8rem', 
-                color: 'var(--accent)', 
-                marginTop: '1rem', 
+              <Link href="/history" style={{
+                textAlign: 'center',
+                fontSize: '0.8rem',
+                color: 'var(--accent)',
+                marginTop: '1rem',
                 fontWeight: 900,
-                letterSpacing: '0.1em' 
+                letterSpacing: '0.1em'
               }}>ACCESS ARCHIVE ACCESS →</Link>
             </div>
           )}

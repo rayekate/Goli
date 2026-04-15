@@ -14,6 +14,7 @@ import {
   Wallet
 } from 'lucide-react';
 import StatCard from '@/components/StatCard';
+import GoldCoinLoader from '@/components/GoldCoinLoader';
 import Link from 'next/link';
 
 export default function AdminOverviewPage() {
@@ -83,7 +84,11 @@ export default function AdminOverviewPage() {
     return () => clearInterval(id);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (loading || !stats) return <div style={{ padding: '2rem', color: 'var(--text-muted)' }}>Loading platform data...</div>;
+  if (loading || !stats) return (
+    <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <GoldCoinLoader label="Loading platform data…" />
+    </div>
+  );
 
   return (
     <div className="container animate-in stagger-1" style={{ padding: '20px 15px', maxWidth: '1200px' }}>

@@ -11,78 +11,118 @@ interface StatCardProps {
     value: string;
     isPositive: boolean;
   };
+  accent?: 'default' | 'success' | 'danger' | 'warning';
 }
 
-export default function StatCard({ title, value, icon: Icon, trend }: StatCardProps) {
+const ACCENT_MAP = {
+  default: { glow: 'var(--accent)', iconBg: 'rgba(245,158,11,0.08)', iconBorder: 'rgba(245,158,11,0.15)', iconColor: 'var(--accent)' },
+  success: { glow: 'var(--success)', iconBg: 'rgba(52,211,153,0.08)', iconBorder: 'rgba(52,211,153,0.15)', iconColor: 'var(--success)' },
+  danger:  { glow: 'var(--danger)',  iconBg: 'rgba(239,68,68,0.08)',   iconBorder: 'rgba(239,68,68,0.15)',  iconColor: 'var(--danger)'  },
+  warning: { glow: '#f59e0b',        iconBg: 'rgba(245,158,11,0.08)', iconBorder: 'rgba(245,158,11,0.15)', iconColor: '#f59e0b'        },
+};
+
+export default function StatCard({
+  title,
+  value,
+  icon: Icon,
+  trend,
+  accent = 'default',
+}: StatCardProps) {
+  const a = ACCENT_MAP[accent];
+
   return (
-    <div className="glass-card animate-in stagger-2" style={{
-      padding: '1.25rem 1.5rem',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '0.5rem',
-      borderRadius: '24px',
-      overflow: 'visible', // allow glow to bleed
-      minHeight: '120px',
-      justifyContent: 'center'
-    }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <div
+      style={{
+        position: 'relative',
+        background: 'var(--glass-bg)',
+        backdropFilter: 'var(--glass-blur)',
+        WebkitBackdropFilter: 'var(--glass-blur)',
+        border: 'var(--glass-border)',
+        borderRadius: '16px',
+        padding: '1.35rem 1.5rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.5rem',
+        minHeight: '120px',
+        justifyContent: 'center',
+        overflow: 'hidden',
+        transition: 'all 0.3s cubic-bezier(0.4,0,0.2,1)',
+        boxShadow: 'var(--glass-shadow)',
+      }}
+      className="animate-in stagger-2"
+    >
+      {/* Top accent line */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: '2px',
+        background: `linear-gradient(90deg, transparent, ${a.glow}, transparent)`,
+        opacity: 0.5, pointerEvents: 'none',
+      }} />
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem' }}>
+        {/* Text */}
         <div style={{ flex: 1, minWidth: 0 }}>
-          <p style={{ 
-            color: 'var(--text-muted)', 
-            fontSize: '0.7rem', 
-            marginBottom: '0.4rem', 
-            fontWeight: 800, 
-            textTransform: 'uppercase', 
-            letterSpacing: '0.1em' 
-          }}>{title}</p>
-          <h2 style={{ 
-            fontSize: '1.75rem', 
-            margin: 0, 
-            color: 'var(--text)', 
-            fontWeight: 950,
-            letterSpacing: '-0.02em',
-          }}>{value}</h2>
-          
+          <p style={{
+            color: 'var(--text-muted)',
+            fontSize: '0.68rem',
+            marginBottom: '0.5rem',
+            fontWeight: 800,
+            textTransform: 'uppercase',
+            letterSpacing: '0.12em',
+          }}>
+            {title}
+          </p>
+
+          <h2 style={{
+            fontSize: 'clamp(1.35rem, 2.5vw, 1.85rem)',
+            margin: 0,
+            color: 'var(--text)',
+            fontWeight: 900,
+            letterSpacing: '-0.03em',
+            lineHeight: 1.1,
+          }}>
+            {value}
+          </h2>
+
           {trend && (
-            <div style={{ 
+            <div style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.35rem',
-              marginTop: '0.75rem',
-              fontSize: '0.72rem', 
-              fontWeight: 800,
+              gap: '0.3rem',
+              marginTop: '0.65rem',
+              fontSize: '0.7rem',
+              fontWeight: 700,
               color: trend.isPositive ? 'var(--success)' : 'var(--danger)',
-              background: trend.isPositive ? 'rgba(0,230,138,0.06)' : 'rgba(255,71,87,0.06)',
-              padding: '0.2rem 0.75rem',
+              background: trend.isPositive ? 'rgba(52,211,153,0.08)' : 'rgba(239,68,68,0.08)',
+              padding: '0.2rem 0.65rem',
               borderRadius: '100px',
-              border: `1px solid ${trend.isPositive ? 'rgba(0,230,138,0.1)' : 'rgba(255,71,87,0.1)'}`,
+              border: `1px solid ${trend.isPositive ? 'rgba(52,211,153,0.15)' : 'rgba(239,68,68,0.15)'}`,
             }}>
               {trend.isPositive ? '↑' : '↓'} {trend.value}
             </div>
           )}
         </div>
-        <div className="icon-box" style={{ 
-          width: '52px', 
-          height: '52px', 
-          borderRadius: '14px',
-          flexShrink: 0
+
+        {/* Icon box */}
+        <div style={{
+          width: 48, height: 48, borderRadius: '12px', flexShrink: 0,
+          background: a.iconBg,
+          border: `1px solid ${a.iconBorder}`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          color: a.iconColor,
+          transition: 'all 0.3s ease',
         }}>
-          <Icon size={24} />
+          <Icon size={21} />
         </div>
       </div>
-      
-      {/* Dynamic Aura Glow */}
-      <div style={{ 
-        position: 'absolute', 
-        bottom: '-10%', 
-        right: '-10%', 
-        width: '100px', 
-        height: '100px', 
-        background: 'var(--accent)', 
-        filter: 'blur(50px)', 
-        opacity: 0.04, 
-        pointerEvents: 'none',
-        zIndex: 0
+
+      {/* Subtle corner glow */}
+      <div style={{
+        position: 'absolute', bottom: '-20%', right: '-10%',
+        width: 100, height: 100,
+        background: a.glow,
+        filter: 'blur(50px)',
+        opacity: 0.05,
+        pointerEvents: 'none', zIndex: 0,
       }} />
     </div>
   );

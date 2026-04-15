@@ -125,9 +125,8 @@ export default function TradePage() {
 
   if (loading || !user) {
     return (
-      <div style={{ padding: '60px 20px', textAlign: 'center' }}>
-        <div className="skeleton" style={{ width: '200px', height: '32px', margin: '0 auto 1rem' }} />
-        <div className="skeleton" style={{ width: '300px', height: '16px', margin: '0 auto' }} />
+      <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <GoldCoinLoader label="Loading trading terminal…" />
       </div>
     );
   }

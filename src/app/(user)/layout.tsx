@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import UserSidebar from '@/components/UserSidebar';
 import AppHeader from '@/components/AppHeader';
+import GoldCoinLoader from '@/components/GoldCoinLoader';
 
 export default function UserLayout({
   children,
@@ -45,17 +46,16 @@ export default function UserLayout({
 
   if (loading) {
     return (
-      <div className="container" style={{ padding: '80px 20px', textAlign: 'center' }}>
-        <div className="skeleton-loader" style={{ margin: '0 auto', width: '40px', height: '40px' }} />
-        <p style={{ marginTop: '1rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>Connecting to platform...</p>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <GoldCoinLoader label="Connecting to platform…" />
       </div>
     );
   }
 
   if (!user) {
     return (
-      <div className="container" style={{ padding: '80px 20px', textAlign: 'center' }}>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Redirecting to login...</p>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <GoldCoinLoader label="Redirecting to login…" />
       </div>
     );
   }

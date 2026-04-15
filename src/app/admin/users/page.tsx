@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { Users, Search, X, DollarSign, Plus, Minus, ArrowDownCircle, ArrowUpCircle, Shield, ShieldOff, ChevronDown, ChevronUp, UserCircle } from 'lucide-react';
+import GoldCoinLoader from '@/components/GoldCoinLoader';
 
 type BalanceModal = { userId: string; name: string; balance: number } | null;
 type ManualTxModal = { userId: string; name: string; balance: number; type: 'deposit' | 'withdrawal' } | null;
@@ -108,12 +109,8 @@ export default function AdminUsersPage() {
   };
 
   if (loading || dataLoading) return (
-    <div className="admin-users-page" style={{ padding: 'clamp(12px, 3vw, 20px)' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        {[1, 2, 3].map(i => (
-          <div key={i} className="skeleton" style={{ height: '120px', borderRadius: '16px' }} />
-        ))}
-      </div>
+    <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <GoldCoinLoader label="Loading user registry…" />
     </div>
   );
 

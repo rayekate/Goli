@@ -92,21 +92,20 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="animate-in" style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh', backgroundColor: 'var(--background)' }}>
+    <div className="animate-in" style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh', padding: '100px 0 0 0', backgroundColor: 'var(--background)' }}>
       {/* Hidden price ticker to drive the chart data */}
       <div style={{ display: 'none' }}>
         <LivePriceTicker onPriceUpdate={handlePriceUpdate} />
       </div>
 
       {/* Hero Section */}
-      <section className="hero-section" style={{ padding: '140px 0 180px', position: 'relative', zIndex: 1 }}>
+      <section className="hero-section" style={{ padding: '140px 0 100px', position: 'relative', zIndex: 1 }}>
         <div className="container">
           <div className="hero-grid" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8rem' }}>
 
             {/* Left Content */}
             <motion.div
-              className="hero-content"
-              style={{ flex: '1 1 520px', minWidth: 0 }}
+              className="hero-content flex-[1_1_400px] md:flex-[1_1_520px] min-w-0"
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
@@ -250,6 +249,27 @@ export default function Home() {
                     ))}
                   </div>
 
+                  {/* Graph Title (Floating Right) */}
+                  <div style={{
+                    position: 'absolute',
+                    top: '1.5rem',
+                    right: '1.5rem',
+                    zIndex: 10,
+                  }}>
+                    <div style={{
+                      padding: '0.5rem 1rem',
+                      fontSize: '10px',
+                      fontWeight: 900,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.2em',
+                      color: 'var(--text)',
+                      border: '1px solid var(--border)',
+                      backdropFilter: 'blur(10px)'
+                    }} className="btn-asymmetric">
+                      XAU / USD
+                    </div>
+                  </div>
+
                   <div className="trade-chart-col" style={{ minWidth: 0, height: '500px', overflow: 'hidden' }}>
                     <PriceChart data={priceHistory} singleColor="#f59e0b" minimal={true} />
                   </div>
@@ -284,7 +304,7 @@ export default function Home() {
       {/* Feature Grid with Asymmetric Cards */}
       <section >
         <div className="container">
-          <div style={{ marginBottom: '10rem' }}>
+          <div style={{ marginBottom: '5rem' }}>
             <span className="meta-text">Platform Infrastructure</span>
             <h2 className="display-header" style={{ fontSize: '5rem', marginTop: '2rem' }}>EDITORIAL<br />PRECISION</h2>
           </div>
@@ -325,7 +345,7 @@ export default function Home() {
 
       {/* Call To Action - Editorial Split Layout */}
       {!user && (
-        <section style={{ padding: '80px 0 140px' }}>
+        <section style={{ padding: '80px 0 190px' }}>
           <div className="container">
             <div style={{
               borderRadius: '80px 20px 80px 20px',

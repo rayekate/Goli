@@ -30,7 +30,7 @@ export default function HistoryPage() {
         fetch(`/api/trades?page=${currentTradePage}&limit=${ITEMS_PER_PAGE}`),
         fetch(`/api/transactions?page=${currentTxPage}&limit=${ITEMS_PER_PAGE}`)
       ]);
-      
+
       if (tradeRes.ok) {
         const tradeData = await tradeRes.json();
         setTrades(tradeData.trades || []);
@@ -39,7 +39,7 @@ export default function HistoryPage() {
       } else {
         setFetchError('Failed to load trades.');
       }
-      
+
       if (transRes.ok) {
         const transData = await transRes.json();
         setTransactions(transData.transactions || []);
@@ -82,18 +82,14 @@ export default function HistoryPage() {
     <div className="container animate-in" style={{ maxWidth: '1000px', margin: '0 auto' }}>
       {/* Institutional Header */}
       <div style={{ marginBottom: '3.5rem', position: 'relative' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
-          <div className="badge" style={{ background: 'var(--surface-hover)', color: 'var(--text-muted)', border: '1px solid var(--border)' }}>AUDIT LOGS</div>
-          <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--accent)', boxShadow: '0 0 10px var(--accent)' }} />
-          <span style={{ fontSize: '0.65rem', fontWeight: 900, color: 'var(--accent)', letterSpacing: '0.2em' }}>TERMINAL SYNCHRONIZED</span>
-        </div>
-        <h1 style={{ 
-          fontSize: 'clamp(2.2rem, 5vw, 3rem)', 
-          marginBottom: '0.5rem', 
+
+        <h1 style={{
+          fontSize: 'clamp(2.2rem, 5vw, 3rem)',
+          marginBottom: '0.5rem',
           fontWeight: 950,
           letterSpacing: '-0.04em',
           lineHeight: 1,
-          color: 'var(--text)' 
+          color: 'var(--text)'
         }}>
           Activity <span className="text-gradient-gold">Archives</span>
         </h1>
@@ -103,13 +99,13 @@ export default function HistoryPage() {
       </div>
 
       {fetchError && (
-        <div style={{ 
-          background: 'rgba(255,170,0,0.08)', 
-          color: '#ffaa00', 
-          padding: '1.25rem', 
-          borderRadius: '16px', 
-          marginBottom: '2rem', 
-          fontSize: '0.85rem', 
+        <div style={{
+          background: 'rgba(255,170,0,0.08)',
+          color: '#ffaa00',
+          padding: '1.25rem',
+          borderRadius: '16px',
+          marginBottom: '2rem',
+          fontSize: '0.85rem',
           border: '1px solid rgba(255,170,0,0.2)',
           display: 'flex',
           gap: '0.75rem',
@@ -129,14 +125,14 @@ export default function HistoryPage() {
             <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700 }}>{wins}W / {losses}L</p>
           </div>
         </div>
-        
+
         <div className="glass-card" style={{ padding: '1.25rem', borderRadius: '24px', position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: totalProfit >= 0 ? 'var(--success)' : 'var(--danger)', opacity: 0.3 }} />
           <p style={{ fontSize: '0.6rem', fontWeight: 900, color: 'var(--text-muted)', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.2em' }}>Performance</p>
-          <p style={{ 
-            fontSize: '1.8rem', 
-            fontWeight: 950, 
-            color: totalProfit >= 0 ? 'var(--success)' : 'var(--danger)', 
+          <p style={{
+            fontSize: '1.8rem',
+            fontWeight: 950,
+            color: totalProfit >= 0 ? 'var(--success)' : 'var(--danger)',
             letterSpacing: '-0.05em'
           }}>
             {totalProfit >= 0 ? '+' : '-'}${Math.abs(totalProfit).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
@@ -154,12 +150,12 @@ export default function HistoryPage() {
 
       {/* Tabs */}
       <div style={{ display: 'flex', gap: '0.35rem', marginBottom: '2rem', background: 'var(--surface-hover)', padding: '0.35rem', borderRadius: '100px', border: '1px solid var(--border)', width: '100%', maxWidth: '500px' }}>
-        <button 
+        <button
           onClick={() => setActiveTab('trades')}
           className="hover-glow"
-          style={{ 
+          style={{
             flex: 1,
-            padding: '0.75rem 0.5rem', 
+            padding: '0.75rem 0.5rem',
             borderRadius: '100px',
             fontSize: 'clamp(0.65rem, 2.5vw, 0.85rem)',
             fontWeight: 800,
@@ -176,12 +172,12 @@ export default function HistoryPage() {
         >
           TRADES ({tradeTotal})
         </button>
-        <button 
+        <button
           onClick={() => setActiveTab('transactions')}
           className="hover-glow"
-          style={{ 
+          style={{
             flex: 1,
-            padding: '0.75rem 0.5rem', 
+            padding: '0.75rem 0.5rem',
             borderRadius: '100px',
             fontSize: 'clamp(0.65rem, 2.5vw, 0.85rem)',
             fontWeight: 800,
@@ -211,12 +207,12 @@ export default function HistoryPage() {
               trades.length > 0 ? (
                 <>
                   {trades.map((trade, i) => (
-                    <div key={trade._id} className="glass-card" style={{ 
-                      padding: 'clamp(0.75rem, 3vw, 1.25rem) clamp(0.75rem, 4vw, 1.5rem)', 
+                    <div key={trade._id} className="glass-card" style={{
+                      padding: 'clamp(0.75rem, 3vw, 1.25rem) clamp(0.75rem, 4vw, 1.5rem)',
                       borderRadius: '20px',
-                      display: 'flex', 
-                      justifyContent: 'space-between', 
-                      alignItems: 'center', 
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
                       gap: '0.75rem',
                       flexWrap: 'wrap',
                       borderLeft: `4px solid ${trade.result === 'win' ? 'var(--success)' : 'var(--danger)'}`,
@@ -225,15 +221,15 @@ export default function HistoryPage() {
                       overflow: 'hidden'
                     }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.5rem, 2vw, 1rem)', flex: '1 1 180px', minWidth: 0 }}>
-                        <div style={{ 
-                          width: 'clamp(32px, 8vw, 44px)', height: 'clamp(32px, 8vw, 44px)', borderRadius: '12px', 
+                        <div style={{
+                          width: 'clamp(32px, 8vw, 44px)', height: 'clamp(32px, 8vw, 44px)', borderRadius: '12px',
                           flexShrink: 0,
-                          background: 'var(--surface-hover)', 
+                          background: 'var(--surface-hover)',
                           display: 'flex', alignItems: 'center', justifyContent: 'center',
                           border: '1px solid var(--border)'
                         }}>
-                          {trade.direction === 'up' 
-                            ? <TrendingUp size={16} color="var(--success)" /> 
+                          {trade.direction === 'up'
+                            ? <TrendingUp size={16} color="var(--success)" />
                             : <TrendingDown size={16} color="var(--danger)" />
                           }
                         </div>
@@ -248,9 +244,9 @@ export default function HistoryPage() {
                           </div>
                         </div>
                       </div>
-                      
+
                       <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                        <p style={{ 
+                        <p style={{
                           fontWeight: 950,
                           fontSize: 'clamp(1rem, 4vw, 1.4rem)',
                           color: trade.result === 'win' ? 'var(--success)' : 'var(--danger)',
@@ -263,8 +259,8 @@ export default function HistoryPage() {
                           <span style={{ fontSize: '0.6rem', color: 'var(--text-muted)', fontWeight: 700 }}>
                             {new Date(trade.createdAt).toLocaleDateString([], { month: 'numeric', day: 'numeric' })}
                           </span>
-                          <span className="badge" style={{ 
-                            fontSize: '0.55rem', padding: '0.15rem 0.4rem', 
+                          <span className="badge" style={{
+                            fontSize: '0.55rem', padding: '0.15rem 0.4rem',
                             background: trade.result === 'win' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
                             color: trade.result === 'win' ? 'var(--success)' : 'var(--danger)',
                             border: `1px solid ${trade.result === 'win' ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)'}`
@@ -300,11 +296,11 @@ export default function HistoryPage() {
               transactions.length > 0 ? (
                 <>
                   {transactions.map((tx, i) => (
-                    <div key={tx._id} className="glass-card" style={{ 
-                      padding: 'clamp(0.75rem, 3vw, 1.25rem) clamp(0.75rem, 4vw, 1.5rem)', 
+                    <div key={tx._id} className="glass-card" style={{
+                      padding: 'clamp(0.75rem, 3vw, 1.25rem) clamp(0.75rem, 4vw, 1.5rem)',
                       borderRadius: '20px',
-                      display: 'flex', 
-                      justifyContent: 'space-between', 
+                      display: 'flex',
+                      justifyContent: 'space-between',
                       alignItems: 'center',
                       gap: '0.75rem',
                       flexWrap: 'wrap',
@@ -313,15 +309,15 @@ export default function HistoryPage() {
                       overflow: 'hidden'
                     }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.5rem, 2vw, 1rem)', flex: '1 1 180px', minWidth: 0 }}>
-                        <div style={{ 
-                          width: 'clamp(32px, 8vw, 44px)', height: 'clamp(32px, 8vw, 44px)', borderRadius: '12px', 
+                        <div style={{
+                          width: 'clamp(32px, 8vw, 44px)', height: 'clamp(32px, 8vw, 44px)', borderRadius: '12px',
                           flexShrink: 0,
-                          background: 'var(--surface-hover)', 
+                          background: 'var(--surface-hover)',
                           display: 'flex', alignItems: 'center', justifyContent: 'center',
                           border: '1px solid var(--border)'
                         }}>
-                          {tx.type === 'deposit' 
-                            ? <ArrowUpRight size={16} color="var(--success)" /> 
+                          {tx.type === 'deposit'
+                            ? <ArrowUpRight size={16} color="var(--success)" />
                             : <ArrowDownLeft size={16} color="var(--accent)" />
                           }
                         </div>
@@ -329,15 +325,15 @@ export default function HistoryPage() {
                           <span style={{ fontWeight: 950, fontSize: 'clamp(0.8rem, 3vw, 1rem)', color: 'var(--text)', display: 'block', marginBottom: '0.25rem', letterSpacing: '-0.02em', textTransform: 'uppercase', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                             {tx.type} ARCHIVE {tx.cryptoType && `(${tx.cryptoType})`}
                           </span>
-                          <span className="badge" style={{ 
-                            fontSize: '0.6rem', padding: '0.2rem 0.6rem', 
+                          <span className="badge" style={{
+                            fontSize: '0.6rem', padding: '0.2rem 0.6rem',
                             background: tx.status === 'approved' ? 'rgba(16, 185, 129, 0.1)' : tx.status === 'pending' ? 'rgba(212, 175, 55, 0.1)' : 'var(--border)',
                             color: tx.status === 'approved' ? 'var(--success)' : tx.status === 'pending' ? 'var(--accent)' : 'var(--text-muted)',
                             border: `1px solid ${tx.status === 'approved' ? 'rgba(16,185,129,0.2)' : tx.status === 'pending' ? 'rgba(212,175,55,0.2)' : 'var(--border-highlight)'}`
                           }}>{tx.status?.toUpperCase()}</span>
                         </div>
                       </div>
-                      
+
                       <div style={{ textAlign: 'right', flexShrink: 0 }}>
                         <span style={{ fontWeight: 950, fontSize: 'clamp(1rem, 4vw, 1.4rem)', color: tx.type === 'deposit' ? 'var(--success)' : 'var(--text)', letterSpacing: '-0.04em', lineHeight: 1 }}>
                           {tx.type === 'deposit' ? '+' : '-'}${tx.amount?.toLocaleString(undefined, { minimumFractionDigits: tx.amount >= 1000 ? 0 : 1, maximumFractionDigits: 1 })}

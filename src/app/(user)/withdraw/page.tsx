@@ -87,27 +87,21 @@ export default function WithdrawPage() {
     finally { setSubmitting(false); }
   };
 
-  if (loading || !user) return (<div style={{ padding: '60px 20px', textAlign: 'center' }}><div className="skeleton" style={{ width: '200px', height: '32px', margin: '0 auto 1rem' }} /><div className="skeleton" style={{ width: '300px', height: '16px', margin: '0 auto' }} /></div>);
+  if (loading || !user) return (
+    <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <GoldCoinLoader label="Loading withdrawal terminal…" />
+    </div>
+  );
 
   return (
-    <div className="animate-in" style={{ padding: '40px 0', maxWidth: '900px', margin: '0 auto' }}>
+    <div className="animate-in" style={{ maxWidth: '900px', margin: '0 auto' }}>
       {/* Institutional Header */}
-      <div style={{ marginBottom: '5rem', position: 'relative' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-          <div className="meta-text" style={{ 
-            background: 'rgba(var(--text), 0.03)', 
-            color: 'var(--text-muted)', 
-            padding: '0.4rem 1rem',
-            border: '1px solid var(--border-subtle)',
-            borderRadius: '100px'
-          }}>WITHDRAW_TERMINAL_ACTIVE</div>
-          <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--primary)' }} />
-          <span className="meta-text" style={{ color: 'var(--primary)' }}>SECURE CHANNEL ACTIVE</span>
-        </div>
-        <h1 style={{ 
-          fontSize: 'clamp(3rem, 6vw, 4.5rem)', 
-          marginBottom: '1rem', 
-          color: 'var(--text)' 
+      <div style={{ marginBottom: '2rem', position: 'relative' }}>
+
+        <h1 style={{
+          fontSize: 'clamp(1rem, 6vw, 3.5rem)',
+          marginBottom: '1rem',
+          color: 'var(--text)'
         }}>
           WITHDRAW <span style={{ color: 'var(--primary)' }}>RESERVE ASSETS</span>
         </h1>
@@ -117,17 +111,17 @@ export default function WithdrawPage() {
       </div>
 
       <div className="ghost-border-wrapper">
-        <div className="card-asymmetric" style={{ padding: '4rem 3rem', backgroundColor: 'var(--surface)', border: '1px solid var(--border)', position: 'relative' }}>
-          
+        <div className="card-asymmetric" style={{ padding: '2rem 2rem', backgroundColor: 'var(--surface)', border: '1px solid var(--border)', position: 'relative' }}>
+
           {/* Balance Module */}
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'center', 
-            padding: '2.5rem 3rem', 
-            background: 'rgba(var(--text), 0.03)', 
-            borderRadius: '40px 10px 40px 10px', 
-            marginBottom: '4rem', 
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '1.5rem 2rem',
+            background: 'rgba(var(--text), 0.03)',
+            borderRadius: '40px 10px 40px 10px',
+            marginBottom: '4rem',
             border: '1px solid var(--border-subtle)',
           }}>
             <div>
@@ -141,16 +135,16 @@ export default function WithdrawPage() {
           </div>
 
           {error && (
-            <div style={{ 
-              background: 'rgba(180, 83, 9, 0.08)', 
-              color: 'var(--accent)', 
-              padding: '1.25rem 2rem', 
-              borderRadius: '8px', 
-              fontSize: '9px', 
-              border: '1px solid var(--accent)', 
+            <div style={{
+              background: 'rgba(180, 83, 9, 0.08)',
+              color: 'var(--accent)',
+              padding: '1.25rem 2rem',
+              borderRadius: '8px',
+              fontSize: '9px',
+              border: '1px solid var(--accent)',
               marginBottom: '3rem',
               display: 'flex',
-              gap: '1rem',
+              gap: '0.5rem',
               alignItems: 'center',
               fontWeight: 900,
               textTransform: 'uppercase',
@@ -159,19 +153,19 @@ export default function WithdrawPage() {
               <AlertTriangle size={20} /> {error}
             </div>
           )}
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <div className="input-group">
               <label className="meta-text" style={{ fontSize: '9px', marginBottom: '1rem' }}>EXTRACTION AMOUNT (USD)</label>
-              <input 
-                type="number" 
-                placeholder={`MINIMUM TIER: $${limits.minWithdrawal}`} 
-                required 
-                min={limits.minWithdrawal} 
-                max={user.balance} 
-                step="0.01" 
+              <input
+                type="number"
+                placeholder={`MINIMUM TIER: $${limits.minWithdrawal}`}
+                required
+                min={limits.minWithdrawal}
+                max={user.balance}
+                step="0.01"
                 className="btn-asymmetric"
-                value={amount} 
-                onChange={(e) => setAmount(e.target.value)} 
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
                 style={{ background: 'rgba(var(--text), 0.03)', border: '1px solid var(--border)', padding: '1.25rem 1.5rem', fontWeight: 700 }}
               />
               {Number(amount) > 0 && (<p className="meta-text" style={{ fontSize: '9px', color: 'var(--primary)', marginTop: '1rem' }}>NET WITHDRAWAL VALUE: ${Number(amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}</p>)}
@@ -232,23 +226,23 @@ export default function WithdrawPage() {
 
             <div className="input-group">
               <label className="meta-text" style={{ fontSize: '9px', marginBottom: '1rem' }}>DESTINATION WALLET ADDRESS</label>
-              <input 
-                type="text" 
-                placeholder="ENTER_INSTITUTIONAL_GRADE_WALLET" 
-                required 
+              <input
+                type="text"
+                placeholder="ENTER_INSTITUTIONAL_GRADE_WALLET"
+                required
                 className="btn-asymmetric"
-                value={walletAddress} 
-                onChange={(e) => setWalletAddress(e.target.value)} 
+                value={walletAddress}
+                onChange={(e) => setWalletAddress(e.target.value)}
                 style={{ background: 'rgba(var(--text), 0.03)', border: '1px solid var(--border)', padding: '1.25rem 1.5rem', fontWeight: 700, fontFamily: 'monospace' }}
               />
             </div>
 
 
 
-            <div style={{ 
-              background: 'rgba(52, 211, 153, 0.05)', 
-              padding: '2rem', 
-              borderRadius: '8px', 
+            <div style={{
+              background: 'rgba(52, 211, 153, 0.05)',
+              padding: '2rem',
+              borderRadius: '8px',
               border: '1px solid var(--primary)',
               display: 'flex',
               gap: '1.5rem',
@@ -260,19 +254,19 @@ export default function WithdrawPage() {
               </p>
             </div>
 
-            <button 
-              type="submit" 
-              className="btn btn-asymmetric interactive-haptic" 
-              style={{ 
-                width: '100%', 
-                fontSize: '11px', 
-                padding: '2rem', 
+            <button
+              type="submit"
+              className="btn btn-asymmetric interactive-haptic"
+              style={{
+                width: '100%',
+                fontSize: '11px',
+                padding: '2rem',
                 fontWeight: 900,
                 backgroundColor: 'var(--text)',
                 color: 'var(--background)',
                 textTransform: 'uppercase',
                 letterSpacing: '0.4em'
-              }} 
+              }}
               disabled={submitting}
             >
               {submitting ? <GoldCoinLoader mini label="PROCESSING..." /> : 'REQUEST WITHDRAW'}
